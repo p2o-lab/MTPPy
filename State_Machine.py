@@ -3,12 +3,12 @@
 #         'Holding','Held','Unholding','Stopping','Stopped',
 #         'Aborting','Aborted','Resetting']'
 
-#TODO statt strings objekte/Variablen mit nachvollziehbaren namen
-
-#TODO laufzeit testen zwischen binär und Integer
-
 class Statemachine :
     def __init__(self):
+
+        self.Pause_disabled=False
+        self.Hold_disabled=False
+        self.Pause_Hold_disabled=False
 
         self.Idle=16
         self.Starting=8
@@ -29,22 +29,22 @@ class Statemachine :
 
         # [Undef,ResetEn,StartEn,StopEn,HoldEn,UnholdEn,PauseEn,ResumeEn,AbortEn,RestartEn,CompleteEn]
 
-        self.IdleEn=388
-        self.StartingEn=132
-        self.ExecuteEn=215
-        self.CompletingEn=132
-        self.CompletedEn=644
-        self.ResumingEn=132
-        self.PausedEn=140
-        self.PausingEn=132
-        self.HoldingEn=132
-        self.HeldEn=164
-        self.UnholdingEn=132
-        self.StoppingEn=132
-        self.StoppedEn=644
-        self.AbortingEn=132
-        self.AbortedEn=644
-        self.ResettingEn=132
+        self.IdleEn=268
+        self.StartingEn=280
+        self.CompletingEn=2266
+        self.CompletedEn=266
+        self.ResumingEn=280
+        self.PausedEn=408
+        self.PausingEn=280
+        self.HoldingEn=264
+        self.HeldEn=296
+        self.UnholdingEn=280
+        self.StoppingEn=256
+        self.StoppedEn=258
+        self.AbortingEn=0
+        self.AbortedEn=2
+        self.ResettingEn=264
+        self.ExecuteEn = 1880
 
         self.act_state=self.Idle
 
@@ -68,7 +68,7 @@ class Statemachine :
             self.act_state=self.Completed
 
     def Pause(self,SC=True):
-        if self.act_state==self.Execute:
+        if self.act_state==self.Execute and self.Pause_disabled==False and self.Pause_Hold_disabled==False:
             self.act_state=self.Pausing
         if self.act_state==self.Pausing and SC==True:
             self.act_state=self.Paused
@@ -87,7 +87,9 @@ class Statemachine :
 
     def Hold(self,SC=True):
         if self.act_state in [self.Starting,self.Execute,self.Completing,
-                self.Resuming,self.Paused,self.Pausing,self.Unholding]:
+                self.Resuming,self.Paused,self.Pausing,self.Unholding] \
+                and self.Hold_disabled==False and self.Pause_Hold_disabled==False :
+
             self.act_state=self.Holding
         if self.act_state==self.Holding and SC==True:
             self.act_state=self.Held
@@ -163,15 +165,55 @@ class Statemachine :
         elif com_var==1024:
             self.Complete(SC)
 
-#Todo funktion um in command enable anzupassen 1: einzelnde loops deaktivieren 2: individuelle zustände anpassen
+#TODo discuss if the stopp and abort loop are possible to disable
 
+def diasable_pause_loop(self):
 
-#Test=Statemachine()
-# print(Test.get_current_state())
-# print(Test.act_state)
-# Test.Start(False)
-# print(Test.get_current_state())
-# print(Test.act_state)
-# Test.Start(True)
-# print(Test.get_current_state())
-# print(Test.act_state)
+    self.Pause_disabled=True
+    self.ExecuteEn = 1816
+
+def disable_hold_loop(self):
+
+    self.Hold_disabled=True
+
+    self.StartingEn = 280
+    self.ExecuteEn = 1880
+    self.CompletingEn = 266
+    self.ResumingEn = 280
+    self.PausedEn = 408
+    self.PausingEn = 280
+    self.UnholdingEn = 280
+
+def disable_hold_paus_loop(self):
+
+    self.Pause_Hold_disabled = True
+    self.StartingEn = 280
+    self.ExecuteEn = 1816
+    self.CompletingEn = 266
+    self.ResumingEn = 280
+    self.PausedEn = 408
+    self.PausingEn = 280
+    self.UnholdingEn = 280
+
+def enable_all_loops(self):
+
+    self.Pause_disabled = False
+    self.Hold_disabled=False
+    self.Pause_Hold_disabled = False
+
+    self.IdleEn = 268
+    self.StartingEn = 280
+    self.CompletingEn = 2266
+    self.CompletedEn = 266
+    self.ResumingEn = 280
+    self.PausedEn = 408
+    self.PausingEn = 280
+    self.HoldingEn = 264
+    self.HeldEn = 296
+    self.UnholdingEn = 280
+    self.StoppingEn = 256
+    self.StoppedEn = 258
+    self.AbortingEn = 0
+    self.AbortedEn = 2
+    self.ResettingEn = 264
+    self.ExecuteEn = 1880
