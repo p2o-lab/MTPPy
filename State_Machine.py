@@ -165,7 +165,7 @@ class Statemachine :
         elif com_var==1024:
             self.Complete(SC)
 
-#TODo discuss if the stopp and abort loop are possible to disable
+#TODo discuss if the stop and abort loop are possible to disable
 
 def diasable_pause_loop(self):
 
