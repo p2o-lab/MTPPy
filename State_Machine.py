@@ -3,7 +3,7 @@
 #         'Holding','Held','Unholding','Stopping','Stopped',
 #         'Aborting','Aborted','Resetting']'
 
-class Statemachine :
+class Statemachine():
     def __init__(self):
 
         self.Pause_disabled=False

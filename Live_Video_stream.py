@@ -1,6 +1,6 @@
 from flask import Flask, render_template, Response
 import cv2
-
+from time import sleep
 app = Flask(__name__)
 
 #camera = cv2.VideoCapture('rtsp://freja.hiof.no:1935/rtplive/_definst_/hessdalen03.stream')  # use 0 for web camera
@@ -33,6 +33,23 @@ def index():
     return render_template('index.html')
 
 
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
+
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
+
 if __name__ == '__main__':
     #app.run(host='192.168.178.69')
     app.run()
+    for i in range(0,10):
+        print(i)
+        sleep(1)
+
+    shutdown()

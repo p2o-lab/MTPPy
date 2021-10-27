@@ -1,8 +1,8 @@
 import State_Machine as SM
 
-class Service:
+class Service():
     def __init__(self):
-        self.Service_SM=SM()
+        self.Service_SM=SM.Statemachine()
 
         self.TagName='Service'
         self.TagDescription='Service Description'
@@ -55,18 +55,19 @@ class Service:
 
     #Zustandssteuerung VDI_256_B4 Section 6.5.2
     def State_control(self):
-        if self.StateOpAct==True:
-            self.Service_SM.ex_command(self.CommandOP)
-        elif self.StateAutAct==True and self.SrcIntAct==True:
-            self.Service_SM.ex_command(self.CommandInt)
-        elif self.StateAutAct==True and self.SrcExtAct==True:
-            self.Service_SM.ex_command(self.CommandExt)
+        if self.StateOffAct != True:
+            if self.StateOpAct==True:
+                self.Service_SM.ex_command(self.CommandOP)
+            elif self.StateAutAct==True and self.SrcIntAct==True:
+                self.Service_SM.ex_command(self.CommandInt)
+            elif self.StateAutAct==True and self.SrcExtAct==True:
+                self.Service_SM.ex_command(self.CommandExt)
 
 
     #Prozedurvorgabe  VDI_256_B4 Section 6.5.3
     #TODO implement procedures as Functions in the individual Service or use the current procedure identifier to communicate only the value
     def Procedure_selection(self):
-        if self.Service_SM.get_current_state()==16:
+        if self.Service_SM.get_current_state()==16 and self.StateOffAct != True:
 
             if self.StateOpAct==True:
                 self.ProcedureCur=self.ProcedureOP
@@ -139,7 +140,7 @@ class Service:
 
     #TODO Service Source Mode VDI_256_B4 Section 5.6.2
     def Service_source_mode(self):
-        if self.SrcChannel==False:
+        if self.SrcChannel==False and self.StateOffAct != True:
             self.SrcExtAut=False
             self.SrcIntAut=False
 
@@ -156,12 +157,12 @@ class Service:
     # SrC Channel True is set PEA intern witch Service_source_mode_Aut_Ext and Service_source_mode_Aut_Int
 
     def Service_source_mode_Aut_Ext(self):
-        if self.SrcChannel==True:
+        if self.SrcChannel==True and self.StateOffAct != True:
             self.SrcExtAut=True
             self.SrcIntAut=False
 
     def Service_source_mode_Aut_Int(self):
-        if self.SrcChannel==True:
+        if self.SrcChannel==True and self.StateOffAct != True:
             self.SrcExtAut=False
             self.SrcIntAut=True
 
