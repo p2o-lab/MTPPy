@@ -63,7 +63,7 @@ class Statemachine():
 
     def Complete(self,SC=True):
         if self.act_state==self.Execute:
-            self.act_state==self.Completing
+            self.act_state=self.Completing
         if self.act_state==self.Completing and SC==True:
             self.act_state=self.Completed
 
@@ -123,7 +123,7 @@ class Statemachine():
         return CurrentState
 
     def get_command_en(self):
-
+        CommandEN=0
         if self.act_state==self.Idle: CommandEN=self.IdleEn
         if self.act_state==self.Starting: CommandEN=self.StartingEn
         if self.act_state==self.Execute: CommandEN=self.ExecuteEn

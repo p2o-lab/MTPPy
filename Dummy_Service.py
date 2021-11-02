@@ -31,7 +31,6 @@ class D_Service():
             self.Service.Service_SM.Complete(True)
 
     def Completed(self):
-
         if self.Service.ProcedureCur==1:
             print('Procedure 1 is completed')
             sleep(1)

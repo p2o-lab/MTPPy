@@ -135,6 +135,7 @@ class Service():
 
         self.PosTextID= self.get_PosTextID()
 
+
     #TODO Dienst Bediener Interaktion VDI_256_B4 Section 6.5.6
 
 

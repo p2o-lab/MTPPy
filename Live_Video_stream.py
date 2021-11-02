@@ -48,8 +48,3 @@ def shutdown():
 if __name__ == '__main__':
     #app.run(host='192.168.178.69')
     app.run()
-    for i in range(0,10):
-        print(i)
-        sleep(1)
-
-    shutdown()
