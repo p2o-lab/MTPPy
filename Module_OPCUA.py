@@ -21,7 +21,7 @@ structure_dict={
             'StateChannel':{'init':0},
             'StateOffAut':{'init':0},
             'StateOpAut':{'init':0},
-            'StateAutAut':{'init':0},
+            'StateAutAut':{'init':16},
             'StateOffOp':{'init':0},
             'StateOpOp':{'init':0},
             'StateAutOp':{'init':0},
