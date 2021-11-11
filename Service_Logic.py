@@ -6,8 +6,6 @@ class Logic_Class():
         self.ns=ns
         client = Client('opc.tcp://localhost:4840')
         client.connect()
-
-
         sub = client.create_subscription(500, handler)
         handle = sub.subscribe_data_change(client.get_node(f'ns={self.ns};s=Service_Control').get_children())
 
@@ -36,7 +34,7 @@ class Logic_Class():
                 self.Service.Service.StateOffOp = False
 
 
-            if curr_name == 'StateOffOp':
+            if curr_name == 'StateOffOp'and self.Service.Service.Service_SM.get_current_state()==16:
                 self.Service.Service.StateAutOp = False
                 self.Service.Service.StateOpOp = False
                 self.Service.Service.StateOffOp = True
@@ -60,22 +58,28 @@ class Logic_Class():
 
         if curr_name in ['CommandOp', 'CommandInt', 'CommandExt']:
         #if curr_name in ['CommandOp']:
+
             if curr_name == 'CommandOp' and self.Service.Service.StateOpAct == True:
-                self.Service.Service.Service_SM.ex_command(val)
+                self.Service.Service.CommandOP=val
+                self.Service.Service.State_control()
                 self.Service.Service.update_feedback()
                 self.Service.execute_state()
 
             if curr_name == 'CommandInt' and self.Service.Service.StateAutAct == True \
                     and self.Service.Service.SrcIntAct == True:
-                self.Service.Service.Service_SM.ex_command(val)
+                self.Service.Service.CommandInt=val
+                self.Service.Service.State_control()
                 self.Service.Service.update_feedback()
+                self.Service.execute_state()
 
             if curr_name == 'CommandExt' and self.Service.Service.StateAutAct == True \
                     and self.Service.Service.SrcExtAct == True:
-                self.Service.Service.Service_SM.ex_command(val)
+                self.Service.Service.CommandExt = val
+                self.Service.Service.State_control()
                 self.Service.Service.update_feedback()
+                self.Service.execute_state()
 
-        client2.get_node(f'ns={curr_nsi};s=StateCur').set_value(self.Service.Service.StateCur)
-        client2.get_node(f'ns={curr_nsi};s=CommandEn').set_value(self.Service.Service.CommandEn)
+            client2.get_node(f'ns={curr_nsi};s=StateCur').set_value(self.Service.Service.StateCur)
+            client2.get_node(f'ns={curr_nsi};s=CommandEn').set_value(self.Service.Service.CommandEn)
         client2.disconnect()
 

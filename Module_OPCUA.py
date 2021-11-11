@@ -4,7 +4,7 @@ structure_dict={
     'D_Service':
         {'Service_Control':{
             'WQC':{'ns':'ns=1;s=WQC','Name':'WQC','Type':'byte','init':0},
-            'OsLevel':{'ns':'ns=1;s=Os_Level','Name':'Os_Level','Type':'byte','init':0},
+            'OSLevel':{'ns':'ns=1;s=Os_Level','Name':'Os_Level','Type':'byte','init':0},
             'CommandOp':{'ns':'ns=1;s=CommandOp','Name':'CommandOp','Type':'int','init':0},
             'CommandInt':{'init':0},
             'CommandExt':{'init':0},
@@ -33,21 +33,23 @@ structure_dict={
             'SrcIntOp':{'init':False,'Type':'byte'},
             'SrcExtOp':{'init':False,'Type':'byte'},
             'SrcIntAct':{'init':False,'Type':'byte'},
-            'SrcExtAct':{'init':False,'Type':'byte'}}},
+            'SrcExtAct':{'init':False,'Type':'byte'},
+            'SrcIntAut':{'init':False,'Type':'byte'},
+        }},
     'D_Service_2':
         {'Service_Control': {
             'WQC': {'ns': 'ns=1;s=WQC', 'Name': 'WQC', 'Type': 'byte', 'init': 0},
-            'OsLevel': {'ns': 'ns=1;s=Os_Level', 'Name': 'Os_Level', 'Type': 'byte', 'init': 0},
+            'OSLevel': {'ns': 'ns=1;s=Os_Level', 'Name': 'Os_Level', 'Type': 'byte', 'init': 0},
             'CommandOp': {'ns': 'ns=1;s=CommandOp', 'Name': 'CommandOp', 'Type': 'int', 'init': 0},
             'CommandInt': {'init': 0},
             'CommandExt': {'init': 0},
-            'ProcedureOp': {'init': 0},
+            'ProcedureOp': {'init': 1},
             'ProcedureInt': {'init': 0},
             'ProcedureExt': {'init': 0},
             'StateCur': {'init': 16},
             'CommandEn': {'init': 268},
-            'ProcedureCur': {'init': 0},
-            'ProcedureReq': {'init': 0},
+            'ProcedureCur': {'init': 1},
+            'ProcedureReq': {'init': 1},
             'PosTextID': {'init': 0},
             'InteractQuestionID': {'init': 0},
             'InteractAnswerID': {'init': 0},
@@ -66,7 +68,10 @@ structure_dict={
             'SrcIntOp': {'init': False, 'Type': 'byte'},
             'SrcExtOp': {'init': False, 'Type': 'byte'},
             'SrcIntAct': {'init': False, 'Type': 'byte'},
-            'SrcExtAct': {'init': False, 'Type': 'byte'}}}}
+            'SrcExtAct': {'init': False, 'Type': 'byte'},
+            'SrcIntAut': {'init': False, 'Type': 'byte'},
+        }}
+}
 
 server=Server()
 server.set_endpoint("opc.tcp://localhost:4840")

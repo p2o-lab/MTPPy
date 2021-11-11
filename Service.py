@@ -133,7 +133,7 @@ class Service():
         self.StateCur=self.Service_SM.get_current_state()
         self.CommandEn=self.Service_SM.get_command_en()
 
-        self.PosTextID= self.get_PosTextID()
+        #self.PosTextID= self.get_PosTextID()
 
 
     #TODO Dienst Bediener Interaktion VDI_256_B4 Section 6.5.6
