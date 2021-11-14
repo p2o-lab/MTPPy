@@ -1,16 +1,31 @@
-import Service_Logic_2
-import Dummy_Service
+from Service_Sync_opc_side import Service_Sync
+from Data_Processing import Data_Processing
+from IndicatorElements import AnaView
+from AnaView_Sync_opc_side import AnaView_Sync
+from opcua import Client
+from time import sleep
 
-class Service_1_Handler(object):
-    def datachange_notification(self,node,val,data):
-        i=1
-        #Service_1.Sync_and_execute(node,val)
 
-class Service_2_Handler(object):
+class S_Data_Processing_Handler(object):
     def datachange_notification(self, node, val, data):
-        Service_2.Sync_and_execute(node, val)
+        S_Data_Processing_Sync.Sync_and_execute(node, val)
+
+# class S_Data_Processing_AnaView_Handler(object):
+#     def datachange_notification(self,node,val,data):
+
+
 
 address='opc.tcp://localhost:4840'
+client = Client(address)
+client.connect()
 
-#Service_1=Service_Logic_2.Sync_Class(Dummy_Service.D_Service(),2,Service_1_Handler(),address)
-Service_2=Service_Logic_2.Sync_Class(Dummy_Service.D_Service(),1,Service_2_Handler(),address)
+S_Data_Processing_AnaView=AnaView()
+S_Data_Processing=Data_Processing(S_Data_Processing_AnaView)
+
+S_Data_Processing_Sync=Service_Sync(S_Data_Processing,1,client)
+S_Data_Processing_AnaView_Sync=AnaView_Sync(S_Data_Processing_AnaView,2,client)
+
+while True:
+    S_Data_Processing_Sync.Sync_and_execute()
+    S_Data_Processing_AnaView_Sync.Sync_and_execute()
+    sleep(0.5)

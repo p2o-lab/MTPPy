@@ -5,8 +5,6 @@ class IndicatorElement(DataAssembly):
         super(IndicatorElement,self).__init__()
         self.WQC=0
 
-
-
 class AnaView(IndicatorElement):
     def __init__(self):
         super(AnaView,self).__init__()
@@ -155,3 +153,4 @@ class StringView(IndicatorElement):
         super(StringView,self).__init__()
         self.Text='Text_Value'
 
+i=AnaView()

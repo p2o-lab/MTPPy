@@ -1,8 +1,10 @@
 from opcua import Server
 
 structure_dict={
-    'D_Service':
-        {'Service_Control':{
+    'Data_Processing':
+        {'ServiceControl':{
+            'TagName':{'init':'TagName'},
+            'TagDescription':{'init':'TagDescription'},
             'WQC':{'ns':'ns=1;s=WQC','Name':'WQC','Type':'byte','init':0},
             'OSLevel':{'ns':'ns=1;s=Os_Level','Name':'Os_Level','Type':'byte','init':0},
             'CommandOp':{'ns':'ns=1;s=CommandOp','Name':'CommandOp','Type':'int','init':0},
@@ -35,41 +37,15 @@ structure_dict={
             'SrcIntAct':{'init':False,'Type':'byte'},
             'SrcExtAct':{'init':False,'Type':'byte'},
             'SrcIntAut':{'init':False,'Type':'byte'},
-        }},
-    'D_Service_2':
-        {'Service_Control': {
-            'WQC': {'ns': 'ns=1;s=WQC', 'Name': 'WQC', 'Type': 'byte', 'init': 0},
-            'OSLevel': {'ns': 'ns=1;s=Os_Level', 'Name': 'Os_Level', 'Type': 'byte', 'init': 0},
-            'CommandOp': {'ns': 'ns=1;s=CommandOp', 'Name': 'CommandOp', 'Type': 'int', 'init': 0},
-            'CommandInt': {'init': 0},
-            'CommandExt': {'init': 0},
-            'ProcedureOp': {'init': 1},
-            'ProcedureInt': {'init': 0},
-            'ProcedureExt': {'init': 0},
-            'StateCur': {'init': 16},
-            'CommandEn': {'init': 268},
-            'ProcedureCur': {'init': 1},
-            'ProcedureReq': {'init': 1},
-            'PosTextID': {'init': 0},
-            'InteractQuestionID': {'init': 0},
-            'InteractAnswerID': {'init': 0},
-            'StateChannel': {'init': False, 'Type': 'byte'},
-            'StateOffAut': {'init': False, 'Type': 'byte'},
-            'StateOpAut': {'init': False, 'Type': 'byte'},
-            'StateAutAut': {'init': False, 'Type': 'byte'},
-            'StateOffOp': {'init': False, 'Type': 'byte'},
-            'StateOpOp': {'init': False, 'Type': 'byte'},
-            'StateAutOp': {'init': False, 'Type': 'byte'},
-            'StateOpAct': {'init': True, 'Type': 'byte'},
-            'StateAutAct': {'init': False, 'Type': 'byte'},
-            'StateOffAct': {'init': False, 'Type': 'byte'},
-            'SrcChannel': {'init': False, 'Type': 'byte'},
-            'SrcExtAut': {'init': False, 'Type': 'byte'},
-            'SrcIntOp': {'init': False, 'Type': 'byte'},
-            'SrcExtOp': {'init': False, 'Type': 'byte'},
-            'SrcIntAct': {'init': False, 'Type': 'byte'},
-            'SrcExtAct': {'init': False, 'Type': 'byte'},
-            'SrcIntAut': {'init': False, 'Type': 'byte'},
+        },
+         'AnaView':
+            {'TagName': {'init': 'TagName'},
+            'TagDescription': {'init': 'TagDescription'},
+             'WQC':{'init':0},
+             'V':{'init':0},
+             'VSclMin':{'init':0},
+             'VSclMax':{'init':100},
+             'VUnit':{'init':0}
         }}
 }
 

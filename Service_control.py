@@ -1,18 +1,15 @@
+from DataAssembly import DataAssembly
 import State_Machine as SM
 
-class Service():
+class Service_control(DataAssembly):
     def __init__(self):
+        super(Service_control,self).__init__()
         self.Service_SM=SM.Statemachine()
-
-        self.TagName='Service'
-        self.TagDescription='Service Description'
         self.WQC=0
         self.OSLevel=0
-
         self.CommandOP=0
         self.CommandInt=0
         self.CommandExt=0
-
         self.ProcedureOP=0
         self.ProcedureInt=0
         self.ProcedureExt=0

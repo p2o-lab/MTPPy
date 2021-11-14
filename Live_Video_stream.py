@@ -12,10 +12,11 @@ def gen_frames():  # generate frame by frame from camera
     while True:
         # Capture frame-by-frame
         success, frame = camera.read()  # read the camera frame
+        edge=cv2.Canny(frame, 100, 200)
         if not success:
             break
         else:
-            ret, buffer = cv2.imencode('.jpg', frame)
+            ret, buffer = cv2.imencode('.jpg', edge)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
@@ -33,18 +34,8 @@ def index():
     return render_template('index.html')
 
 
-def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
 
 
-@app.route('/shutdown', methods=['POST'])
-def shutdown():
-    shutdown_server()
-    return 'Server shutting down...'
-
-if __name__ == '__main__':
-    #app.run(host='192.168.178.69')
-    app.run()
+# if __name__ == '__main__':
+#     #app.run(host='192.168.178.69')
+app.run()
