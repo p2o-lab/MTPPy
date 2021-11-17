@@ -71,7 +71,6 @@ class Service_Sync():
     #def Sync_and_execute(self,node,val):
 
         self.Sync_POL_PEA()
-
         self.Service.State_control()
         self.Service.Procedure_selection()
         self.Service.Service_operation_mode()

@@ -1,8 +1,6 @@
 from opcua import Server
 
-structure_dict={
-    'Data_Processing':
-        {'ServiceControl':{
+Service_control_dict={
             'TagName':{'init':'TagName'},
             'TagDescription':{'init':'TagDescription'},
             'WQC':{'ns':'ns=1;s=WQC','Name':'WQC','Type':'byte','init':0},
@@ -13,40 +11,64 @@ structure_dict={
             'ProcedureOp':{'init':1},
             'ProcedureInt':{'init':0},
             'ProcedureExt':{'init':0},
-            'StateCur':{'init':16},
-            'CommandEn':{'init':268},
-            'ProcedureCur':{'init':1},
-            'ProcedureReq':{'init':1},
+            'StateCur':{'init':0},
+            'CommandEn':{'init':0},
+            'ProcedureCur':{'init':0},
+            'ProcedureReq':{'init':0},
             'PosTextID':{'init':0},
             'InteractQuestionID':{'init':0},
             'InteractAnswerID':{'init':0},
-            'StateChannel':{'init':False,'Type':'byte'},
-            'StateOffAut':{'init':False,'Type':'byte'},
-            'StateOpAut':{'init':False,'Type':'byte'},
-            'StateAutAut':{'init':False,'Type':'byte'},
-            'StateOffOp':{'init':False,'Type':'byte'},
-            'StateOpOp':{'init':False,'Type':'byte'},
-            'StateAutOp':{'init':False,'Type':'byte'},
-            'StateOpAct':{'init':True,'Type':'byte'},
-            'StateAutAct':{'init':False,'Type':'byte'},
-            'StateOffAct':{'init':False,'Type':'byte'},
-            'SrcChannel':{'init':False,'Type':'byte'},
-            'SrcExtAut':{'init':False,'Type':'byte'},
-            'SrcIntOp':{'init':False,'Type':'byte'},
-            'SrcExtOp':{'init':False,'Type':'byte'},
-            'SrcIntAct':{'init':False,'Type':'byte'},
-            'SrcExtAct':{'init':False,'Type':'byte'},
-            'SrcIntAut':{'init':False,'Type':'byte'},
-        },
-         'AnaView':
-            {'TagName': {'init': 'TagName'},
+            'StateChannel':{'init':False},
+            'StateOffAut':{'init':False},
+            'StateOpAut':{'init':False},
+            'StateAutAut':{'init':False},
+            'StateOffOp':{'init':False},
+            'StateOpOp':{'init':False},
+            'StateAutOp':{'init':False},
+            'StateOpAct':{'init':True},
+            'StateAutAct':{'init':False},
+            'StateOffAct':{'init':False},
+            'SrcChannel':{'init':False},
+            'SrcExtAut':{'init':False},
+            'SrcIntOp':{'init':False},
+            'SrcExtOp':{'init':False},
+            'SrcIntAct':{'init':False},
+            'SrcExtAct':{'init':False},
+            'SrcIntAut':{'init':False},
+        }
+AnaView_dict={'TagName': {'init': 'TagName'},
             'TagDescription': {'init': 'TagDescription'},
              'WQC':{'init':0},
              'V':{'init':0},
              'VSclMin':{'init':0},
              'VSclMax':{'init':100},
-             'VUnit':{'init':0}
-        }}
+             'VUnit':{'init':0}}
+
+structure_dict={
+    'Data_Processing':{'ServiceControl':
+        Service_control_dict,
+         'AnaView':AnaView_dict
+           },
+    'Raw_data_aquisitoion':{'ServiceControl':
+        Service_control_dict},
+
+    'Rawdataarchiving':{'ServiceControl':
+        Service_control_dict},
+
+    'Configuration_Mode':{'ServiceControl':
+        Service_control_dict},
+
+    'Camera_Positioning':{'ServiceControl':
+        Service_control_dict},
+
+    'Camera_Position_Zeroing':{'ServiceControl':
+        Service_control_dict},
+
+    'Illumination':{'ServiceControl':
+        Service_control_dict},
+
+    'Lens':{'ServiceControl':
+        Service_control_dict},
 }
 
 server=Server()

@@ -1,10 +1,10 @@
 
 
 class Procedure(object):
-    def __init__(self,ProcedureId:int,SelfCompleting:bool=False,IsDefault:bool=False):
-        self.IsSelfCompleting=SelfCompleting
-        self.ProcedureId=ProcedureId
-        self.IsDefault=IsDefault
+    def __init__(self):
+        self.IsSelfCompleting=False
+        self.ProcedureId=0
+        self.IsDefault=False
 
     def get_procedureid(self):
         return self.ProcedureId
