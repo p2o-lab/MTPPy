@@ -112,7 +112,7 @@ class DIntManInt(DIntMan):
         self.SrcIntAct=False
         self.SrcManAct=False
 
-    def service_source_mode(self):
+    def source_mode(self):
         if self.SrcChannel==True :
 
             if self.SrcManAut == True:
@@ -169,7 +169,7 @@ class BinManInt(BinMan):
         self.SrcIntAct = False
         self.SrcManAct = False
 
-    def service_source_mode(self):
+    def source_mode(self):
         if self.SrcChannel == True:
 
             if self.SrcManAut == True:
@@ -201,7 +201,7 @@ class BinManInt(BinMan):
 class AnaServParam(OperationElement):
     def __init__(self):
         super(AnaServParam,self).__init__()
-
+        self.WQC = 0
         self.VExt=0
         self.VOp=0
         self.VInt=0
@@ -232,7 +232,7 @@ class AnaServParam(OperationElement):
         self.SrcIntAct=False
         self.SrcExtAct=False
 
-    def Service_operation_mode(self):
+    def operation_mode(self):
         if self.StateChannel == True:
 
             if self.StateAutAut == True:
@@ -270,7 +270,7 @@ class AnaServParam(OperationElement):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-    def Service_source_mode(self):
+    def source_mode(self):
         if self.SrcChannel==False and self.StateOffAct != True:
             self.SrcExtAut=False
             self.SrcIntAut=False
@@ -302,11 +302,13 @@ class AnaServParam(OperationElement):
                 self.VReq=self.VExt
             if self.StateAutAct == True and self.SrcIntAct == True:
                 self.VReq=self.VInt
+    def set_Vout(self):
+        self.VOut=self.VReq
 
 class DIntServParam(OperationElement):
     def __init__(self):
         super(DIntServParam,self).__init__()
-
+        self.WQC=0
         self.VExt=0
         self.VOp=0
         self.VInt=0
@@ -337,7 +339,7 @@ class DIntServParam(OperationElement):
         self.SrcIntAct=False
         self.SrcExtAct=False
 
-    def Service_operation_mode(self):
+    def operation_mode(self):
         if self.StateChannel == True:
 
             if self.StateAutAut == True:
@@ -375,7 +377,7 @@ class DIntServParam(OperationElement):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-    def Service_source_mode(self):
+    def source_mode(self):
         if self.SrcChannel==False and self.StateOffAct != True:
             self.SrcExtAut=False
             self.SrcIntAut=False
@@ -411,7 +413,7 @@ class DIntServParam(OperationElement):
 class BinServParam(OperationElement):
     def __init__(self):
         super(BinServParam,self).__init__()
-
+        self.WQC = 0
         self.VExt=False
         self.VOp=False
         self.VInt=False
@@ -439,7 +441,7 @@ class BinServParam(OperationElement):
         self.SrcIntAct=False
         self.SrcExtAct=False
 
-    def Service_operation_mode(self):
+    def operation_mode(self):
         if self.StateChannel == True:
 
             if self.StateAutAut == True:
@@ -477,7 +479,7 @@ class BinServParam(OperationElement):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-    def Service_source_mode(self):
+    def source_mode(self):
         if self.SrcChannel==False and self.StateOffAct != True:
             self.SrcExtAut=False
             self.SrcIntAut=False
@@ -504,13 +506,13 @@ class BinServParam(OperationElement):
 class StringServParam(OperationElement):
     def __init__(self):
         super(StringServParam,self).__init__()
-
+        self.WQC = 0
         self.VExt='VExt_string'
         self.VOp='VOp_string'
         self.VInt='VInt_string'
         self.VReq='VReq_string'
         self.VOut='VOut_string'
-        self.VFbk='VOut_string'
+        self.VFbk='VFbk_string'
         self.Sync=False
         self.StateChannel=False
         self.StateOffAut=False
@@ -530,7 +532,7 @@ class StringServParam(OperationElement):
         self.SrcIntAct=False
         self.SrcExtAct=False
 
-    def Service_operation_mode(self):
+    def operation_mode(self):
         if self.StateChannel == True:
 
             if self.StateAutAut == True:
@@ -568,7 +570,7 @@ class StringServParam(OperationElement):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-    def Service_source_mode(self):
+    def source_mode(self):
         if self.SrcChannel==False and self.StateOffAct != True:
             self.SrcExtAut=False
             self.SrcIntAut=False

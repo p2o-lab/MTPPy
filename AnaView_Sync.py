@@ -1,4 +1,4 @@
-from opcua import Client
+
 
 class AnaView_Sync():
     def __init__(self,AnaView,ns,client):
@@ -23,7 +23,7 @@ class AnaView_Sync():
         self.client.get_node(f'ns={self.ns};s=VUnit').set_value(self.AnaView.VUnit)
         #self.client.disconnect()
 
-    def Sync_and_execute(self):
+    def sync_and_execute(self):
 
         self.AnaView.limit_check()
         self.Sync_PEA_POL()

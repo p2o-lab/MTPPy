@@ -6,10 +6,12 @@ from IndicatorElements import AnaView
 
 class Data_Processing(Service_control):
 
-    def __init__(self,AnaView):
+    def __init__(self,AnaView,VideoStream):
         super(Data_Processing,self).__init__()
         self.AnaView=AnaView
         self.AnaView.VSclMax=307200
+        self.VideoStream=VideoStream
+
 
     def Idle(self):
 
@@ -28,18 +30,22 @@ class Data_Processing(Service_control):
         self.Service_SM.Start( SC=True)
 
     def Execute(self):
-        cam = cv2.VideoCapture('http://192.168.178.69:23336/video_feed')
+
+
         print(f'Service 1 is Executing')
 
         while True:
-            _,img=cam.read()
-            edge = cv2.Canny(img, 100, 200)
-            sum=edge.sum()/255
-            self.AnaView.V=sum
-            sleep(1)
+            #print(f'New img {self.VideoStream.new_img_flag_process}')
+            if self.VideoStream.new_img_flag_process==True:
+                edge = cv2.Canny(self.VideoStream.frame, 100, 200)
+                sum=edge.sum()/255
+                self.AnaView.V=sum
+                sum=0
+                self.VideoStream.new_img_flag_process = False
+                #self.VideoStream.new_img_flag_archive=True
             if self.stop_execute:
                 break
-
+            sleep(1)
 
     def Completing(self):
         print('Service 1 is completing')
@@ -90,4 +96,10 @@ class Data_Processing(Service_control):
         print(f'Service 1 is Resetting')
         self.Service_SM.Reset(SC=True)
 
-#S=Data_Processing(AnaView())
+    def Sync_operation_mode(self):
+        pass
+
+    def Service_activated(self):
+        pass
+# S=Data_Processing(AnaView())
+# S.Execute()

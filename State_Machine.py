@@ -47,6 +47,8 @@ class Statemachine():
         self.ExecuteEn = 1880
 
         self.act_state=self.Idle
+        self.Custom_CommandEn_Enable=False
+        self.Custom_CommandEn=0
 
     #TODO implement error messages if not valid state changes are blocked
     def Start(self, SC=True):
@@ -123,24 +125,27 @@ class Statemachine():
         return CurrentState
 
     def get_command_en(self):
-        CommandEN=0
-        if self.act_state==self.Idle: CommandEN=self.IdleEn
-        if self.act_state==self.Starting: CommandEN=self.StartingEn
-        if self.act_state==self.Execute: CommandEN=self.ExecuteEn
-        if self.act_state==self.Completing: CommandEN=self.CompletingEn
-        if self.act_state==self.Completed: CommandEN=self.CompletedEn
-        if self.act_state==self.Resuming: CommandEN=self.ResumingEn
-        if self.act_state==self.Paused: CommandEN=self.PausedEn
-        if self.act_state==self.Pausing: CommandEN=self.PausingEn
-        if self.act_state==self.Holding: CommandEN=self.HoldingEn
-        if self.act_state==self.Held: CommandEN=self.HeldEn
-        if self.act_state==self.Unholding: CommandEN=self.UnholdingEn
-        if self.act_state==self.Stopping: CommandEN=self.StoppingEn
-        if self.act_state==self.Stopped: CommandEN=self.StoppedEn
-        if self.act_state==self.Aborting: CommandEN=self.AbortingEn
-        if self.act_state==self.Aborted: CommandEN=self.AbortedEn
-        if self.act_state==self.Resetting: CommandEN=self.ResettingEn
+        CommandEN = 0
+        if self.Custom_CommandEn_Enable == False:
+            if self.act_state==self.Idle: CommandEN=self.IdleEn
+            if self.act_state==self.Starting: CommandEN=self.StartingEn
+            if self.act_state==self.Execute: CommandEN=self.ExecuteEn
+            if self.act_state==self.Completing: CommandEN=self.CompletingEn
+            if self.act_state==self.Completed: CommandEN=self.CompletedEn
+            if self.act_state==self.Resuming: CommandEN=self.ResumingEn
+            if self.act_state==self.Paused: CommandEN=self.PausedEn
+            if self.act_state==self.Pausing: CommandEN=self.PausingEn
+            if self.act_state==self.Holding: CommandEN=self.HoldingEn
+            if self.act_state==self.Held: CommandEN=self.HeldEn
+            if self.act_state==self.Unholding: CommandEN=self.UnholdingEn
+            if self.act_state==self.Stopping: CommandEN=self.StoppingEn
+            if self.act_state==self.Stopped: CommandEN=self.StoppedEn
+            if self.act_state==self.Aborting: CommandEN=self.AbortingEn
+            if self.act_state==self.Aborted: CommandEN=self.AbortedEn
+            if self.act_state==self.Resetting: CommandEN=self.ResettingEn
 
+        elif self.Custom_CommandEn_Enable==True:
+            CommandEN=self.Custom_CommandEn
         return CommandEN
 
     def ex_command(self,com_var:int,SC:bool=True):

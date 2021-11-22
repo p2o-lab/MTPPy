@@ -59,6 +59,8 @@ class Service_template(Service_control):
     def Resetting(self):
         self.Service_SM.Reset(SC=True)
 
+    def Sync_operation_mode(self):
+        pass
 
-
-
+    def Service_activated(self):
+        pass
