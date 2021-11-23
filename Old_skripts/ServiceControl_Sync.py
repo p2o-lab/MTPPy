@@ -1,8 +1,4 @@
 from opcua import Client
-
-
-
-
 class ServiceControl_Sync():
     #def __init__(self,Service,ns,handler,opc_address):
     def __init__(self,Service,ns,client,opc_address,Handler):

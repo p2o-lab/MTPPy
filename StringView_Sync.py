@@ -1,5 +1,4 @@
 
-
 class StringView_Sync():
     def __init__(self,StringView,ns,client):
         self.StringView=StringView
