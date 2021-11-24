@@ -1,17 +1,44 @@
 from Service_control import Service_control
-import Procedure
+from Procedure import Procedure
 from time import sleep
 import cv2
 from IndicatorElements import AnaView
 
+class Regression(Procedure):
+    def __init__(self):
+        super(Regression,self).__init__()
+        self.IsSelfCompleting=False
+        self.ProcedureId=0
+        self.IsDefault=True
+
+class Classification(Procedure):
+    def __init__(self):
+        super(Classification,self).__init__()
+        self.IsSelfCompleting=False
+        self.ProcedureId=1
+        self.IsDefault=False
+
+class Test_Model(Procedure):
+    def __init__(self):
+        super(Test_Model,self).__init__()
+        self.IsSelfCompleting=False
+        self.ProcedureId=2
+        self.IsDefault=False
+
 class Data_Processing(Service_control):
 
-    def __init__(self,AnaView,VideoStream):
-        super(Data_Processing,self).__init__()
-        self.AnaView=AnaView
-        self.AnaView.VSclMax=307200
+    def __init__(self,node,client,opc_address,VideoStream,Model_ID,Result,Confidence_interval,Status_message):
+        super(Data_Processing,self).__init__(node=node,client=client,opc_address=opc_address)
         self.VideoStream=VideoStream
-
+        self.Model_ID=Model_ID
+        self.Confidence_interval=Confidence_interval
+        self.Status_message=Status_message
+        self.Result=Result
+        self.Result.VSclMax=307200
+        self.client=client
+        self.Regression=Regression()
+        self.Classification=Classification()
+        self.Test_Model=Test_Model()
 
     def Idle(self):
 
@@ -24,31 +51,26 @@ class Data_Processing(Service_control):
 
     def Starting(self):
         print('Service 1 is starting')
-        for i in range (0,4):
-            print(i)
-            sleep(1)
         self.Service_SM.Start( SC=True)
 
     def Execute(self):
 
-
         print(f'Service 1 is Executing')
-
-        while True:
-            #print(f'New img {self.VideoStream.new_img_flag_process}')
-            if self.VideoStream.new_img_flag_process==True:
-                edge = cv2.Canny(self.VideoStream.frame, 100, 200)
-                sum=edge.sum()/255
-                self.AnaView.V=sum
-                sum=0
-                self.VideoStream.new_img_flag_process = False
-                #self.VideoStream.new_img_flag_archive=True
-            if self.stop_execute:
-                break
-            sleep(1)
+        if self.ProcedureCur==self.Test_Model.ProcedureId:
+            while True:
+                if self.VideoStream.new_img_flag_process == True:
+                    edge = cv2.Canny(self.VideoStream.frame, 100, 200)
+                    sum=edge.sum()/255
+                    self.Result.V=sum
+                    self.client.get_node('ns=3;s=V').set_value(self.Result.V)
+                    self.VideoStream.model_frame = edge
+                    self.VideoStream.new_img_flag_process = False
+                if self.stop_execute:
+                    break
 
     def Completing(self):
         print('Service 1 is completing')
+        self.Result.V=0
         self.Service_SM.Complete(SC=True)
 
 
@@ -97,7 +119,11 @@ class Data_Processing(Service_control):
         self.Service_SM.Reset(SC=True)
 
     def Sync_operation_mode(self):
-        pass
+        if self.Model_ID.Sync == True:
+            self.Model_ID.StateChannel = self.StateChannel
+            self.Model_ID.StateOpAct = self.StateOpAct
+            self.Model_ID.StateAutAct = self.StateAutAct
+            self.Model_ID.StateOffAct = self.StateOffAct
 
     def Service_activated(self):
         pass

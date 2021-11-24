@@ -1,3 +1,4 @@
+from opcua import Client
 from DataAssembly import DataAssembly
 
 class IndicatorElement(DataAssembly):
@@ -6,16 +7,36 @@ class IndicatorElement(DataAssembly):
         self.WQC=0
 
 class AnaView(IndicatorElement):
-    def __init__(self):
+    def __init__(self,node,client):
         super(AnaView,self).__init__()
         self.V=0
         self.VSclMin=0
         self.VSclMax=100
         self.VUnit=0
+        self.V_old= self.V
+        self.client=client
+        self.node = self.client.get_node(node)
+        self.ns = self.node.nodeid.NamespaceIndex
+        self.Init_sync()
 
     def limit_check(self):
-        if self.V < self.VSclMin: self.V = self.VSclMin
-        if self.V > self.VSclMax: self.V = self.VSclMax
+        if self.V != self.V_old:
+            if self.V < self.VSclMin: self.V = self.VSclMin
+            elif self.V > self.VSclMax: self.V = self.VSclMax
+            self.V_old=self.V
+            self.client.get_node(f'ns={self.ns};s=V').set_value(self.V)
+
+    def Init_sync(self):
+        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s=V').set_value(self.V)
+        self.client.get_node(f'ns={self.ns};s=VSclMin').set_value(self.VSclMin)
+        self.client.get_node(f'ns={self.ns};s=VSclMax').set_value(self.VSclMax)
+        self.client.get_node(f'ns={self.ns};s=VUnit').set_value(self.VUnit)
+
+    def Runtime(self):
+        self.limit_check()
 
 class AnaMon(AnaView):
     def __init__(self):
@@ -149,8 +170,22 @@ class BinMon(BinView):
 
 
 class StringView(IndicatorElement):
-    def __init__(self):
+    def __init__(self,node,client):
         super(StringView,self).__init__()
         self.Text='Text_Value'
+        self.Text_old=self.Text
+        self.client=client
+        self.node = self.client.get_node(node)
+        self.ns = self.node.nodeid.NamespaceIndex
+        self.Init_sync()
 
-i=AnaView()
+    def Init_sync(self):
+        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s=Text').set_value(self.Text)
+
+    def Runtime(self):
+        if self.Text != self.Text_old:
+            self.Text_old=self.Text
+            self.client.get_node(f'ns={self.ns};s=Text').set_value(self.Text)

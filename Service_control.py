@@ -4,7 +4,7 @@ from threading import Thread
 from opcua import Client
 
 class Service_control(DataAssembly):
-    def __init__(self,client,ns,opc_address,Handler):
+    def __init__(self,node,client,opc_address):
         super(Service_control,self).__init__()
 
         self.Service_SM=SM.Statemachine()
@@ -66,17 +66,18 @@ class Service_control(DataAssembly):
         self.prev_state = 0
 
         self.client = client
-        self.ns = ns
+        self.node = self.client.get_node(node)
+        self.ns = self.node.nodeid.NamespaceIndex
         self.Init_sync()
 
-        handler = Handler()
-        handler_client = Client(opc_address)
-        handler_client.connect()
-
-        ServiceControl_nodes = self.client.get_node(f'ns={self.ns};s=ServiceControl').get_children()
-
-        sub = handler_client.create_subscription(500, handler)
-        handle = sub.subscribe_data_change(ServiceControl_nodes)
+        # handler = Handler()
+        # handler_client = Client(opc_address)
+        # handler_client.connect()
+        #
+        # ServiceControl_nodes = self.client.get_node(f'ns={self.ns};s=ServiceControl').get_children()
+        #
+        # sub = handler_client.create_subscription(500, handler)
+        # handle = sub.subscribe_data_change(ServiceControl_nodes)
 
     #TODO runtime in einzelne variablenbasierte eventfunktionen aufsplitten
 
@@ -112,6 +113,7 @@ class Service_control(DataAssembly):
         if self.StateOffAct==True:
             if self.StateAutAut or self.StateOpAut or self.StateAutOp or self.StateOpOp:
                 self.Service_activated()
+                self.execute_state()
 
         if self.StateChannel == True:
 
@@ -119,20 +121,27 @@ class Service_control(DataAssembly):
                 self.StateOpAct = False
                 self.StateAutAct = True
                 self.StateOffAct = False
+                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOpAut == True:
                 self.StateOpAct = True
                 self.StateAutAct = False
                 self.StateOffAct = False
+                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOffAut == True:
                 self.StateOpAct = False
                 self.StateAutAct = False
                 self.StateOffAct = True
+                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
 
-            self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-            self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-            self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+
 
         elif self.StateChannel==False:
 
@@ -201,8 +210,14 @@ class Service_control(DataAssembly):
     #TODO Service Source Mode VDI_256_B4 Section 5.6.2
     def Service_source_mode(self):
         if self.SrcChannel==False and self.StateOffAct != True:
-            self.SrcExtAut=False
-            self.SrcIntAut=False
+
+            if self.SrcExtAut == True:
+                self.SrcExtAut=False
+                self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
+
+            if self.SrcIntAut == True:
+                self.SrcIntAut=False
+                self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
 
             if self.SrcExtOp==True:
                 self.SrcIntAct=False
@@ -222,8 +237,8 @@ class Service_control(DataAssembly):
                 self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
                 self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
 
-            self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
-            self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
+
+
 
     # SrC Channel True is set PEA intern witch Service_source_mode_Aut_Ext and Service_source_mode_Aut_Int
 
@@ -254,59 +269,66 @@ class Service_control(DataAssembly):
             if self.StateCur == self.Service_SM.Idle and self.prev_state != self.Service_SM.Idle:
                 self.stop_resetting = True
                 self.stop_idle = False
+                self.prev_state = self.Service_SM.Idle
                 Idle_thread = Thread(target=self.Idle)
                 Idle_thread.start()
-                self.prev_state = self.Service_SM.Idle
+
 
             if self.StateCur == self.Service_SM.Starting and self.prev_state != self.Service_SM.Starting:
                 self.stop_idle = True
                 self.stop_execute = True
                 self.stop_starting = False
+                self.prev_state = self.Service_SM.Starting
                 Starting_thread = Thread(target=self.Starting)
                 Starting_thread.start()
-                self.prev_state = self.Service_SM.Starting
 
             if self.StateCur == self.Service_SM.Execute and self.prev_state != self.Service_SM.Execute:
                 self.stop_idle = True
                 self.stop_execute = False
+                self.prev_state = self.Service_SM.Execute
                 Execute_thread = Thread(target=self.Execute)
                 Execute_thread.start()
-                self.prev_state = self.Service_SM.Execute
+
 
             if self.StateCur == self.Service_SM.Completing and self.prev_state != self.Service_SM.Completing:
                 self.stop_execute = True
                 self.stop_completing = False
+                self.prev_state = self.Service_SM.Completing
                 Completing_thread = Thread(target=self.Completing())
                 Completing_thread.start()
-                self.prev_state = self.Service_SM.Completing
+
 
             if self.StateCur == self.Service_SM.Completed and self.prev_state != self.Service_SM.Completed:
                 self.stop_completing = True
                 self.stop_completed = False
+                self.prev_state = self.Service_SM.Completed
                 Completed_thread = Thread(target=self.Completed)
                 Completed_thread.start()
-                self.prev_state = self.Service_SM.Completed
+
 
             if self.StateCur == self.Service_SM.Resuming and self.prev_state != self.Service_SM.Resuming:
                 self.stop_paused = True
                 self.stop_resuming = False
+                self.prev_state = self.Service_SM.Resuming
                 Resuming_thread = Thread(target=self.Resuming())
                 Resuming_thread.start()
-                self.prev_state = self.Service_SM.Resuming
+
 
             if self.StateCur == self.Service_SM.Paused and self.prev_state != self.Service_SM.Paused:
                 self.stop_pausing = True
                 self.stop_paused = False
+                self.prev_state = self.Service_SM.Paused
                 Paused_thread = Thread(target=self.Paused)
                 Paused_thread.start()
-                self.prev_state = self.Service_SM.Paused
+
 
             if self.StateCur == self.Service_SM.Pausing and self.prev_state != self.Service_SM.Pausing:
                 self.stop_execute = True
                 self.stop_pausing = False
+                self.prev_state = self.Service_SM.Pausing
                 Pausing_thread = Thread(target=self.Pausing)
                 Pausing_thread.start()
-                self.prev_state = self.Service_SM.Pausing
+
 
             if self.StateCur == self.Service_SM.Holding and self.prev_state != self.Service_SM.Holding:
                 self.stop_execute = True
@@ -317,23 +339,25 @@ class Service_control(DataAssembly):
                 self.stop_pausing = True
                 self.stop_unholding = True
                 self.stop_holding = False
+                self.prev_state = self.Service_SM.Holding
                 Holding_thread = Thread(target=self.Holding)
                 Holding_thread.start()
-                self.prev_state = self.Service_SM.Holding
+
 
             if self.StateCur == self.Service_SM.Held and self.prev_state != self.Service_SM.Held:
                 self.stop_holding = True
                 self.stop_held = False
+                self.prev_state = self.Service_SM.Held
                 Held_thread = Thread(target=self.Held)
                 Held_thread.start()
-                self.prev_state = self.Service_SM.Held
+
 
             if self.StateCur == self.Service_SM.Unholding and self.prev_state != self.Service_SM.Unholding:
                 self.stop_held = True
                 self.stop_unholding = False
+                self.prev_state = self.Service_SM.Unholding
                 Unholding_thread = Thread(target=self.Unholding)
                 Unholding_thread.start()
-                self.prev_state = self.Service_SM.Unholding
 
             if self.StateCur == self.Service_SM.Stopping and self.prev_state != self.Service_SM.Stopping:
                 self.stop_execute = True
@@ -349,16 +373,18 @@ class Service_control(DataAssembly):
                 self.stop_resetting = True
                 self.stop_idle = True
                 self.stop_stopping = False
+                self.prev_state = self.Service_SM.Stopping
                 Stopping_thread = Thread(target=self.Stopping)
                 Stopping_thread.start()
-                self.prev_state = self.Service_SM.Stopping
+
 
             if self.StateCur == self.Service_SM.Stopped and self.prev_state != self.Service_SM.Stopped:
                 self.stop_stopping = True
                 self.stop_stopped = False
+                self.prev_state = self.Service_SM.Stopped
                 Stopped_thread = Thread(target=self.Stopped)
                 Stopped_thread.start()
-                self.prev_state = self.Service_SM.Stopped
+
 
             if self.StateCur == self.Service_SM.Aborting and self.prev_state != self.Service_SM.Aborting:
                 self.stop_execute = True
@@ -376,25 +402,46 @@ class Service_control(DataAssembly):
                 self.stop_stopping = True
                 self.stop_stopped = True
                 self.stop_aborting = False
+                self.prev_state = self.Service_SM.Aborting
                 Aborting_thread = Thread(target=self.Aborting)
                 Aborting_thread.start()
-                self.prev_state = self.Service_SM.Aborting
+
 
             if self.StateCur == self.Service_SM.Aborted and self.prev_state != self.Service_SM.Aborted:
                 self.stop_aborting = True
                 self.stop_aborted = False
+                self.prev_state = self.Service_SM.Aborted
                 Aborted_thread = Thread(target=self.Aborted)
                 Aborted_thread.start()
-                self.prev_state = self.Service_SM.Aborted
+
 
             if self.StateCur == self.Service_SM.Resetting and self.prev_state != self.Service_SM.Resetting:
                 self.stop_completed = True
                 self.stop_stopped = True
                 self.stop_aborted = True
                 self.stop_resetting = False
+                self.prev_state = self.Service_SM.Resetting
                 Resetting_thread = Thread(target=self.Resetting)
                 Resetting_thread.start()
-                self.prev_state = self.Service_SM.Resetting
+
+
+        # if self.StateOffAct == False:
+        #     self.stop_idle = True
+        #     self.stop_starting = True
+        #     self.stop_execute = True
+        #     self.stop_completing = True
+        #     self.stop_completed = True
+        #     self.stop_resuming = True
+        #     self.stop_paused = True
+        #     self.stop_pausing = True
+        #     self.stop_holding = True
+        #     self.stop_held = True
+        #     self.stop_unholding = True
+        #     self.stop_stopping = True
+        #     self.stop_stopped = True
+        #     self.stop_aborting = True
+        #     self.stop_aborted = True
+        #     self.stop_resetting = True
 
     def Runtime(self):
         self.State_control()
@@ -402,6 +449,7 @@ class Service_control(DataAssembly):
         self.Service_operation_mode()
         self.Update_feedback()
         self.Service_source_mode()
+        self.Sync_operation_mode()
         self.execute_state()
 
     def Init_sync(self):

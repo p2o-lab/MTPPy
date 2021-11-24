@@ -13,9 +13,9 @@ class Trigger_based(Procedure):
         self.ProcedureId=0
         self.IsDefault=True
 
-class Rawdataarchiving(Service_control):
-    def __init__(self,Model_Result,VideoStream,Data_sink,Data_format,Status_Message):
-        super(Rawdataarchiving,self).__init__()
+class Raw_data_archiving(Service_control):
+    def __init__(self,node,client,opc_address,Model_Result,VideoStream,Data_sink,Data_format,Status_Message):
+        super(Raw_data_archiving,self).__init__(node=node,client=client,opc_address=opc_address)
         self.P_Trigger_based=Trigger_based()
         self.Model_Result=Model_Result
         self.VideoStream=VideoStream
@@ -29,27 +29,25 @@ class Rawdataarchiving(Service_control):
        pass
 
     def Starting(self):
-        if self.save_path=='Archive/':
-            if os.path.exists('Archive') == False:
-                os.mkdir('Archive')
+        if os.path.exists(self.save_path) == False:
+            os.mkdir(self.save_path)
 
-        self.meta_dict={'Img_name':'0','Img_canny_name':'0','Date':'0','Num_white_pix':0}
+        self.meta_dict={'Img_name':'0','Date':'0','Model_Result':0}
         self.Service_SM.Start(SC=True)
 
     def Execute(self):
         self.Status_Message.Text=f'Saving results to {self.save_path} as {self.save_format}'
         while self.ProcedureCur==self.P_Trigger_based.ProcedureId:
             if self.VideoStream.new_img_flag_archive == True:
-                time=datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S')
-                self.VideoStream.new_img_flag_archive = False
-                #if time[-1] in ['0','5']:
-                self.meta_dict['Num_white_pix'] = self.Model_Result.V
+                time=datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S_%f')
+                time=time[:-5]
+                self.meta_dict['Model_Result'] = self.Model_Result.V
                 cv2.imwrite(self.save_path+time+'_img'+self.save_format,self.VideoStream.frame)
                 self.meta_dict['Img_name']=time+'_img'+self.save_format
                 self.meta_dict['Date']=time
-                self.meta_dict['Img_canny_name']=time+'_canny'+self.save_format
                 out_json=open(self.save_path+time+'.json','w+')
                 json.dump(self.meta_dict,out_json)
+                self.VideoStream.new_img_flag_archive = False
             if self.stop_execute:
                 break
 
@@ -94,10 +92,25 @@ class Rawdataarchiving(Service_control):
         self.Service_SM.Reset(SC=True)
 
     def Sync_operation_mode(self):
-        pass
+        if self.Data_sink.Sync == True:
+            self.Data_sink.StateChannel = self.StateChannel
+            self.Data_sink.StateOpAct = self.StateOpAct
+            self.Data_sink.StateAutAct = self.StateAutAct
+            self.Data_sink.StateOffAct = self.StateOffAct
+
+        if self.Data_format.Sync == True:
+            self.Data_format.StateChannel=self.StateChannel
+            self.Data_format.StateOpAct=self.StateOpAct
+            self.Data_format.StateAutAct=self.StateAutAct
+            self.Data_format.StateOffAct=self.StateOffAct
+
 
     def Service_activated(self):
+        self.Data_sink.set_VOut()
+        self.Data_format.set_VOut()
+        if self.Data_sink.VOut[-1]!='/': self.Data_sink.VOut=self.Data_sink.VOut+'/'
+        if self.Data_format.VOut[0]!='.':self.Data_format.VOut='.'+self.Data_format.VOut
         self.save_path=self.Data_sink.VOut
-        self.save_format=self.Data_format.Vout
+        self.save_format=self.Data_format.VOut
 
 

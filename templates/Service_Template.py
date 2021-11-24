@@ -6,9 +6,9 @@ class Prod_Template(Procedure):
     def __init__(self):
         super(Prod_Template,self).__init__()
 
-class Service_template(Service_control):
-    def __init__(self,Prod_Template):
-        super(Service_template,self).__init__()
+class Service_template():
+    def __init__(self,Service_controlself,node,client,opc_address,Handler,Prod_Template):
+        super(Service_template,self).__init__(client,node,opc_address,Handler)
 
     def Idle(self):
        pass

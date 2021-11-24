@@ -28,14 +28,13 @@ class Hardware_trigger(Procedure):
 
 
 class Raw_data_aq(Service_control):
-    def __init__(self,ns,client,opc_address,Handler,VideoStream,Shutter_speed_setpoint,Resolution_setpoint,
+    def __init__(self,node,client,opc_address,VideoStream,Shutter_speed_setpoint,Resolution_setpoint,
                  ROI_x0,ROI_y0,ROI_x_delta,ROI_y_delta,Gain_setpoint,Auto_brightness_setpoint,
                  Time_interval_setpoint,Shutter_speed_feedback,Resolution_feedback,Gain_feedback,Auto_Brightness_feedback,
                  Webserver_endpoint):
-        super(Raw_data_aq,self).__init__(client,ns,opc_address,Handler)
+        super(Raw_data_aq,self).__init__(node=node,client=client,opc_address=opc_address)
 
         #self.client=client
-        self.opc_address=opc_address
         self.Free_run=Free_run()
         self.Snapshot=Snapshot()
         self.Hardware_trigger=Hardware_trigger()
@@ -65,43 +64,30 @@ class Raw_data_aq(Service_control):
         self.Gain_setpoint.Sync=True
         self.Auto_brightness_setpoint.Sync=True
         self.Time_interval_setpoint.Sync=True
-
+        self.camera = cv2.VideoCapture(0)
         self.Video_stream.frame = cv2.imread('templates/novid.jpg')
 
     def Idle(self):
-       self.Webserver_endpoint=f'{self.Video_stream.host_name}:{self.Video_stream.port}'
+        self.Webserver_endpoint.Text=f'{self.Video_stream.host_name}:{self.Video_stream.port}'
+        print('idle')
 
     def Starting(self):
-        self.Time_interval_setpoint.set_Vout()
-
-        if self.ProcedureCur==self.Free_run.ProcedureId:
-            self.Video_stream.mode='Free_run'
-
-
-        elif self.ProcedureCur == self.Snapshot.ProcedureId:
-            self.Video_stream.mode = 'Snapshot'
-
-        elif self.ProcedureCur == self.Hardware_trigger.ProcedureId:
-            self.Video_stream.mode = 'Hardware_trigger'
-
-        else:
-            self.Video_stream.mode = 'Snapshot'
-
-        self.Service_SM.Start( SC=True)
+        self.Time_interval_setpoint.set_VOut()
+        self.State_control(SC=True)
 
     def Execute(self):
-        self.Video_stream.data_aq_active=True
-        self.camera = cv2.VideoCapture(0)
 
         if self.ProcedureCur == self.Free_run.ProcedureId:
+
             while True:
                 _, frame3 = self.camera.read()
                 self.Video_stream.frame = frame3
                 self.Video_stream.new_img_flag_archive = True
                 self.Video_stream.new_img_flag_process = True
+
                 sleep(abs(self.Time_interval_setpoint.VOut))
                 if self.stop_execute:
-                    break
+                        break
 
         if self.ProcedureCur == self.Snapshot.ProcedureId:
             _, frame3 = self.camera.read()
@@ -126,7 +112,7 @@ class Raw_data_aq(Service_control):
     def Completing(self):
         self.Video_stream.data_aq_active = False
         _,frame2=self.camera.read()
-        self.Video_stream.frame2 = frame2
+        self.Video_stream.frame = cv2.imread('templates/novid.jpg')
 
         #requests.get(' http://192.168.178.69:23336/shutdown')
         self.Service_SM.Complete(SC=True)
