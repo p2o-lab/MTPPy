@@ -1,0 +1,391 @@
+﻿<CAEXFile SchemaVersion="3.0" FileName="manifest.aml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.dke.de/CAEX" xsi:schemaLocation="http://www.dke.de/CAEX CAEX_ClassModel_V.3.0.xsd">
+  <SuperiorStandardVersion>AutomationML 2.10</SuperiorStandardVersion>
+  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="5.3.3.0" LastWritingDateTime="2021-11-24T18:14:40.1730076+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="5.3.3.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
+  <InterfaceClassLib Name="AutomationMLInterfaceClassLib" ChangeMode="state">
+    <Description>Standard Automation Markup Language Interface Class Library - Part 1 Content </Description>
+    <Version>2.10</Version>
+    <Copyright>AutomationML e.V.</Copyright>
+    <InterfaceClass Name="AutomationMLBaseInterface">
+      <InterfaceClass Name="Order" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+        <Attribute Name="Direction" RefAttributeType="AutomationMLBaseAttributeTypeLib/Direction" AttributeDataType="xs:string">
+          <DefaultValue>InOut</DefaultValue>
+          <Constraint Name="AllowedValues">
+            <NominalScaledType>
+              <RequiredValue>In</RequiredValue>
+              <RequiredValue>Out</RequiredValue>
+              <RequiredValue>InOut</RequiredValue>
+            </NominalScaledType>
+          </Constraint>
+        </Attribute>
+      </InterfaceClass>
+      <InterfaceClass Name="Port" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+        <Attribute Name="Direction" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/Direction">
+          <Constraint Name="AllowedValues">
+            <NominalScaledType>
+              <RequiredValue>In</RequiredValue>
+              <RequiredValue>Out</RequiredValue>
+              <RequiredValue>InOut</RequiredValue>
+            </NominalScaledType>
+          </Constraint>
+        </Attribute>
+        <Attribute Name="Cardinality" RefAttributeType="AutomationMLBaseAttributeTypeLib/Cardinality">
+          <Attribute Name="MinOccur" AttributeDataType="xs:unsignedInt" />
+          <Attribute Name="MaxOccur" AttributeDataType="xs:unsignedInt" />
+        </Attribute>
+        <Attribute Name="Category" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/Category" />
+      </InterfaceClass>
+      <InterfaceClass Name="PPRConnector" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface" />
+      <InterfaceClass Name="ExternalDataConnector" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+        <InterfaceClass Name="COLLADAInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
+          <Attribute Name="refType" AttributeDataType="xs:string" />
+          <Attribute Name="target" AttributeDataType="xs:token" />
+        </InterfaceClass>
+        <InterfaceClass Name="PLCopenXMLInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector" />
+        <InterfaceClass Name="ExternalDataReference" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
+          <Attribute Name="MIMEType" AttributeDataType="xs:string" RefAttributeType="AutomationMLBaseAttributeTypeLib/MIMEType" />
+        </InterfaceClass>
+      </InterfaceClass>
+      <InterfaceClass Name="Communication" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
+        <InterfaceClass Name="SignalInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication" />
+      </InterfaceClass>
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <RoleClassLib Name="AutomationMLBaseRoleClassLib">
+    <Description>Automation Markup Language Base Role Class Library - Part 1</Description>
+    <Version>2.10.0</Version>
+    <RoleClass Name="AutomationMLBaseRole" ChangeMode="state">
+      <RoleClass Name="Group" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+        <Attribute Name="AssociatedFacet" RefAttributeType="AutomationMLBaseAttributeTypeLib/AssociatedFacet" AttributeDataType="xs:string" />
+      </RoleClass>
+      <RoleClass Name="Facet" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      <RoleClass Name="Resource" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      <RoleClass Name="Product" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      <RoleClass Name="Process" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      <RoleClass Name="Structure" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole">
+        <RoleClass Name="ProductStructure" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+        <RoleClass Name="ProcessStructure" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+        <RoleClass Name="ResourceStructure" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+      </RoleClass>
+      <RoleClass Name="ExternalData" RefBaseClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+    </RoleClass>
+  </RoleClassLib>
+  <SystemUnitClassLib Name="MTPDataObjectSUCLib" ID="27564507-1b79-4926-a912-cf1c6316f007">
+    <Version>0</Version>
+    <SystemUnitClass Name="DataAssembly" ID="a5175fab-76c4-43d4-a601-32fa129b285e" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Attribute Name="TagName" AttributeDataType="xs:string" />
+      <Attribute Name="TagDescription" AttributeDataType="xs:string" />
+      <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      <SystemUnitClass Name="IndicatoElement" ID="db691706-d1e8-4a8e-8263-c1e93faa9dfe" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Attribute Name="WQC" AttributeDataType="xs:string" />
+        <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        <SystemUnitClass Name="AnaView" ID="f5369467-155c-4b4c-9982-09eba741a10f" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement">
+          <Attribute Name="V" AttributeDataType="xs:float" />
+          <Attribute Name="VSclMin" AttributeDataType="xs:string" />
+          <Attribute Name="VSclMax" AttributeDataType="xs:float" />
+          <Attribute Name="VUnit" AttributeDataType="xs:int" />
+          <SystemUnitClass Name="AnaMon" ID="6dc62dbe-42f9-4d9c-bd60-1b9ab9d667a3" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
+            <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
+            <Attribute Name="VAHEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VAHLim" AttributeDataType="xs:float" />
+            <Attribute Name="VAHAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWHEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWHLim" AttributeDataType="xs:float" />
+            <Attribute Name="VWHAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTHEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTHLim" AttributeDataType="xs:float" />
+            <Attribute Name="VTHAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTLEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTLLim" AttributeDataType="xs:float" />
+            <Attribute Name="VTLAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWLEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWLLim" AttributeDataType="xs:float" />
+            <Attribute Name="VWLAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VALEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VALLim" AttributeDataType="xs:float" />
+            <Attribute Name="VALAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="DIntView" ID="d46fd519-1b3e-4d9f-94a5-3f13be483723" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement">
+          <Attribute Name="V" AttributeDataType="xs:int" />
+          <Attribute Name="VSclMin" AttributeDataType="xs:int" />
+          <Attribute Name="VSclMax" AttributeDataType="xs:int" />
+          <Attribute Name="VUnit" AttributeDataType="xs:int" />
+          <SystemUnitClass Name="AnaMon" ID="2756557e-f26f-48cd-8202-47f24249fd10" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/DIntView">
+            <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
+            <Attribute Name="VAHEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VAHLim" AttributeDataType="xs:int" />
+            <Attribute Name="VAHAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWHEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWHLim" AttributeDataType="xs:int" />
+            <Attribute Name="VWHAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTHEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTHLim" AttributeDataType="xs:int" />
+            <Attribute Name="VTHAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTLEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VTLLim" AttributeDataType="xs:int" />
+            <Attribute Name="VTLAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWLEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VWLLim" AttributeDataType="xs:int" />
+            <Attribute Name="VWLAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VALEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VALLim" AttributeDataType="xs:int" />
+            <Attribute Name="VALAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="BinView" ID="df6db59a-ab3a-4c67-817d-6e091caac702" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement">
+          <Attribute Name="V" AttributeDataType="xs:boolean">
+            <DefaultValue>false</DefaultValue>
+            <Value>false</Value>
+          </Attribute>
+          <Attribute Name="VState0" AttributeDataType="xs:string" />
+          <Attribute Name="VState1" AttributeDataType="xs:string" />
+          <SystemUnitClass Name="SystemUnitClass" ID="3f24c300-fc35-4899-8410-d77e38d368a0" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/BinView">
+            <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
+            <Attribute Name="VFlutEn" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="VFlutTi" AttributeDataType="xs:float" />
+            <Attribute Name="VFlutCnt" AttributeDataType="xs:short" />
+            <Attribute Name="VFlutAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="StringView" ID="792b320b-c8b5-40ac-80a3-41e8476950f3" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement">
+          <Attribute Name="Text" AttributeDataType="xs:string" />
+        </SystemUnitClass>
+      </SystemUnitClass>
+      <SystemUnitClass Name="OperationElement" ID="f7a9a98a-ed4c-4aee-8ee1-3b75930cd7a3" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
+        <SystemUnitClass Name="AnaMan" ID="d68e9c1d-2e8e-4b74-b765-3334bd33dedc" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Attribute Name="VOut" AttributeDataType="xs:float" />
+          <Attribute Name="VSclMin" AttributeDataType="xs:float" />
+          <Attribute Name="VSclMax" AttributeDataType="xs:float" />
+          <Attribute Name="VUnit" AttributeDataType="xs:short" />
+          <Attribute Name="VMan" AttributeDataType="xs:float" />
+          <Attribute Name="VMin" AttributeDataType="xs:float" />
+          <Attribute Name="VMax" AttributeDataType="xs:float" />
+          <Attribute Name="VRbk" AttributeDataType="xs:float" />
+          <Attribute Name="VFbk" AttributeDataType="xs:float" />
+          <SystemUnitClass Name="AnaManInt" ID="0c38bc4d-6634-491b-9fcb-337a1e77adaa" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaMan">
+            <Attribute Name="WQC" AttributeDataType="xs:byte" />
+            <Attribute Name="VMan" AttributeDataType="xs:float" />
+            <Attribute Name="VInt" AttributeDataType="xs:float" />
+            <Attribute Name="SrcChannel" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcManAut" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcManOp" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcManAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="DIntMan" ID="5da8e1e6-46f2-44ad-befb-4f65f647c3d9" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Attribute Name="VOut" AttributeDataType="xs:float" />
+          <Attribute Name="VSclMin" AttributeDataType="xs:float" />
+          <Attribute Name="VSclMax" AttributeDataType="xs:float" />
+          <Attribute Name="VUnit" AttributeDataType="xs:short" />
+          <Attribute Name="VMan" AttributeDataType="xs:float" />
+          <Attribute Name="VMin" AttributeDataType="xs:float" />
+          <Attribute Name="VMax" AttributeDataType="xs:float" />
+          <Attribute Name="VRbk" AttributeDataType="xs:float" />
+          <Attribute Name="VFbk" AttributeDataType="xs:float" />
+          <SystemUnitClass Name="DIntManInt" ID="f262cd10-5231-41a0-9e46-4a45c5774bb5" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/DIntMan">
+            <Attribute Name="WQC" AttributeDataType="xs:byte" />
+            <Attribute Name="VMan" AttributeDataType="xs:int" />
+            <Attribute Name="VInt" AttributeDataType="xs:int" />
+            <Attribute Name="SrcChannel" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcManAut" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcManOp" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+            <Attribute Name="SrcManAct" AttributeDataType="xs:boolean">
+              <DefaultValue>false</DefaultValue>
+              <Value>false</Value>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+      </SystemUnitClass>
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+  <SystemUnitClassLib Name="MTPSUCLib" ID="1d0aa456-f618-4678-8a40-978ab0c487bf">
+    <Version>0</Version>
+    <SystemUnitClass Name="LinkedObject" ID="fee5d7e3-4c9d-4166-beec-1d7be1a774ff">
+      <Attribute Name="RefID" AttributeDataType="xs:ID" />
+      <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+  <AttributeTypeLib Name="AutomationMLBaseAttributeTypeLib" ChangeMode="state">
+    <Description>Standard Automation Markup Language Attribute Type Library</Description>
+    <Version>2.10.0</Version>
+    <Copyright>AutomationML e.V.</Copyright>
+    <AttributeType Name="AssociatedExternalValue">
+      <Attribute Name="refCAEXAttribute" AttributeDataType="xs:string" />
+      <Attribute Name="refURI" AttributeDataType="xs:string" />
+      <Attribute Name="Direction" AttributeDataType="xs:string" />
+    </AttributeType>
+    <AttributeType Name="AssociatedFacet" AttributeDataType="xs:string" />
+    <AttributeType Name="Cardinality">
+      <Attribute Name="MinOccur" AttributeDataType="xs:unsignedInt" />
+      <Attribute Name="MaxOccur" AttributeDataType="xs:unsignedInt" />
+    </AttributeType>
+    <AttributeType Name="Category" AttributeDataType="xs:string" />
+    <AttributeType Name="Direction" AttributeDataType="xs:string">
+      <DefaultValue>InOut</DefaultValue>
+      <Constraint Name="AllowedValues">
+        <NominalScaledType>
+          <RequiredValue>In</RequiredValue>
+          <RequiredValue>Out</RequiredValue>
+          <RequiredValue>InOut</RequiredValue>
+        </NominalScaledType>
+      </Constraint>
+    </AttributeType>
+    <AttributeType Name="DocLang" AttributeDataType="xs:string" />
+    <AttributeType Name="Frame" AttributeDataType="">
+      <Attribute Name="x" AttributeDataType="xs:double">
+        <DefaultValue>0</DefaultValue>
+        <Value>0</Value>
+      </Attribute>
+      <Attribute Name="y" AttributeDataType="xs:double">
+        <DefaultValue>0</DefaultValue>
+        <Value>0</Value>
+      </Attribute>
+      <Attribute Name="z" AttributeDataType="xs:double">
+        <DefaultValue>0</DefaultValue>
+        <Value>0</Value>
+      </Attribute>
+      <Attribute Name="rx" AttributeDataType="xs:double">
+        <DefaultValue>0</DefaultValue>
+        <Value>0</Value>
+      </Attribute>
+      <Attribute Name="ry" AttributeDataType="xs:double">
+        <DefaultValue>0</DefaultValue>
+        <Value>0</Value>
+      </Attribute>
+      <Attribute Name="rz" AttributeDataType="xs:double">
+        <DefaultValue>0</DefaultValue>
+        <Value>0</Value>
+      </Attribute>
+    </AttributeType>
+    <AttributeType Name="ListType" AttributeDataType="xs:string" />
+    <AttributeType Name="LocalizedAttribute" AttributeDataType="xs:string" />
+    <AttributeType Name="MIMEType" AttributeDataType="xs:string" />
+    <AttributeType Name="OrderedListType" AttributeDataType="xs:string" />
+    <AttributeType Name="refURI" AttributeDataType="xs:anyURI" />
+  </AttributeTypeLib>
+</CAEXFile>
