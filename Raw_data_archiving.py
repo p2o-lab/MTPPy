@@ -89,6 +89,7 @@ class Raw_data_archiving(Service_control):
         pass
 
     def Resetting(self):
+        self.Status_Message.Text = ' '
         self.Service_SM.Reset(SC=True)
 
     def Sync_operation_mode(self):

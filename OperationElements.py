@@ -290,7 +290,7 @@ class AnaServParam(OperationElement):
             if self.StateOpOp==True:
                 self.StateOpAct=True
                 self.StateAutAct=False
-                self.StateOffAct=True
+                self.StateOffAct=False
                 self.StateOpOp = False
 
                 self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
@@ -507,7 +507,7 @@ class DIntServParam(OperationElement):
             if self.StateOpOp==True:
                 self.StateOpAct=True
                 self.StateAutAct=False
-                self.StateOffAct=True
+                self.StateOffAct=False
                 self.StateOpOp = False
 
                 self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)

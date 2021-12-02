@@ -41,20 +41,13 @@ class Data_Processing(Service_control):
         self.Test_Model=Test_Model()
 
     def Idle(self):
-
-        print(f'Service 1 is Idle')
-        while True:
-            sleep(1)
-
-            if self.stop_idle:
-                break
-
+        pass
     def Starting(self):
-        print('Service 1 is starting')
+        #print('Service 1 is starting')
         self.Service_SM.Start( SC=True)
 
     def Execute(self):
-
+#Todo generate flga to trigger archivin service
         print(f'Service 1 is Executing')
         if self.ProcedureCur==self.Test_Model.ProcedureId:
             while True:

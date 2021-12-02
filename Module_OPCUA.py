@@ -157,6 +157,13 @@ DintView_dict={'TagName': {'init': 'TagName','datatype':12},
              'VSclMax':{'init':100,'datatype':6},
              'VUnit':{'init':0,'datatype':6}}
 
+BinProcessValueIn_dict={'TagName': {'init': 'TagName','datatype':12},
+                        'TagDescription': {'init': 'TagDescription','datatype':12},
+                        'WQC':{'init':0,'datatype':6},
+                        'VExt': {'init': False, 'datatype': 1},
+                        'VState0':{'init':'VState0','datatype':1},
+                        'VState1':{'init':'VState1','datatype':1}}
+
 structure_dict={
     'Data_Processing':{'ServiceControl': Service_control_dict,
                        'Model_ID': DIntServ_dict,
@@ -181,6 +188,8 @@ structure_dict={
                             'Gain_feedback':AnaView_dict,
                             'Auto_Brightness_feedback':AnaView_dict,
                             'Webserver_endpoint':StringView_dict,
+
+                            #'Data_aq_trigger':BinProcessValueIn_dict,
                             },
 
     'Rawdataarchiving':{'ServiceControl':Service_control_dict,
@@ -227,6 +236,8 @@ structure_dict={
                     'Duration_setpoint':AnaServ_dict,
 
                     'Intensity_feedback': AnaView_dict,
+
+                    #'Light_trigger':BinProcessValueIn_dict,
                     },
 
     'Lens':{'ServiceControl':Service_control_dict,

@@ -137,6 +137,7 @@ class Service_control(DataAssembly):
                 self.StateOpAct = False
                 self.StateAutAct = False
                 self.StateOffAct = True
+
                 self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
                 self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
                 self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
@@ -237,9 +238,6 @@ class Service_control(DataAssembly):
                 self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
                 self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
 
-
-
-
     # SrC Channel True is set PEA intern witch Service_source_mode_Aut_Ext and Service_source_mode_Aut_Int
 
     def Service_source_mode_Aut_Ext(self):
@@ -273,7 +271,6 @@ class Service_control(DataAssembly):
                 Idle_thread = Thread(target=self.Idle)
                 Idle_thread.start()
 
-
             if self.StateCur == self.Service_SM.Starting and self.prev_state != self.Service_SM.Starting:
                 self.stop_idle = True
                 self.stop_execute = True
@@ -294,7 +291,7 @@ class Service_control(DataAssembly):
                 self.stop_execute = True
                 self.stop_completing = False
                 self.prev_state = self.Service_SM.Completing
-                Completing_thread = Thread(target=self.Completing())
+                Completing_thread = Thread(target=self.Completing)
                 Completing_thread.start()
 
 
@@ -310,7 +307,7 @@ class Service_control(DataAssembly):
                 self.stop_paused = True
                 self.stop_resuming = False
                 self.prev_state = self.Service_SM.Resuming
-                Resuming_thread = Thread(target=self.Resuming())
+                Resuming_thread = Thread(target=self.Resuming)
                 Resuming_thread.start()
 
 

@@ -7,6 +7,7 @@ from time import sleep
 from PEA_Video_stream import PEA_Video_stream
 from OperationElements import AnaServParam,StringServParam,DIntServParam
 from threading import Thread
+from Illumination import Illuminaton
 #from New_image import New_image
 
 
@@ -107,12 +108,41 @@ def Raw_data_archiving_sync():
         S_Raw_data_archiving.Runtime()
         sleep(1)
 
-class Raw_data_aq_handler(object):
+
+S_Illumination_Wavelength=AnaServParam(node='ns=49;s=Wavelength_setpoint',client=client,opc_address=address)
+S_Illumination_Intensity_setpoint=AnaServParam(node='ns=50;s=Intensity_setpoint',client=client,opc_address=address)
+S_Illumination_Frequency_setpoint=AnaServParam(node='ns=51;s=Frequenzy_setpoint',client=client,opc_address=address)
+S_Illumination_Duration_setpoint=AnaServParam(node='ns=52;s=Duration_setpoint',client=client,opc_address=address)
+S_Illumination_Intensity_feedback=AnaView(node='ns=53;s=Intensity_feedback',client=client)
+#S_Illumination_Light_trigger=BinProcessValueIn(node=,client=client,opc_address=address)
+
+S_Illumination=Illuminaton(node='ns=48;s=ServiceControl',client=client,opc_address=address,
+                           Wavelength=S_Illumination_Wavelength,
+                           Intensity_setpoint=S_Illumination_Intensity_setpoint,
+                           Frequency_setpoint=S_Illumination_Frequency_setpoint,
+                           Duration_setpoint=S_Illumination_Duration_setpoint,
+                           Intensity_feedback=S_Illumination_Intensity_feedback,
+                           )
+
+def Illumination_sync():
+    while True:
+        S_Illumination_Wavelength.Runtime()
+        S_Illumination_Intensity_setpoint.Runtime()
+        S_Illumination_Frequency_setpoint.Runtime()
+        S_Illumination_Duration_setpoint.Runtime()
+        S_Illumination_Intensity_feedback.Runtime()
+        S_Illumination.Runtime()
+        #print('running')
+        sleep(1)
+
+class Module_handler(object):
     def datachange_notification(self, node, val, data):
         print(f'{node} {val}')
         ns=node.nodeid.NamespaceIndex
+
         if ns == 1: S_Data_processing.Handler_sync(node, val)
         if ns == 2: S_Data_processing_Model_ID.Handler_sync(node, val)
+
         if ns==6: S_Raw_data_aq.Handler_sync(node, val)
         if ns==7: S_Raw_data_aq_Shutter_speed_setpoint.Handler_sync(node, val)
         if ns==8: S_Raw_data_aq_Resolution_setpoint.Handler_sync(node, val)
@@ -128,6 +158,14 @@ class Raw_data_aq_handler(object):
         if ns==22: S_Raw_data_arch_Data_sink.Handler_sync(node, val)
         if ns==23: S_Raw_data_arch_Data_format.Handler_sync(node, val)
 
+        if ns==48: S_Illumination.Handler_sync(node, val)
+        if ns==49: S_Illumination_Wavelength.Handler_sync(node, val)
+        if ns==50: S_Illumination_Intensity_setpoint.Handler_sync(node, val)
+        if ns==51: S_Illumination_Frequency_setpoint.Handler_sync(node, val)
+        if ns==52: S_Illumination_Duration_setpoint.Handler_sync(node, val)
+
+
+
 
 
 Module_Nodes=[]
@@ -135,23 +173,27 @@ for node_1 in client.get_objects_node().get_children()[1:]:
     for node_2 in client.get_node(node_1).get_children():
         for node_3 in client.get_node(node_2).get_children(): Module_Nodes.append(node_3)
 
-handler = Raw_data_aq_handler()
+handler = Module_handler()
 handler_client = Client(address)
 handler_client.connect()
 sub = handler_client.create_subscription(500, handler)
 handle = sub.subscribe_data_change(Module_Nodes)
 
 
-Raw_data_aq_thread=Thread(target=lambda:Raw_data_aq_sync())
+Raw_data_aq_thread=Thread(target=Raw_data_aq_sync)
 Raw_data_aq_thread.start()
 
-Data_processing_thread=Thread(target=lambda:Data_processing_sync())
+
+Data_processing_thread=Thread(target=Data_processing_sync)
 Data_processing_thread.start()
 
-Raw_data_archiving_thread=Thread(target=lambda:Raw_data_archiving_sync())
+
+Raw_data_archiving_thread=Thread(target=Raw_data_archiving_sync)
 Raw_data_archiving_thread.start()
 
 
+Illumination_thread=Thread(target=Illumination_sync)
+Illumination_thread.start()
 
 #
 #

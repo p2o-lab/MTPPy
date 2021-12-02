@@ -7,7 +7,7 @@ class Prod_Template(Procedure):
         super(Prod_Template,self).__init__()
 
 class Service_template():
-    def __init__(self,Service_controlself,node,client,opc_address,Handler,Prod_Template):
+    def __init__(self,Service_control,node,client,opc_address,Handler,Prod_Template):
         super(Service_template,self).__init__(client,node,opc_address,Handler)
 
     def Idle(self):

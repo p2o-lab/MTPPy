@@ -68,6 +68,7 @@ class Raw_data_aq(Service_control):
         self.Video_stream.frame = cv2.imread('templates/novid.jpg')
 
     def Idle(self):
+        ## todo set boundarys of shutter speed according to time intervall
         self.Webserver_endpoint.Text=f'{self.Video_stream.host_name}:{self.Video_stream.port}'
         print('idle')
 
@@ -76,7 +77,7 @@ class Raw_data_aq(Service_control):
         self.State_control(SC=True)
 
     def Execute(self):
-
+##Todo if no bild is captured change to hold
         if self.ProcedureCur == self.Free_run.ProcedureId:
 
             while True:
@@ -113,7 +114,7 @@ class Raw_data_aq(Service_control):
         self.Video_stream.data_aq_active = False
         _,frame2=self.camera.read()
         self.Video_stream.frame = cv2.imread('templates/novid.jpg')
-
+    ##todo set idle frame for other prod in Reset
         #requests.get(' http://192.168.178.69:23336/shutdown')
         self.Service_SM.Complete(SC=True)
 
