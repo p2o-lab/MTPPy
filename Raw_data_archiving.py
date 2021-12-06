@@ -36,7 +36,7 @@ class Raw_data_archiving(Service_control):
         self.Service_SM.Start(SC=True)
 
     def Execute(self):
-        self.Status_Message.Text=f'Saving results to {self.save_path} as {self.save_format}'
+        self.Status_Message.set_text(f'Saving results to {self.save_path} as {self.save_format}')
         while self.ProcedureCur==self.P_Trigger_based.ProcedureId:
             if self.VideoStream.new_img_flag_archive == True:
                 time=datetime.datetime.now().strftime('%Y_%m_%d_%H_%M_%S_%f')
@@ -89,7 +89,7 @@ class Raw_data_archiving(Service_control):
         pass
 
     def Resetting(self):
-        self.Status_Message.Text = ' '
+        self.Status_Message.set_text(' ')
         self.Service_SM.Reset(SC=True)
 
     def Sync_operation_mode(self):

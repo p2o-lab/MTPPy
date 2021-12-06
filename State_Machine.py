@@ -52,71 +52,81 @@ class Statemachine():
 
     #TODO implement error messages if not valid state changes are blocked
     def Start(self, SC=True):
-        if self.act_state==self.Idle:
-            self.act_state = self.Starting
+
         if self.act_state==self.Starting and SC==True:
             self.act_state=self.Execute
+        elif self.act_state == self.Idle:
+            self.act_state = self.Starting
 
     def Restart(self, SC=True):
-        if self.act_state==self.Execute:
-            self.act_state=self.Starting
+
         if self.act_state==self.Starting and SC==True:
             self.act_state=self.Execute
+        elif self.act_state==self.Execute:
+            self.act_state=self.Starting
 
     def Complete(self,SC=True):
-        if self.act_state==self.Execute:
-            self.act_state=self.Completing
+
         if self.act_state==self.Completing and SC==True:
             self.act_state=self.Completed
+        elif self.act_state==self.Execute:
+            self.act_state=self.Completing
 
     def Pause(self,SC=True):
-        if self.act_state==self.Execute and self.Pause_disabled==False and self.Pause_Hold_disabled==False:
-            self.act_state=self.Pausing
+
         if self.act_state==self.Pausing and SC==True:
             self.act_state=self.Paused
+        elif self.act_state==self.Execute and self.Pause_disabled==False and self.Pause_Hold_disabled==False:
+            self.act_state=self.Pausing
 
     def Resume(self,SC=True):
-        if self.act_state==self.Paused:
-            self.act_state=self.Resuming
+
         if self.act_state==self.Resuming and SC==True:
             self.act_state=self.Execute
+        elif self.act_state==self.Paused:
+            self.act_state=self.Resuming
 
     def Reset(self,SC=True):
-        if self.act_state in [self.Completed,self.Stopped,self.Aborted]:
-            self.act_state=self.Resetting
+
         if self.act_state==self.Resetting and SC==True:
             self.act_state=self.Idle
+        elif self.act_state in [self.Completed,self.Stopped,self.Aborted]:
+            self.act_state=self.Resetting
 
     def Hold(self,SC=True):
-        if self.act_state in [self.Starting,self.Execute,self.Completing,
+
+        if self.act_state==self.Holding and SC==True:
+            self.act_state=self.Held
+        elif self.act_state in [self.Starting,self.Execute,self.Completing,
                 self.Resuming,self.Paused,self.Pausing,self.Unholding] \
                 and self.Hold_disabled==False and self.Pause_Hold_disabled==False :
 
             self.act_state=self.Holding
-        if self.act_state==self.Holding and SC==True:
-            self.act_state=self.Held
 
     def Unhold(self,SC=True):
-        if self.act_state==self.Held:
-            self.act_state=self.Unholding
+
         if self.act_state==self.Unholding and SC==True:
             self.act_state=self.Execute
+        elif self.act_state==self.Held:
+            self.act_state=self.Unholding
 
     def Stop(self,SC=True):
-        if self.act_state in [self.Idle,self.Starting,self.Execute,self.Completing,
+
+        if self.act_state==self.Stopping and SC==True:
+            self.act_state=self.Stopped
+        elif self.act_state in [self.Idle,self.Starting,self.Execute,self.Completing,
                 self.Completed,self.Resuming,self.Paused,self.Pausing,
                 self.Holding,self.Held,self.Unholding,self.Resetting]:
             self.act_state=self.Stopping
-        if self.act_state==self.Stopping and SC==True:
-            self.act_state=self.Stopped
 
     def Abort(self,SC=True):
-        if self.act_state in [self.Idle,self.Starting,self.Execute,self.Completing,
+
+        if self.act_state==self.Aborting and SC==True:
+            self.act_state=self.Aborted
+        elif self.act_state in [self.Idle,self.Starting,self.Execute,self.Completing,
                 self.Completed,self.Resuming,self.Paused,self.Pausing,
                 self.Holding,self.Held,self.Unholding,self.Stopping,self.Stopped,self.Resetting]:
             self.act_state=self.Aborting
-        if self.act_state==self.Aborting and SC==True:
-            self.act_state=self.Aborted
 
     def get_current_state(self):
 

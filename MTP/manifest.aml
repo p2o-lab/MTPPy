@@ -9,7 +9,7 @@
     <Document DocumentIdentifier="VDI/VDE/NAMUR 2658-4" Version="1.0.0" />
   </AdditionalInformation>
   <SuperiorStandardVersion>AutomationML 2.10</SuperiorStandardVersion>
-  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="5.6.7.0" LastWritingDateTime="2021-12-02T17:29:28.1004504+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="5.6.7.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
+  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="5.6.7.0" LastWritingDateTime="2021-12-06T14:29:36.1683794+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="5.6.7.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
   <InstanceHierarchy Name="ModuleTypePackage">
     <Version>0</Version>
     <InternalElement Name="AIModule" ID="0a70569a-076e-4dbf-b633-333b70d4dd25" RefBaseSystemUnitPath="MTPSUCLib/ModuleTypePackage">
@@ -23,7 +23,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>82633d69-4d1a-4368-a1ee-dd70a1b01841</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Shutter_speed_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -115,7 +117,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>59c9cec4-b0c4-442c-a0e5-faa3606f9605</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Resolution_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -207,7 +211,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>4f3f0c01-89a3-4e01-82fb-954a18b2a577</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>ROI_x0</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -299,7 +305,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>14b85a30-1b1c-4b71-b370-c366b40ceff9</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>ROI_x_delta</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -391,7 +399,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>3ba87e62-997d-4e64-823b-cbf2e6adff67</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>ROI_y_delta</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -483,7 +493,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>805408a8-7a2f-4bf6-b3d2-4ecdcded8a68</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Gain_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -575,7 +587,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>1010ae65-9475-46f1-a282-19c468f2d47a</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Auto_brightness_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -667,7 +681,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>11196a2b-0b99-4f18-ac6f-11d4af8a9511</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Time_interval_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -759,7 +775,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>431190c0-c1b6-45d4-99b2-db1b2cfcb8ce</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Shutter_Speed_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -772,7 +790,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>26e9e64b-8186-4233-8891-2c9f721e4402</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Resolution_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -785,7 +805,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d0a7c11b-6342-4ea9-b304-286fe75821c2</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Gain_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -798,7 +820,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>bcd6c431-b0a6-4f1f-aaa4-2f2e04335688</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Auto_Brightness_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -811,7 +835,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>1d74577e-dc51-495d-a80f-1ce02d536672</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Webserver_endpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="Text" AttributeDataType="xs:string" />
@@ -821,7 +847,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>9bbec9be-017a-442e-90b9-a9d8fb2424c9</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Data_aq_trigger</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:boolean">
@@ -836,7 +864,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>ca78c549-8c12-4148-8215-909a0276a194</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Raw_data_aquisition</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -927,7 +957,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>1398292b-d63c-43d7-af3b-658060a43288</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Data_sink</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:string" />
@@ -1014,7 +1046,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>36cc3745-fbce-42c4-ae70-c783fb448f58</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Data_format</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:string" />
@@ -1101,7 +1135,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>dd3fb895-29a8-4c3e-b6b5-67593fb7aa6f</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Status_message_data_archiving</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="Text" AttributeDataType="xs:string" />
@@ -1111,7 +1147,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>9d92a907-2d2f-4e19-8d4c-36b7f910f5ff</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Raw_data_archiving</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -1202,7 +1240,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>1e118f99-d320-4412-9008-343be08fbfe4</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Model_ID</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:int" />
@@ -1291,7 +1331,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>59d21534-ca25-444c-978b-940850808452</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Result</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -1304,7 +1346,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>dd794fd0-a1ab-47f4-ad55-f2c848c65cf4</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Confidence_interval</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -1317,7 +1361,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>b0cc61ff-78ae-480d-8c72-9537d19223f3</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Status_message_data_processing</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="Text" AttributeDataType="xs:string" />
@@ -1327,7 +1373,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>9be717f1-4dc9-4f34-9812-76100c7e9f4a</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Data_processing</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -1418,7 +1466,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>76ec26f3-4e55-46c9-b2e0-2185be298c93</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Current_configuration_ID</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:int" />
@@ -1431,7 +1481,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>5384f72b-1cb2-494f-a739-a55a9e2bbbfb</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Configuration_ID</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:int" />
@@ -1520,7 +1572,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>aceace30-18aa-4964-94a7-dfe1643361c3</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Configuration_mode</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -1611,7 +1665,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>645efb0c-cd45-4288-92a3-73567d3076b5</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_X_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -1703,7 +1759,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>f3af585e-7942-4ba9-b058-4a1ff61c756d</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Y_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -1795,7 +1853,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7c8e3dfe-ed99-40ae-8d54-d7c194b5de79</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absoltue_Z_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -1887,7 +1947,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>a6be3e98-c7c1-4231-b608-516782a8aeaa</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_angle_X_Y_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -1979,7 +2041,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7f71e8fc-8e39-4c36-9e83-e9e44b4ff45e</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_angle_X_Z_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -2071,7 +2135,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>c9cbcba9-d823-4df1-bc7e-14e3814cece1</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_angle_Y_Z_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -2163,7 +2229,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>0a5f5e52-5eaa-4a07-9ff1-79f6fc57f7e8</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_X_camera_pos</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2176,7 +2244,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>dc870ad6-c92b-4c72-902d-4a932dc8501e</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Y_camera_pos</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2189,7 +2259,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d47d6a6d-37d1-46fb-be35-9aa126aac7a5</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Z_camera_pos</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2202,7 +2274,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>e2ff25f8-6508-4a2d-bc29-c78466ab42c8</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_angle_X_Y_camera_pos</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2215,7 +2289,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>fde1cce9-57fe-409a-bf38-a066d538704c</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_angle_X_Z_camera_pos</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2228,7 +2304,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>1222d6f5-b633-46dc-ae00-3e435e3ab703</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_angle_Y_Z_camera_pos</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2241,7 +2319,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>21d0f2d9-e27d-45bc-ad98-33efeb1a680d</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Position_ID_camera_pos</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:int" />
@@ -2330,7 +2410,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d9695e6a-6134-44b4-8965-ba50b468fd80</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Camera_positioning</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -2421,7 +2503,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>5bd6b6f1-a166-4052-b6c8-584127564523</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Position_ID_camera_upd</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:int" />
@@ -2510,7 +2594,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>64bf869e-1912-46fd-bcd3-57757bd56fe0</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_X_camera_upd</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2523,7 +2609,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>c4deb6a2-f5df-45c2-86d2-622b6197a4a1</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Y_camera_upd</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2536,7 +2624,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>77cfa274-0ff6-4762-9260-26dfab552782</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Z_camera_upd</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2549,7 +2639,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7b3e0ffd-6f5f-4980-8bd3-b18d2a25bf30</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Angle_X_Y_camera_upd</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2562,7 +2654,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>825c009f-d238-4934-838b-22db37fac0bf</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Angle_X_Z_camera_upd</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2575,7 +2669,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>a1fe78e8-2298-455b-807b-1cb7b1ec45f9</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_Angle_Y_Z_camera_upd</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -2588,7 +2684,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>b7c7ec75-56c5-4584-98c5-4b37999cce52</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Position_ID_camera_upd1</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:int" />
@@ -2601,7 +2699,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>91f79089-8f34-46e8-9fb2-f39536cbe16c</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Camera_position_update</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -2692,7 +2792,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7529de7d-1df5-43ed-9def-3ce163878bf5</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Wavelength_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -2784,7 +2886,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>5a83380d-ab0a-4ac1-97af-a5f75bc820b8</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Intensity_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -2876,7 +2980,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>8828bc76-dea7-40da-8b07-78ceeabd0f78</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Frequency_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -2968,7 +3074,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>c6f272c2-0d1a-42c1-9aee-01037befd470</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Duration_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -3060,7 +3168,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>9298b536-880c-4be8-a115-8dee2d955704</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Intensity_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -3073,7 +3183,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>21c557c1-81a5-4cd6-abf2-125e601e6b8b</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Light_trigger</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:boolean">
@@ -3088,7 +3200,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d27f71f6-2100-4bad-a8f9-fcc458760a6e</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Illumination</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -3179,7 +3293,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d46c763e-37b9-4ea4-aa56-f33f2b31c014</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_focus_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -3271,7 +3387,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>f5a318ef-a52d-4eb4-91ae-8aef1b1868d6</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_iris_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -3363,7 +3481,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>b6cd23c8-19aa-4084-889b-3dfcba4a61b9</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Auto_focus_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -3455,7 +3575,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d5024103-c4c3-43cb-b530-d2ae16dc4ff1</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Auto_iris_setpoint</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
             <Attribute Name="VExt" AttributeDataType="xs:float" />
@@ -3547,7 +3669,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>dcdb3bb9-bfba-4662-a944-87a2ea6716f8</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_focus_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -3560,7 +3684,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>dd6a4d96-ac02-4511-9ff2-8e0f49681495</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_iris_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -3573,7 +3699,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d21cf844-ffba-4a97-923c-67949570608f</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Auto_focus_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -3586,7 +3714,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>770d50f7-d21d-4305-b049-b7b5060af7d3</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Auto_iris_feedback</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="V" AttributeDataType="xs:float" />
@@ -3599,7 +3729,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>8b048b73-440b-40b8-8a14-9917e108434e</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Lens</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:byte" />
             <Attribute Name="OSLevel" AttributeDataType="xs:byte" />
@@ -3690,7 +3822,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>47936d2c-11e3-4642-9d94-d8f238e59957</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Free_run</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3699,7 +3833,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>c2e4042f-6450-4cab-add6-2138fdbd04c7</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Snapshot</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3708,7 +3844,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>ef349026-8ddc-496a-8d78-c2297e322db7</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Trigger_based</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3717,7 +3855,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>897c2054-1b51-43dc-8a50-738d429dd944</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Trigger_based</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3726,7 +3866,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>20cfa7db-0c1a-431f-9150-158d32d9ad31</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Regression</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3735,7 +3877,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>3a3b160a-34f3-45e0-99fb-f9433555fb2f</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Classification</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3744,7 +3888,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>db71dddc-7e36-4885-9225-017839360f50</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Safe_configuration</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3753,7 +3899,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7f449536-6ee8-4aa0-84ed-0cc8e094a7a0</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Load_configuration</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3762,7 +3910,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>9d468926-5b5f-4d7e-91dc-eb53fb669831</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Absolute_position_change</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3771,7 +3921,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>9343a8f6-ae66-4634-9cd5-ac44b89ca196</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Relative_position_change</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3780,7 +3932,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>32797321-1fce-4e05-abe2-dab1de3730e6</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Find_position</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3789,7 +3943,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>3d1eb2fc-0673-485a-9c21-a952362ff9f0</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Zeroing</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3798,7 +3954,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>637d9336-3b5e-4712-bc08-2e99ffa03d14</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Save_position</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3807,7 +3965,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>84f0a4cf-c6d9-49bb-b53b-42ce704df9e9</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Continous</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3816,7 +3976,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>361cf932-4abd-48a5-9969-67c7f6e51980</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Illumination_Strobe_mode</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3825,7 +3987,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>728230ce-f8aa-453e-b1e3-f03d4fdd05e6</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Trigger_based</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3834,7 +3998,9 @@
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>d9288a66-68e8-42e0-b4c4-065290141976</Value>
             </Attribute>
-            <Attribute Name="TagName" AttributeDataType="xs:string" />
+            <Attribute Name="TagName" AttributeDataType="xs:string">
+              <Value>Configure</Value>
+            </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -3856,25 +4022,6 @@
         <ExternalInterface Name="ServiceFile" ID="c8a6e0bb-4163-4987-934a-f5d019893850" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
           <Attribute Name="refURI" AttributeDataType="xs:IDREF" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
         </ExternalInterface>
-        <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
-      </InternalElement>
-      <InternalElement Name="HMI" ID="42960744-5f32-4ab1-ba5a-4770a9c0c59e" RefBaseSystemUnitPath="MTPHMISUCLib/HMISet">
-        <ExternalInterface Name="HMIFile" ID="d45eac49-4789-4b5a-af07-ffd556c52694" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
-          <Attribute Name="refURI" AttributeDataType="xs:IDREF" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
-        </ExternalInterface>
-        <InternalElement Name="Test_OPCUA_Item" ID="f6d73d3a-387c-4c11-bc6c-1210d578323c" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/InputElement/BinProcessValueIn">
-          <Attribute Name="RefID" AttributeDataType="xs:ID" />
-          <Attribute Name="TagName" AttributeDataType="xs:string" />
-          <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-          <Attribute Name="WQC" AttributeDataType="xs:byte" />
-          <Attribute Name="VExt" AttributeDataType="xs:boolean">
-            <DefaultValue>false</DefaultValue>
-            <Value>false</Value>
-          </Attribute>
-          <Attribute Name="VState0" AttributeDataType="xs:string" />
-          <Attribute Name="VState1" AttributeDataType="xs:string" />
-          <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
-        </InternalElement>
         <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
       </InternalElement>
       <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />

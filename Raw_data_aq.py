@@ -69,11 +69,15 @@ class Raw_data_aq(Service_control):
 
     def Idle(self):
         ## todo set boundarys of shutter speed according to time intervall
-        self.Webserver_endpoint.Text=f'{self.Video_stream.host_name}:{self.Video_stream.port}'
-        print('idle')
+        self.Webserver_endpoint.set_text(f'{self.Video_stream.host_name}:{self.Video_stream.port}')
+        #print('idle')
 
     def Starting(self):
         self.Time_interval_setpoint.set_VOut()
+
+        for i in range(0,5):
+            print(f'starting {i}')
+            sleep(1)
         self.State_control(SC=True)
 
     def Execute(self):

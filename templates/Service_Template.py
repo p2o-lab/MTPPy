@@ -22,7 +22,6 @@ class Service_template():
     def Completing(self):
         self.Service_SM.Complete(SC=True)
 
-
     def Completed(self):
         pass
 

@@ -236,16 +236,8 @@ class AnaServParam(OperationElement):
         self.client = client
         self.node = self.client.get_node(node)
         self.ns = self.node.nodeid.NamespaceIndex
+        self.identifier = self.node.nodeid.Identifier
         self.Init_sync()
-
-        # handler = Handler()
-        # handler_client = Client(opc_address)
-        # handler_client.connect()
-        #
-        # AnaServParam_nodes = self.client.get_node(node).get_children()
-        #
-        # sub = handler_client.create_subscription(500, handler)
-        # handle = sub.subscribe_data_change(AnaServParam_nodes)
 
     def operation_mode(self):
         if self.StateChannel == True:
@@ -254,25 +246,25 @@ class AnaServParam(OperationElement):
                 self.StateOpAct = False
                 self.StateAutAct = True
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOpAut == True:
                 self.StateOpAct = True
                 self.StateAutAct = False
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOffAut == True:
                 self.StateOpAct = False
                 self.StateAutAct = False
                 self.StateOffAct = True
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
         elif self.StateChannel==False:
 
@@ -282,10 +274,10 @@ class AnaServParam(OperationElement):
                 self.StateOffAct = False
                 self.StateAutOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
 
             if self.StateOpOp==True:
                 self.StateOpAct=True
@@ -293,10 +285,10 @@ class AnaServParam(OperationElement):
                 self.StateOffAct=False
                 self.StateOpOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
 
             if self.StateOffOp == True:
                 self.StateOpAct = False
@@ -304,10 +296,10 @@ class AnaServParam(OperationElement):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
 
 
     def source_mode(self):
@@ -315,35 +307,35 @@ class AnaServParam(OperationElement):
 
             if self.SrcExtAut == True:
                 self.SrcExtAut = False
-                self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
 
             if self.SrcIntAut == True:
                 self.SrcIntAut = False
-                self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
 
             if self.SrcExtOp == True:
                 self.SrcIntAct = False
                 self.SrcExtAct = True
                 self.SrcExtOp = False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
 
             if self.SrcIntOp == True:
                 self.SrcIntAct = True
                 self.SrcExtAct = False
                 self.SrcIntOp = False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
 
         if self.Sync==True:
-            self.client.get_node(f'ns={self.ns};s=StateChannel').set_value(self.StateChannel)
-            self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-            self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-            self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateChannel').set_value(self.StateChannel)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
 
     def scale_check(self):
@@ -359,71 +351,91 @@ class AnaServParam(OperationElement):
         if self.StateOffAct != True:
             if self.StateOpAct==True:
                 self.VReq=self.VOp
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
             if self.StateAutAct ==True and self.SrcExtAct == True :
                 self.VReq=self.VExt
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
             if self.StateAutAct == True and self.SrcIntAct == True:
                 self.VReq=self.VInt
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
 
     def set_VOut(self):
         self.VOut=self.VReq
-        self.client.get_node(f'ns={self.ns};s=VOut').set_value(self.VOut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOut').set_value(self.VOut)
 
     def Init_sync(self):
-        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
-        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
-        self.client.get_node(f'ns={self.ns};s=OSLevel').set_value(self.OSLevel)
-        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
-        self.client.get_node(f'ns={self.ns};s=VExt').set_value(self.VExt)
-        self.client.get_node(f'ns={self.ns};s=VOp').set_value(self.VOp)
-        self.client.get_node(f'ns={self.ns};s=VInt').set_value(self.VInt)
-        self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
-        self.client.get_node(f'ns={self.ns};s=VOut').set_value(self.VOut)
-        self.client.get_node(f'ns={self.ns};s=VFbk').set_value(self.VFbk)
-        self.client.get_node(f'ns={self.ns};s=VSclMin').set_value(self.VSclMin)
-        self.client.get_node(f'ns={self.ns};s=VSclMax').set_value(self.VSclMax)
-        self.client.get_node(f'ns={self.ns};s=VUnit').set_value(self.VUnit)
-        self.client.get_node(f'ns={self.ns};s=VMin').set_value(self.VMin)
-        self.client.get_node(f'ns={self.ns};s=VMax').set_value(self.VMax)
-        self.client.get_node(f'ns={self.ns};s=Sync').set_value(self.Sync)
-        self.client.get_node(f'ns={self.ns};s=StateChannel').set_value(self.StateChannel)
-        self.client.get_node(f'ns={self.ns};s=StateOffAut').set_value(self.StateOffAut)
-        self.client.get_node(f'ns={self.ns};s=StateOpAut').set_value(self.StateOpAut)
-        self.client.get_node(f'ns={self.ns};s=StateAutAut').set_value(self.StateAutAut)
-        self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
-        self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-        self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-        self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-        self.client.get_node(f'ns={self.ns};s=SrcChannel').set_value(self.SrcChannel)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
-        self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.OSLevel').set_value(self.OSLevel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VExt').set_value(self.VExt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOp').set_value(self.VOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VInt').set_value(self.VInt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOut').set_value(self.VOut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VFbk').set_value(self.VFbk)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VSclMin').set_value(self.VSclMin)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VSclMax').set_value(self.VSclMax)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VUnit').set_value(self.VUnit)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VMin').set_value(self.VMin)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VMax').set_value(self.VMax)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.Sync').set_value(self.Sync)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateChannel').set_value(self.StateChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAut').set_value(self.StateOffAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAut').set_value(self.StateOpAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAut').set_value(self.StateAutAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcChannel').set_value(self.SrcChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
 
-    def Handler_sync(self, node, val):
-        curr_name = node.nodeid.Identifier
-        if curr_name in 'OSLevel': self.OSLevel = val
-        if curr_name in 'VExt': self.VExt = val
-        if curr_name in 'VOp': self.VOp = val
-        if curr_name in 'Sync': self.Sync = val
-        if curr_name in 'StateOffOp': self.StateOffOp = val
-        if curr_name in 'StateOpOp': self.StateOpOp = val
-        if curr_name in 'StateAutOp': self.StateAutOp = val
-        if curr_name in 'SrcIntOp': self.SrcIntOp = val
-        if curr_name in 'SrcExtOp': self.SrcExtOp = val
+    def Handler_sync(self, node, val,ident):
+        #curr_name = node.nodeid.Identifier
+        if 'OSLevel' in ident: self.OSLevel = val
+        if 'VExt' in ident:
+            self.VExt = val
+            self.scale_check()
+            self.limit_check()
+            self.set_VReq()
 
-    def Runtime(self):
-        self.operation_mode()
-        self.source_mode()
-        self.scale_check()
-        self.limit_check()
-        self.set_VReq()
+        if 'VOp' in ident:
+            self.VOp = val
+            self.scale_check()
+            self.limit_check()
+            self.set_VReq()
+
+        if 'Sync' in ident: self.Sync = val
+        if 'StateOffOp' in ident:
+            self.StateOffOp = val
+            self.operation_mode()
+        if 'StateOpOp' in ident:
+            self.StateOpOp = val
+            self.operation_mode()
+        if 'StateAutOp' in ident:
+            self.StateAutOp = val
+            self.operation_mode()
+        if 'SrcIntOp' in ident:
+            self.SrcIntOp = val
+            self.source_mode()
+        if 'SrcExtOp' in ident:
+            self.SrcExtOp = val
+            self.source_mode()
+
+    # def Runtime(self):
+    #     self.operation_mode()
+    #     self.source_mode()
+    #     self.scale_check()
+    #     self.limit_check()
+    #     self.set_VReq()
 
 class DIntServParam(OperationElement):
     def __init__(self,node,client,opc_address):
@@ -462,6 +474,7 @@ class DIntServParam(OperationElement):
         self.client = client
         self.node = self.client.get_node(node)
         self.ns = self.node.nodeid.NamespaceIndex
+        self.identifier= self.node.nodeid.Identifier
         self.Init_sync()
 
     def operation_mode(self):
@@ -471,25 +484,25 @@ class DIntServParam(OperationElement):
                 self.StateOpAct = False
                 self.StateAutAct = True
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOpAut == True:
                 self.StateOpAct = True
                 self.StateAutAct = False
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOffAut == True:
                 self.StateOpAct = False
                 self.StateAutAct = False
                 self.StateOffAct = True
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
         elif self.StateChannel==False:
 
@@ -499,10 +512,10 @@ class DIntServParam(OperationElement):
                 self.StateOffAct = False
                 self.StateAutOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
 
             if self.StateOpOp==True:
                 self.StateOpAct=True
@@ -510,10 +523,10 @@ class DIntServParam(OperationElement):
                 self.StateOffAct=False
                 self.StateOpOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
 
             if self.StateOffOp == True:
                 self.StateOpAct = False
@@ -521,10 +534,10 @@ class DIntServParam(OperationElement):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
 
 
     def source_mode(self):
@@ -532,35 +545,35 @@ class DIntServParam(OperationElement):
 
             if self.SrcExtAut == True:
                 self.SrcExtAut = False
-                self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
 
             if self.SrcIntAut == True:
                 self.SrcIntAut = False
-                self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
 
             if self.SrcExtOp == True:
                 self.SrcIntAct = False
                 self.SrcExtAct = True
                 self.SrcExtOp = False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
 
             if self.SrcIntOp == True:
                 self.SrcIntAct = True
                 self.SrcExtAct = False
                 self.SrcIntOp = False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
 
         if self.Sync==True:
-            self.client.get_node(f'ns={self.ns};s=StateChannel').set_value(self.StateChannel)
-            self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-            self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-            self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateChannel').set_value(self.StateChannel)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
 
     def scale_check(self):
@@ -576,71 +589,91 @@ class DIntServParam(OperationElement):
         if self.StateOffAct != True:
             if self.StateOpAct==True:
                 self.VReq=self.VOp
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
             if self.StateAutAct ==True and self.SrcExtAct == True :
                 self.VReq=self.VExt
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
             if self.StateAutAct == True and self.SrcIntAct == True:
                 self.VReq=self.VInt
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
 
     def set_VOut(self):
         self.VOut=self.VReq
-        self.client.get_node(f'ns={self.ns};s=VOut').set_value(self.VOut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOut').set_value(self.VOut)
 
     def Init_sync(self):
-        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
-        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
-        self.client.get_node(f'ns={self.ns};s=OSLevel').set_value(self.OSLevel)
-        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
-        self.client.get_node(f'ns={self.ns};s=VExt').set_value(self.VExt)
-        self.client.get_node(f'ns={self.ns};s=VOp').set_value(self.VOp)
-        self.client.get_node(f'ns={self.ns};s=VInt').set_value(self.VInt)
-        self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
-        self.client.get_node(f'ns={self.ns};s=VOut').set_value(self.VOut)
-        self.client.get_node(f'ns={self.ns};s=VFbk').set_value(self.VFbk)
-        self.client.get_node(f'ns={self.ns};s=VSclMin').set_value(self.VSclMin)
-        self.client.get_node(f'ns={self.ns};s=VSclMax').set_value(self.VSclMax)
-        self.client.get_node(f'ns={self.ns};s=VUnit').set_value(self.VUnit)
-        self.client.get_node(f'ns={self.ns};s=VMin').set_value(self.VMin)
-        self.client.get_node(f'ns={self.ns};s=VMax').set_value(self.VMax)
-        self.client.get_node(f'ns={self.ns};s=Sync').set_value(self.Sync)
-        self.client.get_node(f'ns={self.ns};s=StateChannel').set_value(self.StateChannel)
-        self.client.get_node(f'ns={self.ns};s=StateOffAut').set_value(self.StateOffAut)
-        self.client.get_node(f'ns={self.ns};s=StateOpAut').set_value(self.StateOpAut)
-        self.client.get_node(f'ns={self.ns};s=StateAutAut').set_value(self.StateAutAut)
-        self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
-        self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-        self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-        self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-        self.client.get_node(f'ns={self.ns};s=SrcChannel').set_value(self.SrcChannel)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
-        self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.OSLevel').set_value(self.OSLevel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VExt').set_value(self.VExt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOp').set_value(self.VOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VInt').set_value(self.VInt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOut').set_value(self.VOut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VFbk').set_value(self.VFbk)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VSclMin').set_value(self.VSclMin)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VSclMax').set_value(self.VSclMax)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VUnit').set_value(self.VUnit)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VMin').set_value(self.VMin)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VMax').set_value(self.VMax)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.Sync').set_value(self.Sync)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateChannel').set_value(self.StateChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAut').set_value(self.StateOffAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAut').set_value(self.StateOpAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAut').set_value(self.StateAutAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcChannel').set_value(self.SrcChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
 
-    def Handler_sync(self, node, val):
-        curr_name = node.nodeid.Identifier
-        if curr_name in 'OSLevel': self.OSLevel = val
-        if curr_name in 'VExt': self.VExt = val
-        if curr_name in 'VOp': self.VOp = val
-        if curr_name in 'Sync': self.Sync = val
-        if curr_name in 'StateOffOp': self.StateOffOp = val
-        if curr_name in 'StateOpOp': self.StateOpOp = val
-        if curr_name in 'StateAutOp': self.StateAutOp = val
-        if curr_name in 'SrcIntOp': self.SrcIntOp = val
-        if curr_name in 'SrcExtOp': self.SrcExtOp = val
+    def Handler_sync(self, node, val, ident):
+        # curr_name = node.nodeid.Identifier
+        if 'OSLevel' in ident: self.OSLevel = val
+        if 'VExt' in ident:
+            self.VExt = val
+            self.scale_check()
+            self.limit_check()
+            self.set_VReq()
 
-    def Runtime(self):
-        self.operation_mode()
-        self.source_mode()
-        self.scale_check()
-        self.limit_check()
-        self.set_VReq()
+        if 'VOp' in ident:
+            self.VOp = val
+            self.scale_check()
+            self.limit_check()
+            self.set_VReq()
+
+        if 'Sync' in ident: self.Sync = val
+        if 'StateOffOp' in ident:
+            self.StateOffOp = val
+            self.operation_mode()
+        if 'StateOpOp' in ident:
+            self.StateOpOp = val
+            self.operation_mode()
+        if 'StateAutOp' in ident:
+            self.StateAutOp = val
+            self.operation_mode()
+        if 'SrcIntOp' in ident:
+            self.SrcIntOp = val
+            self.source_mode()
+        if 'SrcExtOp' in ident:
+            self.SrcExtOp = val
+            self.source_mode()
+
+    # def Runtime(self):
+    #     self.operation_mode()
+    #     self.source_mode()
+    #     self.scale_check()
+    #     self.limit_check()
+    #     self.set_VReq()
 
 class BinServParam(OperationElement):
     def __init__(self):
@@ -767,6 +800,7 @@ class StringServParam(OperationElement):
         self.client = client
         self.node = self.client.get_node(node)
         self.ns = self.node.nodeid.NamespaceIndex
+        self.identifier= self.node.nodeid.Identifier
         self.Init_sync()
 
     def operation_mode(self):
@@ -776,25 +810,25 @@ class StringServParam(OperationElement):
                 self.StateOpAct = False
                 self.StateAutAct = True
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOpAut == True:
                 self.StateOpAct = True
                 self.StateAutAct = False
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOffAut == True:
                 self.StateOpAct = False
                 self.StateAutAct = False
                 self.StateOffAct = True
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
         elif self.StateChannel == False:
 
@@ -804,10 +838,10 @@ class StringServParam(OperationElement):
                 self.StateOffAct = False
                 self.StateAutOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
 
             if self.StateOpOp == True:
                 self.StateOpAct = True
@@ -815,10 +849,10 @@ class StringServParam(OperationElement):
                 self.StateOffAct = False
                 self.StateOpOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
 
             if self.StateOffOp == True:
                 self.StateOpAct = False
@@ -826,108 +860,123 @@ class StringServParam(OperationElement):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
 
     def source_mode(self):
         if self.SrcChannel == False and self.StateOffAct != True and self.Sync == False:
 
             if self.SrcExtAut == True:
                 self.SrcExtAut = False
-                self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
 
             if self.SrcIntAut == True:
                 self.SrcIntAut = False
-                self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
 
             if self.SrcExtOp == True:
                 self.SrcIntAct = False
                 self.SrcExtAct = True
                 self.SrcExtOp = False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
 
             if self.SrcIntOp == True:
                 self.SrcIntAct = True
                 self.SrcExtAct = False
                 self.SrcIntOp = False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
 
         if self.Sync == True:
-            self.client.get_node(f'ns={self.ns};s=StateChannel').set_value(self.StateChannel)
-            self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-            self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-            self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateChannel').set_value(self.StateChannel)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
     def set_VReq(self):
         if self.StateOffAct != True:
             if self.StateOpAct == True:
                 self.VReq = self.VOp
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
             if self.StateAutAct == True and self.SrcExtAct == True:
                 self.VReq = self.VExt
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
             if self.StateAutAct == True and self.SrcIntAct == True:
                 self.VReq = self.VInt
-                self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
 
     def set_VOut(self):
         self.VOut = self.VReq
-        self.client.get_node(f'ns={self.ns};s=VOut').set_value(self.VOut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOut').set_value(self.VOut)
 
     def Init_sync(self):
-        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
-        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
-        self.client.get_node(f'ns={self.ns};s=OSLevel').set_value(self.OSLevel)
-        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
-        self.client.get_node(f'ns={self.ns};s=VExt').set_value(self.VExt)
-        self.client.get_node(f'ns={self.ns};s=VOp').set_value(self.VOp)
-        self.client.get_node(f'ns={self.ns};s=VInt').set_value(self.VInt)
-        self.client.get_node(f'ns={self.ns};s=VReq').set_value(self.VReq)
-        self.client.get_node(f'ns={self.ns};s=VOut').set_value(self.VOut)
-        self.client.get_node(f'ns={self.ns};s=VFbk').set_value(self.VFbk)
-        self.client.get_node(f'ns={self.ns};s=Sync').set_value(self.Sync)
-        self.client.get_node(f'ns={self.ns};s=StateChannel').set_value(self.StateChannel)
-        self.client.get_node(f'ns={self.ns};s=StateOffAut').set_value(self.StateOffAut)
-        self.client.get_node(f'ns={self.ns};s=StateOpAut').set_value(self.StateOpAut)
-        self.client.get_node(f'ns={self.ns};s=StateAutAut').set_value(self.StateAutAut)
-        self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
-        self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-        self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-        self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-        self.client.get_node(f'ns={self.ns};s=SrcChannel').set_value(self.SrcChannel)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
-        self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.OSLevel').set_value(self.OSLevel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VExt').set_value(self.VExt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOp').set_value(self.VOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VInt').set_value(self.VInt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VReq').set_value(self.VReq)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VOut').set_value(self.VOut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VFbk').set_value(self.VFbk)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.Sync').set_value(self.Sync)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateChannel').set_value(self.StateChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAut').set_value(self.StateOffAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAut').set_value(self.StateOpAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAut').set_value(self.StateAutAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcChannel').set_value(self.SrcChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
 
 
-    def Handler_sync(self, node, val):
-        curr_name = node.nodeid.Identifier
-        if curr_name in 'OSLevel': self.OSLevel = val
-        if curr_name in 'VExt': self.VExt = val
-        if curr_name in 'VOp': self.VOp = val
-        if curr_name in 'Sync': self.Sync = val
-        if curr_name in 'StateOffOp': self.StateOffOp = val
-        if curr_name in 'StateOpOp': self.StateOpOp = val
-        if curr_name in 'StateAutOp': self.StateAutOp = val
-        if curr_name in 'SrcIntOp': self.SrcIntOp = val
-        if curr_name in 'SrcExtOp': self.SrcExtOp = val
+    def Handler_sync(self, node, val, ident):
 
-    def Runtime(self):
-        self.operation_mode()
-        self.source_mode()
-        self.set_VReq()
+        if  'OSLevel'in ident: self.OSLevel = val
 
+        if 'VExt' in ident:
+            self.VExt = val
+            self.set_VReq()
 
+        if 'VOp' in ident:
+            self.VOp = val
+            self.set_VReq()
+
+        if 'Sync' in ident: self.Sync = val
+
+        if 'StateOffOp' in ident:
+            self.StateOffOp = val
+            self.operation_mode()
+
+        if 'StateOpOp' in ident:
+            self.StateOpOp = val
+            self.operation_mode()
+
+        if 'StateAutOp' in ident:
+            self.StateAutOp = val
+            self.operation_mode()
+
+        if 'SrcIntOp' in ident:
+            self.SrcIntOp = val
+            self.source_mode()
+
+        if 'SrcExtOp' in ident:
+            self.SrcExtOp = val
+            self.source_mode()

@@ -39,6 +39,7 @@ class Data_Processing(Service_control):
         self.Regression=Regression()
         self.Classification=Classification()
         self.Test_Model=Test_Model()
+        self.identifier = self.node.nodeid.Identifier
 
     def Idle(self):
         pass
@@ -53,9 +54,9 @@ class Data_Processing(Service_control):
             while True:
                 if self.VideoStream.new_img_flag_process == True:
                     edge = cv2.Canny(self.VideoStream.frame, 100, 200)
-                    sum=edge.sum()/255
-                    self.Result.V=sum
-                    self.client.get_node('ns=3;s=V').set_value(self.Result.V)
+                    edsum=edge.sum()/255
+                    self.Result.set_v(edsum)
+                    #self.client.get_node(f'ns=1;s=V').set_value(self.Result.V)
                     self.VideoStream.model_frame = edge
                     self.VideoStream.new_img_flag_process = False
                 if self.stop_execute:
@@ -63,7 +64,7 @@ class Data_Processing(Service_control):
 
     def Completing(self):
         print('Service 1 is completing')
-        self.Result.V=0
+        self.Result.set_v(0)
         self.Service_SM.Complete(SC=True)
 
 

@@ -192,7 +192,7 @@ structure_dict={
                             #'Data_aq_trigger':BinProcessValueIn_dict,
                             },
 
-    'Rawdataarchiving':{'ServiceControl':Service_control_dict,
+    'Raw_data_archiving':{'ServiceControl':Service_control_dict,
                         'Data_sink':StringServ_dict,
                         'Data_format':StringServ_dict,
 
@@ -212,21 +212,23 @@ structure_dict={
                           'Absolute_angle_X_Z_setpoint':AnaServ_dict,
                           'Absolute_angle_Y_Z_setpoint':AnaServ_dict,
 
-                          'Absolute_X': AnaView_dict,
-                          'Absolute_Y': AnaView_dict,
-                          'Absolute_Z': AnaView_dict,
-                          'Absolute_angle_X_Y': AnaView_dict,
-                          'Absolute_angle_X_Z': AnaView_dict,
-                          'Absolute_angle_Y_Z': AnaView_dict,
+                          'Absolute_X_camera_pos': AnaView_dict,
+                          'Absolute_Y_camera_pos': AnaView_dict,
+                          'Absolute_Z_camera_pos': AnaView_dict,
+                          'Absolute_angle_X_Y_camera_pos': AnaView_dict,
+                          'Absolute_angle_X_Z_camera_pos': AnaView_dict,
+                          'Absolute_angle_Y_Z_camera_pos': AnaView_dict,
+                          'Position_ID_camera_pos':AnaView_dict
                           },
 
-    'Camera_Position_Zeroing':{'ServiceControl': Service_control_dict,
+    'Camera_position_update':{'ServiceControl': Service_control_dict,
                                'Absolute_X': AnaView_dict,
                                'Absolute_Y': AnaView_dict,
                                'Absolute_Z': AnaView_dict,
                                'Absolute_angle_X_Y': AnaView_dict,
                                'Absolute_angle_X_Z': AnaView_dict,
                                'Absolute_angle_Y_Z': AnaView_dict,
+                               'Position_ID_camera_upd1':DintView_dict
                                },
 
     'Illumination':{'ServiceControl':Service_control_dict,
@@ -237,7 +239,7 @@ structure_dict={
 
                     'Intensity_feedback': AnaView_dict,
 
-                    #'Light_trigger':BinProcessValueIn_dict,
+                    'Light_trigger':BinProcessValueIn_dict,
                     },
 
     'Lens':{'ServiceControl':Service_control_dict,
@@ -264,13 +266,13 @@ for key_1 in structure_dict.keys():
     #print(key_1)
     for key_2 in structure_dict[key_1].keys():
         #print(key_2)
-        obj_2=obj_1.add_folder(f'ns={ns};s={key_2}',key_2)
+        obj_2=obj_1.add_folder(f'ns={ns};s={key_1}.{key_2}',key_2)
         for key_3 in structure_dict[key_1][key_2].keys():
             #print(key_3)
-            obj_3=obj_2.add_variable(f'ns={ns};s={key_3}',key_3,structure_dict[key_1][key_2][key_3]['init']
+            obj_3=obj_2.add_variable(f'ns={ns};s={key_1}.{key_2}.{key_3}',key_3,structure_dict[key_1][key_2][key_3]['init']
                                      ,datatype=structure_dict[key_1][key_2][key_3]['datatype'])
             obj_3.set_writable()
-        ns=ns+1
+        #ns=ns+1
 
 print('Server started')
 server.start()

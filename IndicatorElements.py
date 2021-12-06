@@ -16,27 +16,29 @@ class AnaView(IndicatorElement):
         self.V_old= self.V
         self.client=client
         self.node = self.client.get_node(node)
+        self.identifier = self.node.nodeid.Identifier
         self.ns = self.node.nodeid.NamespaceIndex
         self.Init_sync()
 
-    def limit_check(self):
-        if self.V != self.V_old:
-            if self.V < self.VSclMin: self.V = self.VSclMin
-            elif self.V > self.VSclMax: self.V = self.VSclMax
-            self.V_old=self.V
-            self.client.get_node(f'ns={self.ns};s=V').set_value(self.V)
+    def set_v(self,V):
+        self.V=V
+        #if self.V != self.V_old:
+        if self.V < self.VSclMin: self.V = self.VSclMin
+        elif self.V > self.VSclMax: self.V = self.VSclMax
+        #self.V_old=self.V
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.V').set_value(self.V)
 
     def Init_sync(self):
-        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
-        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
-        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
-        self.client.get_node(f'ns={self.ns};s=V').set_value(self.V)
-        self.client.get_node(f'ns={self.ns};s=VSclMin').set_value(self.VSclMin)
-        self.client.get_node(f'ns={self.ns};s=VSclMax').set_value(self.VSclMax)
-        self.client.get_node(f'ns={self.ns};s=VUnit').set_value(self.VUnit)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.V').set_value(self.V)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VSclMin').set_value(self.VSclMin)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VSclMax').set_value(self.VSclMax)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.VUnit').set_value(self.VUnit)
 
-    def Runtime(self):
-        self.limit_check()
+    # def Runtime(self):
+    #     self.limit_check()
 
 class AnaMon(AnaView):
     def __init__(self):
@@ -177,15 +179,15 @@ class StringView(IndicatorElement):
         self.client=client
         self.node = self.client.get_node(node)
         self.ns = self.node.nodeid.NamespaceIndex
+        self.identifier= self.node.nodeid.Identifier
         self.Init_sync()
 
     def Init_sync(self):
-        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
-        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
-        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
-        self.client.get_node(f'ns={self.ns};s=Text').set_value(self.Text)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.Text').set_value(self.Text)
 
-    def Runtime(self):
-        if self.Text != self.Text_old:
-            self.Text_old=self.Text
-            self.client.get_node(f'ns={self.ns};s=Text').set_value(self.Text)
+    def set_text(self,Text):
+        self.Text=Text
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.Text').set_value(self.Text)

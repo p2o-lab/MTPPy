@@ -11,6 +11,7 @@ class PEA_Video_stream():
 
         self.new_img_flag_archive = False
         self.new_img_flag_process = False
+
     def start_vid_stream(self,host_name,port):
         self.host_name=host_name
         self.port=port

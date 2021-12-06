@@ -68,6 +68,7 @@ class Service_control(DataAssembly):
         self.client = client
         self.node = self.client.get_node(node)
         self.ns = self.node.nodeid.NamespaceIndex
+        self.identifier = self.node.nodeid.Identifier
         self.Init_sync()
 
         # handler = Handler()
@@ -90,13 +91,24 @@ class Service_control(DataAssembly):
                 self.Service_SM.ex_command(self.CommandInt,SC=SC)
             elif self.StateAutAct==True and self.SrcExtAct==True:
                 self.Service_SM.ex_command(self.CommandExt,SC=SC)
-
+            self.StateCur=self.Service_SM.get_current_state()
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.StateCur').set_value(self.StateCur)
 
     #Prozedurvorgabe  VDI_256_B4 Section 6.5.3
     #TODO implement procedures as Functions in the individual Service or use the current procedure identifier to communicate only the value
 
     def Procedure_selection(self):
-        if self.StateCur == self.Service_SM.Starting and self.StateOffAct != True:
+        if self.StateCur == self.Service_SM.Idle and self.StateOffAct != True:
+
+            if self.StateOpAct == True:
+                self.ProcedureReq = self.ProcedureOp
+
+            if self.StateAutAct == True and self.SrcIntAct == True:
+                self.ProcedureReq = self.ProcedureInt
+
+            if self.StateAutAct == True and self.SrcExtAct == True:
+                self.ProcedureReq = self.ProcedureExt
+
             if self.StateOpAct == True:
                 self.ProcedureCur = self.ProcedureReq
 
@@ -106,7 +118,10 @@ class Service_control(DataAssembly):
             if self.StateAutAct == True and self.SrcExtAct == True:
                 self.ProcedureCur = self.ProcedureReq
 
-            self.client.get_node(f'ns={self.ns};s=ProcedureCur').set_value(self.ProcedureCur)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.ProcedureReq').set_value(self.ProcedureReq)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.ProcedureCur').set_value(self.ProcedureCur)
+
+
 
     # Service Operation Mode VDI_256_B4 Section 5.6.1
     def Service_operation_mode(self):
@@ -121,26 +136,26 @@ class Service_control(DataAssembly):
                 self.StateOpAct = False
                 self.StateAutAct = True
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOpAut == True:
                 self.StateOpAct = True
                 self.StateAutAct = False
                 self.StateOffAct = False
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
             if self.StateOffAut == True:
                 self.StateOpAct = False
                 self.StateAutAct = False
                 self.StateOffAct = True
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
 
 
 
@@ -152,10 +167,10 @@ class Service_control(DataAssembly):
                 self.StateOffAct = False
                 self.StateAutOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
 
             if self.StateOpOp==True:
                 self.StateOpAct=True
@@ -163,10 +178,10 @@ class Service_control(DataAssembly):
                 self.StateOffAct=False
                 self.StateOpOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
 
             if self.StateOffOp == True:
                 self.StateOpAct = False
@@ -174,33 +189,20 @@ class Service_control(DataAssembly):
                 self.StateOffAct = True
                 self.StateOffOp = False
 
-                self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-                self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-                self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
 
 
 
     #TODO Rückmeldung VDI_256_B4 Section 6.5.4
     def Update_feedback(self):
-        if self.StateOffAct != True:
-            if self.StateOpAct == True:
-                self.ProcedureReq = self.ProcedureOp
-                self.client.get_node(f'ns={self.ns};s=ProcedureReq').set_value(self.ProcedureReq)
-
-            if self.StateAutAct == True and self.SrcIntAct == True:
-                self.ProcedureReq = self.ProcedureInt
-                self.client.get_node(f'ns={self.ns};s=ProcedureReq').set_value(self.ProcedureReq)
-
-            if self.StateAutAct == True and self.SrcExtAct == True:
-                self.ProcedureReq = self.ProcedureExt
-                self.client.get_node(f'ns={self.ns};s=ProcedureReq').set_value(self.ProcedureReq)
-
 
         self.StateCur=self.Service_SM.get_current_state()
         self.CommandEn=self.Service_SM.get_command_en()
-        self.client.get_node(f'ns={self.ns};s=StateCur').set_value(self.StateCur)
-        self.client.get_node(f'ns={self.ns};s=CommandEn').set_value(self.CommandEn)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateCur').set_value(self.StateCur)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.CommandEn').set_value(self.CommandEn)
 
         #self.PosTextID= self.get_PosTextID()
 
@@ -214,29 +216,29 @@ class Service_control(DataAssembly):
 
             if self.SrcExtAut == True:
                 self.SrcExtAut=False
-                self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
 
             if self.SrcIntAut == True:
                 self.SrcIntAut=False
-                self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
 
             if self.SrcExtOp==True:
                 self.SrcIntAct=False
                 self.SrcExtAct=True
                 self.SrcExtOp=False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
 
             if self.SrcIntOp==True:
                 self.SrcIntAct=True
                 self.SrcExtAct=False
                 self.SrcIntOp=False
 
-                self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-                self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
-                self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
+                self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
 
     # SrC Channel True is set PEA intern witch Service_source_mode_Aut_Ext and Service_source_mode_Aut_Int
 
@@ -244,15 +246,15 @@ class Service_control(DataAssembly):
         if self.SrcChannel==True and self.StateOffAct != True:
             self.SrcExtAut=True
             self.SrcIntAut=False
-            self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
-            self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
 
     def Service_source_mode_Aut_Int(self):
         if self.SrcChannel==True and self.StateOffAct != True:
             self.SrcExtAut=False
             self.SrcIntAut=True
-            self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
-            self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
+            self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
 
     # def get_PosTextID(self):
     #     #Todo Discuss about possible (necessary dialogs)
@@ -440,60 +442,92 @@ class Service_control(DataAssembly):
         #     self.stop_aborted = True
         #     self.stop_resetting = True
 
-    def Runtime(self):
-        self.State_control()
-        self.Procedure_selection()
-        self.Service_operation_mode()
-        self.Update_feedback()
-        self.Service_source_mode()
-        self.Sync_operation_mode()
-        self.execute_state()
 
     def Init_sync(self):
-        self.client.get_node(f'ns={self.ns};s=TagName').set_value(self.TagName)
-        self.client.get_node(f'ns={self.ns};s=TagDescription').set_value(self.TagDescription)
-        self.client.get_node(f'ns={self.ns};s=OSLevel').set_value(self.OSLevel)
-        self.client.get_node(f'ns={self.ns};s=WQC').set_value(self.WQC)
-        self.client.get_node(f'ns={self.ns};s=CommandOp').set_value(self.CommandOp)
-        self.client.get_node(f'ns={self.ns};s=CommandInt').set_value(self.CommandInt)
-        self.client.get_node(f'ns={self.ns};s=CommandExt').set_value(self.CommandExt)
-        self.client.get_node(f'ns={self.ns};s=ProcedureOp').set_value(self.ProcedureOp)
-        self.client.get_node(f'ns={self.ns};s=ProcedureInt').set_value(self.ProcedureInt)
-        self.client.get_node(f'ns={self.ns};s=ProcedureExt').set_value(self.ProcedureExt)
-        self.client.get_node(f'ns={self.ns};s=StateCur').set_value(self.StateCur)
-        self.client.get_node(f'ns={self.ns};s=CommandEn').set_value(self.CommandEn)
-        self.client.get_node(f'ns={self.ns};s=ProcedureCur').set_value(self.ProcedureCur)
-        self.client.get_node(f'ns={self.ns};s=ProcedureReq').set_value(self.ProcedureReq)
-        self.client.get_node(f'ns={self.ns};s=PosTextID').set_value(self.PosTextID)
-        self.client.get_node(f'ns={self.ns};s=InteractQuestionID').set_value(self.InteractQuestionID)
-        self.client.get_node(f'ns={self.ns};s=InteractAnswerID').set_value(self.InteractAnswerID)
-        self.client.get_node(f'ns={self.ns};s=StateChannel').set_value(self.StateChannel)
-        self.client.get_node(f'ns={self.ns};s=StateOffAut').set_value(self.StateOffAut)
-        self.client.get_node(f'ns={self.ns};s=StateOpAut').set_value(self.StateOpAut)
-        self.client.get_node(f'ns={self.ns};s=StateAutAut').set_value(self.StateAutAut)
-        self.client.get_node(f'ns={self.ns};s=StateOffOp').set_value(self.StateOffOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpOp').set_value(self.StateOpOp)
-        self.client.get_node(f'ns={self.ns};s=StateAutOp').set_value(self.StateAutOp)
-        self.client.get_node(f'ns={self.ns};s=StateOpAct').set_value(self.StateOpAct)
-        self.client.get_node(f'ns={self.ns};s=StateAutAct').set_value(self.StateAutAct)
-        self.client.get_node(f'ns={self.ns};s=StateOffAct').set_value(self.StateOffAct)
-        self.client.get_node(f'ns={self.ns};s=SrcChannel').set_value(self.SrcChannel)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAut').set_value(self.SrcExtAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAut').set_value(self.SrcIntAut)
-        self.client.get_node(f'ns={self.ns};s=SrcIntOp').set_value(self.SrcIntOp)
-        self.client.get_node(f'ns={self.ns};s=SrcExtOp').set_value(self.SrcExtOp)
-        self.client.get_node(f'ns={self.ns};s=SrcIntAct').set_value(self.SrcIntAct)
-        self.client.get_node(f'ns={self.ns};s=SrcExtAct').set_value(self.SrcExtAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagName').set_value(self.TagName)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.TagDescription').set_value(self.TagDescription)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.OSLevel').set_value(self.OSLevel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.WQC').set_value(self.WQC)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.CommandOp').set_value(self.CommandOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.CommandInt').set_value(self.CommandInt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.CommandExt').set_value(self.CommandExt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.ProcedureOp').set_value(self.ProcedureOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.ProcedureInt').set_value(self.ProcedureInt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.ProcedureExt').set_value(self.ProcedureExt)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateCur').set_value(self.StateCur)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.CommandEn').set_value(self.CommandEn)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.ProcedureCur').set_value(self.ProcedureCur)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.ProcedureReq').set_value(self.ProcedureReq)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.PosTextID').set_value(self.PosTextID)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.InteractQuestionID').set_value(self.InteractQuestionID)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.InteractAnswerID').set_value(self.InteractAnswerID)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateChannel').set_value(self.StateChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAut').set_value(self.StateOffAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAut').set_value(self.StateOpAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAut').set_value(self.StateAutAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffOp').set_value(self.StateOffOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpOp').set_value(self.StateOpOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutOp').set_value(self.StateAutOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOpAct').set_value(self.StateOpAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateAutAct').set_value(self.StateAutAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.StateOffAct').set_value(self.StateOffAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcChannel').set_value(self.SrcChannel)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAut').set_value(self.SrcExtAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAut').set_value(self.SrcIntAut)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntOp').set_value(self.SrcIntOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtOp').set_value(self.SrcExtOp)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcIntAct').set_value(self.SrcIntAct)
+        self.client.get_node(f'ns={self.ns};s={self.identifier}.SrcExtAct').set_value(self.SrcExtAct)
 
-    def Handler_sync(self,node,val):
-        curr_name = node.nodeid.Identifier
-        if curr_name in 'OSLevel': self.OSLevel=val
-        if curr_name in 'CommandOp': self.CommandOp=val
-        if curr_name in 'CommandExt': self.CommandExt=val
-        if curr_name in 'ProcedureOp': self.ProcedureOp=val
-        if curr_name in 'ProcedureExt': self.ProcedureExt=val
-        if curr_name in 'StateOffOp': self.StateOffOp=val
-        if curr_name in 'StateOpOp': self.StateOpOp=val
-        if curr_name in 'StateAutOp': self.StateAutOp=val
-        if curr_name in 'SrcIntOp': self.SrcIntOp=val
-        if curr_name in 'SrcExtOp': self.SrcExtOp=val
+    def Handler_sync(self,node,val,ident):
+        #curr_name = node.nodeid.Identifier
+        if 'OSLevel'in ident: self.OSLevel=val
+        if 'CommandOp' in ident:
+            self.CommandOp=val
+            self.State_control()
+            self.execute_state()
+            self.Update_feedback()
+
+        if 'CommandExt'in ident:
+            self.CommandExt=val
+            self.State_control()
+            self.execute_state()
+            self.Update_feedback()
+
+        if 'ProcedureOp'in ident :
+            self.ProcedureOp=val
+            self.Procedure_selection()
+
+        if 'ProcedureExt' in ident:
+            self.ProcedureExt=val
+            self.Procedure_selection()
+
+        if 'StateOffOp' in ident:
+            self.StateOffOp=val
+            self.Service_operation_mode()
+        if 'StateOpOp' in ident:
+            self.StateOpOp=val
+            self.Service_operation_mode()
+        if 'StateAutOp' in ident:
+            self.StateAutOp=val
+            self.Service_operation_mode()
+        if 'SrcIntOp' in ident :
+            self.SrcIntOp=val
+            self.Service_source_mode()
+        if 'SrcExtOp' in ident :
+            self.SrcExtOp=val
+            self.Service_source_mode()
+        if 'StateCur' in ident:
+            self.State_control()
+            self.execute_state()
+            self.Update_feedback()
+
+
+    # def Runtime(self):
+    #     self.State_control()
+    #     self.Procedure_selection()
+    #     self.Service_operation_mode()
+    #     self.Update_feedback()
+    #     self.Service_source_mode()
+    #     self.Sync_operation_mode()
+    #     self.execute_state()
