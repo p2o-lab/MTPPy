@@ -9,7 +9,7 @@
     <Document DocumentIdentifier="VDI/VDE/NAMUR 2658-4" Version="1.0.0" />
   </AdditionalInformation>
   <SuperiorStandardVersion>AutomationML 2.10</SuperiorStandardVersion>
-  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="5.6.7.0" LastWritingDateTime="2021-12-06T14:29:36.1683794+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="5.6.7.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
+  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="5.6.7.0" LastWritingDateTime="2021-12-06T17:45:17.7349395+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="5.6.7.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
   <InstanceHierarchy Name="ModuleTypePackage">
     <Version>0</Version>
     <InternalElement Name="AIModule" ID="0a70569a-076e-4dbf-b633-333b70d4dd25" RefBaseSystemUnitPath="MTPSUCLib/ModuleTypePackage">
@@ -17,8 +17,8 @@
         <Description>Contains the version of the MTP</Description>
         <Value>1.0.0</Value>
       </Attribute>
-      <InternalElement Name="Communication" ID="57cb6a66-29f5-4789-b365-b092b45de9fe" RefBaseSystemUnitPath="MTPSUCLib/MTPSet/CommunicationSet">
-        <InternalElement Name="InstanceList" ID="dfc6f17a-8228-4e80-9c0d-56a46081342d" RefBaseSystemUnitPath="MTPSUCLib/InstanceList">
+      <InternalElement Name="Communication" ID="57cb6a66-29f5-4789-b365-b092b45de9fe" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet">
+        <InternalElement Name="InstanceList" ID="dfc6f17a-8228-4e80-9c0d-56a46081342d" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet/InstanceList">
           <InternalElement Name="Shutter_speed_setpoint" ID="82633d69-4d1a-4368-a1ee-dd70a1b01841" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>82633d69-4d1a-4368-a1ee-dd70a1b01841</Value>
@@ -4005,29 +4005,36 @@
             <Attribute Name="WQC" AttributeDataType="xs:string" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
+          <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
         </InternalElement>
-        <InternalElement Name="SourceList" ID="b245777f-9ba4-43b9-a71f-8dfa8ee15fbb" RefBaseSystemUnitPath="MTPSUCLib/SourceList">
-          <InternalElement Name="OPCUAServer" ID="716de4ef-aeae-4e2a-985e-d65db9729cfc" RefBaseSystemUnitPath="MTPCommunicationmSUCLib/ServerAssembly/OPCUAServer">
-            <Attribute Name="Entpoint" AttributeDataType="xs:string" />
-            <InternalElement Name="Test_OPCUA_Item" ID="e9baf9df-3dc3-463c-839a-7846640d7978" RefBaseSystemUnitPath="MTPCommunicationICLib/DataIterm/OPCUAItem">
-              <Attribute Name="Access" AttributeDataType="xs:int" />
+        <InternalElement Name="SourceList" ID="b245777f-9ba4-43b9-a71f-8dfa8ee15fbb" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet/SourceList">
+          <InternalElement Name="OPCUAServer" ID="716de4ef-aeae-4e2a-985e-d65db9729cfc" RefBaseSystemUnitPath="MTPCommunicationSUCLib/ServerAssembly/OPCUAServer">
+            <Attribute Name="Entpoint" AttributeDataType="xs:string">
+              <Value>opc.tcp://localhost:4840</Value>
+            </Attribute>
+            <ExternalInterface Name="OPCUAItem" ID="085bd83e-a8bd-4a9e-b86b-421dca2e921f" RefBaseClassPath="MTPCommunicationICLib/DataItem/OPCUAItem">
+              <Attribute Name="Access" AttributeDataType="xs:byte" />
               <Attribute Name="Identifier" AttributeDataType="xs:string" />
               <Attribute Name="Namespace" AttributeDataType="xs:string" />
-            </InternalElement>
+            </ExternalInterface>
           </InternalElement>
+          <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
         </InternalElement>
         <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
       </InternalElement>
       <InternalElement Name="Services" ID="70417af4-c746-4345-a442-39b800a0c6c0" RefBaseSystemUnitPath="MTPServiceSUCLib/ServiceSet">
-        <ExternalInterface Name="ServiceFile" ID="c8a6e0bb-4163-4987-934a-f5d019893850" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
-          <Attribute Name="refURI" AttributeDataType="xs:IDREF" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI" />
+        <ExternalInterface Name="ServiceReference" ID="c8a6e0bb-4163-4987-934a-f5d019893850" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
+          <Attribute Name="refURI" AttributeDataType="xs:IDREF" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI">
+            <DefaultValue>Services/</DefaultValue>
+            <Value>Services/</Value>
+          </Attribute>
         </ExternalInterface>
         <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
       </InternalElement>
       <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
     </InternalElement>
   </InstanceHierarchy>
-  <InstanceHierarchy Name="Services">
+  <InstanceHierarchy Name="Services" ID="Services/">
     <Version>0</Version>
     <InternalElement Name="Raw_data_aquisition" ID="df2f2079-d6e3-4d14-9e16-44d39c0531f4" RefBaseSystemUnitPath="MTPServiceSUCLib/Service">
       <Attribute Name="RefID" AttributeDataType="xs:IDREF">
@@ -5096,6 +5103,16 @@
       </InterfaceClass>
       <InterfaceClass Name="Communication" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface">
         <InterfaceClass Name="SignalInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/Communication" />
+      </InterfaceClass>
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="MTPCommunicationICLib" ID="">
+    <Version>0</Version>
+    <InterfaceClass Name="DataItem">
+      <Attribute Name="Access" AttributeDataType="xs:byte" />
+      <InterfaceClass Name="OPCUAItem" RefBaseClassPath="MTPCommunicationICLib/DataItem">
+        <Attribute Name="Identifier" AttributeDataType="xs:string" />
+        <Attribute Name="Namespace" AttributeDataType="xs:string" />
       </InterfaceClass>
     </InterfaceClass>
   </InterfaceClassLib>
@@ -6931,7 +6948,6 @@
     </SystemUnitClass>
     <SystemUnitClass Name="MTPSet" ID="41a06c18-c608-4f54-8262-a1ee660f8571">
       <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
-      <SystemUnitClass Name="CommunicationSet" ID="8efa9e96-c804-43e0-8088-5cc5c95318e3" RefBaseClassPath="MTPSUCLib/MTPSet" />
     </SystemUnitClass>
     <SystemUnitClass Name="ModuleTypePackage" ID="e64b1522-8d87-4127-9e67-49b72dd31d29">
       <Attribute Name="Version" AttributeDataType="xs:string">
@@ -6940,8 +6956,14 @@
       </Attribute>
       <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
     </SystemUnitClass>
-    <SystemUnitClass Name="InstanceList" ID="22c25da7-f419-4510-af18-c23b14f1a671" RefBaseClassPath="" />
-    <SystemUnitClass Name="SourceList" ID="144c48a5-1ac0-4419-a6ac-b4c1e26afdae" RefBaseClassPath="" />
+    <SystemUnitClass Name="CommunicationSet" ID="8efa9e96-c804-43e0-8088-5cc5c95318e3" RefBaseClassPath="MTPSUCLib/MTPSet">
+      <SystemUnitClass Name="SourceList" ID="144c48a5-1ac0-4419-a6ac-b4c1e26afdae" RefBaseClassPath="">
+        <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      </SystemUnitClass>
+      <SystemUnitClass Name="InstanceList" ID="22c25da7-f419-4510-af18-c23b14f1a671" RefBaseClassPath="">
+        <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      </SystemUnitClass>
+    </SystemUnitClass>
   </SystemUnitClassLib>
   <SystemUnitClassLib Name="MTPServiceSUCLib">
     <Version>0</Version>
@@ -7006,21 +7028,11 @@
     <Version>0</Version>
     <SystemUnitClass Name="ConnectorInterface" ID="92617a72-255c-4a91-8aea-922f815a9b0f" />
   </SystemUnitClassLib>
-  <SystemUnitClassLib Name="MTPCommunicationmSUCLib">
+  <SystemUnitClassLib Name="MTPCommunicationSUCLib">
     <Version>0</Version>
     <SystemUnitClass Name="ServerAssembly" ID="0e30b5e8-c8d5-4cab-818a-d8f3d1d239b9">
-      <SystemUnitClass Name="OPCUAServer" ID="a9571add-45cf-41cd-b053-ca06daea704d" RefBaseClassPath="MTPCommunicationmSUCLib/ServerAssembly">
+      <SystemUnitClass Name="OPCUAServer" ID="a9571add-45cf-41cd-b053-ca06daea704d" RefBaseClassPath="MTPCommunicationSUCLib/ServerAssembly">
         <Attribute Name="Entpoint" AttributeDataType="xs:string" />
-      </SystemUnitClass>
-    </SystemUnitClass>
-  </SystemUnitClassLib>
-  <SystemUnitClassLib Name="MTPCommunicationICLib">
-    <Version>0</Version>
-    <SystemUnitClass Name="DataIterm" ID="f848b9be-f14a-4a4a-b289-777fa510c567">
-      <Attribute Name="Access" AttributeDataType="xs:int" />
-      <SystemUnitClass Name="OPCUAItem" ID="5d7fb4b0-36ea-4e8e-822a-eaa7d9ddd239" RefBaseClassPath="MTPCommunicationICLib/DataIterm">
-        <Attribute Name="Identifier" AttributeDataType="xs:string" />
-        <Attribute Name="Namespace" AttributeDataType="xs:string" />
       </SystemUnitClass>
     </SystemUnitClass>
   </SystemUnitClassLib>

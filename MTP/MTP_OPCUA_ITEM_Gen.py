@@ -11,7 +11,7 @@ with open('manifest.aml', 'r', encoding='utf-8') as xml_file:
 
 InstanceList=data_dict['CAEXFile']['InstanceHierarchy'][0]['InternalElement']['InternalElement'][0]['InternalElement'][0]['InternalElement']
 SourceList=data_dict['CAEXFile']['InstanceHierarchy'][0]['InternalElement']['InternalElement'][0]['InternalElement'][1]['InternalElement']
-OPCUA_Item=data_dict['CAEXFile']['InstanceHierarchy'][0]['InternalElement']['InternalElement'][0]['InternalElement'][1]['InternalElement']['InternalElement']
+OPCUA_Item=data_dict['CAEXFile']['InstanceHierarchy'][0]['InternalElement']['InternalElement'][0]['InternalElement'][1]['InternalElement']['ExternalInterface']
 SourceList_intel_new=[]
 ID=10000
 Service=''
@@ -56,10 +56,11 @@ for Param in InstanceList:
             if Att['@Name'] not in ['RefID','TagName','TagDescription']:
                 Att['@AttributeDataType']='xs:IDREF'
                 Att['Value']=ID
+                Att['DefaultValue']=0
                 OPCUA_Item_new=copy.deepcopy(OPCUA_Item)
                 OPCUA_Item_new['@ID']=ID
                 OPCUA_Item_new['@Name']=Param['@Name']+'.'+Att['@Name']
-
+                OPCUA_Item_new['Attribute'][0]['Value']=1
                 OPCUA_Item_new['Attribute'][1]['Value']=Service+'.'+Name+'.'+Att['@Name']
                 OPCUA_Item_new['Attribute'][2]['Value']=1
                 SourceList_intel_new.append(copy.deepcopy(OPCUA_Item_new))

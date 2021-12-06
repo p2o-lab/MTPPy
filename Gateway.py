@@ -95,7 +95,7 @@ class Module_handler(object):
         identifier = node.nodeid.Identifier
 
         if f'{Serv_previx_dp}.ServiceControl' in identifier: S_Data_processing.Handler_sync(node, val, identifier)
-        if f'{Serv_previx_dp}.Model_ID' in identifier: S_Data_processing_Model_ID.Handler_sync(node, val)
+        if f'{Serv_previx_dp}.Model_ID' in identifier: S_Data_processing_Model_ID.Handler_sync(node, val, identifier)
 
         if f'{Serv_previx_rda}.ServiceControl' in identifier: S_Raw_data_aq.Handler_sync(node, val, identifier)
         if f'{Serv_previx_rda}.Shutter_speed_setpoint' in identifier: S_Raw_data_aq_Shutter_speed_setpoint.Handler_sync(node, val, identifier)
