@@ -30,6 +30,7 @@ class Illuminaton(Service_control):
                  Frequency_setpoint,Duration_setpoint,Intensity_feedback):
         super(Illuminaton,self).__init__(node,client,opc_address)
         self.Wavelength=Wavelength
+        self.Wavelength.VMax=800
         self.Intensity_setpoint=Intensity_setpoint
         self.Frequency_setpoint=Frequency_setpoint
         self.Duration_setpoint=Duration_setpoint
@@ -39,45 +40,52 @@ class Illuminaton(Service_control):
         self.P_Continous=Continous()
         self.P_Strobe_mode=Strobe_mode()
         self.P_Trigger_based=Trigger_based()
-
+        
+        # GPIO.setwarnings(False)
         # GPIO.setmode(GPIO.BOARD)
-        # GPIO.setup(10, GPIO.OUT)
-        # GPIO.setup(11, GPIO.OUT)
-        # GPIO.setup(12, GPIO.OUT)
-
-        # self.R_GPIO = GPIO.PWM(10,0)
-        # self.G_GPIO = GPIO.PWM(11,0)
-        # self.B_GPIO = GPIO.PWM(12,0)
+        # GPIO.setup(31, GPIO.OUT)
+        # GPIO.setup(33, GPIO.OUT)
+        # GPIO.setup(35, GPIO.OUT)
+        #
+        # self.R = GPIO.PWM(35,200)
+        # self.G = GPIO.PWM(31,200)
+        # self.B = GPIO.PWM(33,200)
 
 
     def Idle(self):
        pass
 
     def Starting(self):
-
-        # self.R_GPIO.start(0)
-        # self.G_GPIO.start(0)
-        # self.B_GPIO.start(0)
+        self.Wavelength.set_VOut()
+        self.Intensity_setpoint.set_VOut()
+        self.Frequency_setpoint.set_VOut()
+        self.Duration_setpoint.set_VOut()
+        self.R.start(0)
+        self.G.start(0)
+        self.B.start(0)
 
         self.Service_SM.Start(SC=True)
 
     def Execute(self):
-        print(self.Wavelength.VOut)
-        self.R, self.G, self.B = self.wavelength_to_rgb()
-        Intensity=self.Intensity_setpoint.VOut/100
+        R1, G1, B1 = self.wavelength_to_rgb(self.Wavelength.VOut)
+        Intensity=self.Intensity_setpoint.VOut/100     
+        print(Intensity,R1,G1,B1,)
         if self.ProcedureCur==self.P_Continous.ProcedureId:
-            # self.R_GPIO.ChangeDutyCycle(10,Intensity*(self.R/255))
-            # self.G_GPIO.ChangeDutyCycle(11,Intensity*(self.G/255))
-            # self.B_GPIO.ChangeDutyCycle(12,Intensity*(self.B/255))
-            pass
+            self.R.ChangeDutyCycle(Intensity*R1)
+            self.G.ChangeDutyCycle(Intensity*G1)
+            self.B.ChangeDutyCycle(Intensity*B1)
+            
 
         if self.ProcedureCur == self.P_Strobe_mode.ProcedureId:
             while self.stop_execute==False:
-                # self.R_GPIO.ChangeDutyCycle(10,Intensity*(self.R/255))
-                # self.G_GPIO.ChangeDutyCycle(11,Intensity*(self.G/255))
-                # self.B_GPIO.ChangeDutyCycle(12,Intensity*(self.B/255))
-                sleep(self.Duration_setpoint.VOut)
-
+                pass
+                # self.R_GPIO.ChangeDutyCycle(Intensity*R1)
+                # self.G_GPIO.ChangeDutyCycle(Intensity*G1)
+                # self.B_GPIO.ChangeDutyCycle(Intensity*B1)
+                # sleep(self.Duration_setpoint.VOut)
+                # self.R_GPIO.ChangeDutyCycle(0)
+                # self.G_GPIO.ChangeDutyCycle(0)
+                # self.B_GPIO.ChangeDutyCycle(0)
         # if self.ProcedureCur == self.P_Strobe_mode.ProcedureId:
         #     while self.stop_execute==False:
         #         if self.Light_trigger==True:
@@ -93,10 +101,10 @@ class Illuminaton(Service_control):
 
 
     def Completing(self):
-        # self.R_GPIO.stop()
-        # self.G_GPIO.stop()
-        # self.B_GPIO.stop()
-        # GPIO.cleanup()
+        # self.R.stop()
+        # self.G.stop()
+        # self.B.stop()
+        #GPIO.cleanup()
         self.Service_SM.Complete(SC=True)
 
 
@@ -142,7 +150,7 @@ class Illuminaton(Service_control):
     def Service_activated(self):
         pass
 
-    def wavelength_to_rgb(self, gamma=0.8):
+    def wavelength_to_rgb(self,Wavelength, gamma=1):
 
         '''This converts a given wavelength of light to an
         approximate RGB color value. The wavelength must be given
@@ -152,7 +160,8 @@ class Illuminaton(Service_control):
         http://www.physics.sfasu.edu/astro/color/spectra.html
         '''
 
-        wavelength = float(self.Wavelength.VOut)
+        wavelength = Wavelength
+        
         if wavelength >= 380 and wavelength <= 440:
             attenuation = 0.3 + 0.7 * (wavelength - 380) / (440 - 380)
             R = ((-(wavelength - 440) / (440 - 380)) * attenuation) ** gamma
@@ -183,7 +192,5 @@ class Illuminaton(Service_control):
             R = 0.0
             G = 0.0
             B = 0.0
-        R *= 255
-        G *= 255
-        B *= 255
-        return (int(R), int(G), int(B))
+
+        return (int(100*R), int(100*G), int(100*B))

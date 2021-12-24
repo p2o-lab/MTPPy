@@ -9,7 +9,7 @@
     <Document DocumentIdentifier="VDI/VDE/NAMUR 2658-4" Version="1.0.0" />
   </AdditionalInformation>
   <SuperiorStandardVersion>AutomationML 2.10</SuperiorStandardVersion>
-  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="5.6.7.0" LastWritingDateTime="2021-12-06T17:45:17.7349395+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="5.6.7.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
+  <SourceDocumentInformation OriginName="AutomationML Editor" OriginID="916578CA-FE0D-474E-A4FC-9E1719892369" OriginVersion="5.6.7.0" LastWritingDateTime="2021-12-15T15:30:52.7509615+01:00" OriginProjectID="unspecified" OriginProjectTitle="unspecified" OriginRelease="5.6.7.0" OriginVendor="AutomationML e.V." OriginVendorURL="www.AutomationML.org" />
   <InstanceHierarchy Name="ModuleTypePackage">
     <Version>0</Version>
     <InternalElement Name="AIModule" ID="0a70569a-076e-4dbf-b633-333b70d4dd25" RefBaseSystemUnitPath="MTPSUCLib/ModuleTypePackage">
@@ -771,7 +771,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Shutter_Speed_feedback" ID="431190c0-c1b6-45d4-99b2-db1b2cfcb8ce" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
+          <InternalElement Name="Shutter_speed_feedback" ID="431190c0-c1b6-45d4-99b2-db1b2cfcb8ce" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>431190c0-c1b6-45d4-99b2-db1b2cfcb8ce</Value>
             </Attribute>
@@ -816,7 +816,7 @@
             <Attribute Name="VUnit" AttributeDataType="xs:int" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Auto_Brightness_feedback" ID="bcd6c431-b0a6-4f1f-aaa4-2f2e04335688" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
+          <InternalElement Name="Auto_brightness_feedback" ID="bcd6c431-b0a6-4f1f-aaa4-2f2e04335688" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>bcd6c431-b0a6-4f1f-aaa4-2f2e04335688</Value>
             </Attribute>
@@ -1661,7 +1661,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_X_setpoint" ID="645efb0c-cd45-4288-92a3-73567d3076b5" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
+          <InternalElement Name="Absolute_X_setpoint_camera_pos" ID="645efb0c-cd45-4288-92a3-73567d3076b5" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>645efb0c-cd45-4288-92a3-73567d3076b5</Value>
             </Attribute>
@@ -1755,7 +1755,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_Y_setpoint" ID="f3af585e-7942-4ba9-b058-4a1ff61c756d" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
+          <InternalElement Name="Absolute_Y_setpoint_camera_pos" ID="f3af585e-7942-4ba9-b058-4a1ff61c756d" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>f3af585e-7942-4ba9-b058-4a1ff61c756d</Value>
             </Attribute>
@@ -1849,7 +1849,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absoltue_Z_setpoint" ID="7c8e3dfe-ed99-40ae-8d54-d7c194b5de79" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
+          <InternalElement Name="Absolute_Z_setpoint_camera_pos" ID="7c8e3dfe-ed99-40ae-8d54-d7c194b5de79" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7c8e3dfe-ed99-40ae-8d54-d7c194b5de79</Value>
             </Attribute>
@@ -1943,7 +1943,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_angle_X_Y_setpoint" ID="a6be3e98-c7c1-4231-b608-516782a8aeaa" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
+          <InternalElement Name="Absolute_angle_X_Y_setpoint_camera_pos" ID="a6be3e98-c7c1-4231-b608-516782a8aeaa" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>a6be3e98-c7c1-4231-b608-516782a8aeaa</Value>
             </Attribute>
@@ -2037,7 +2037,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_angle_X_Z_setpoint" ID="7f71e8fc-8e39-4c36-9e83-e9e44b4ff45e" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
+          <InternalElement Name="Absolute_angle_X_Z_setpoint_camera_pos" ID="7f71e8fc-8e39-4c36-9e83-e9e44b4ff45e" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7f71e8fc-8e39-4c36-9e83-e9e44b4ff45e</Value>
             </Attribute>
@@ -2131,7 +2131,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_angle_Y_Z_setpoint" ID="c9cbcba9-d823-4df1-bc7e-14e3814cece1" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
+          <InternalElement Name="Absolute_angle_Y_Z_setpoint_camera_pos" ID="c9cbcba9-d823-4df1-bc7e-14e3814cece1" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaServParam">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>c9cbcba9-d823-4df1-bc7e-14e3814cece1</Value>
             </Attribute>
@@ -2635,7 +2635,7 @@
             <Attribute Name="VUnit" AttributeDataType="xs:int" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_Angle_X_Y_camera_upd" ID="7b3e0ffd-6f5f-4980-8bd3-b18d2a25bf30" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
+          <InternalElement Name="Absolute_angle_X_Y_camera_upd" ID="7b3e0ffd-6f5f-4980-8bd3-b18d2a25bf30" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>7b3e0ffd-6f5f-4980-8bd3-b18d2a25bf30</Value>
             </Attribute>
@@ -2650,7 +2650,7 @@
             <Attribute Name="VUnit" AttributeDataType="xs:int" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_Angle_X_Z_camera_upd" ID="825c009f-d238-4934-838b-22db37fac0bf" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
+          <InternalElement Name="Absolute_angle_X_Z_camera_upd" ID="825c009f-d238-4934-838b-22db37fac0bf" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>825c009f-d238-4934-838b-22db37fac0bf</Value>
             </Attribute>
@@ -2665,7 +2665,7 @@
             <Attribute Name="VUnit" AttributeDataType="xs:int" />
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Absolute_Angle_Y_Z_camera_upd" ID="a1fe78e8-2298-455b-807b-1cb7b1ec45f9" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
+          <InternalElement Name="Absolute_angle_Y_Z_camera_upd" ID="a1fe78e8-2298-455b-807b-1cb7b1ec45f9" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/IndicatoElement/AnaView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>a1fe78e8-2298-455b-807b-1cb7b1ec45f9</Value>
             </Attribute>
@@ -3818,7 +3818,7 @@
             </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Raw_data_aquisition_Free_run" ID="47936d2c-11e3-4642-9d94-d8f238e59957" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
+          <InternalElement Name="Free_run" ID="47936d2c-11e3-4642-9d94-d8f238e59957" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>47936d2c-11e3-4642-9d94-d8f238e59957</Value>
             </Attribute>
@@ -3826,10 +3826,12 @@
               <Value>Free_run</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Raw_data_aquisition_Snapshot" ID="c2e4042f-6450-4cab-add6-2138fdbd04c7" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
+          <InternalElement Name="Snapshot" ID="c2e4042f-6450-4cab-add6-2138fdbd04c7" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>c2e4042f-6450-4cab-add6-2138fdbd04c7</Value>
             </Attribute>
@@ -3837,10 +3839,12 @@
               <Value>Snapshot</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Raw_data_aquisition_Trigger_based" ID="ef349026-8ddc-496a-8d78-c2297e322db7" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
+          <InternalElement Name="Trigger_based" ID="ef349026-8ddc-496a-8d78-c2297e322db7" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>ef349026-8ddc-496a-8d78-c2297e322db7</Value>
             </Attribute>
@@ -3848,10 +3852,12 @@
               <Value>Trigger_based</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Raw_data_archiving_Trigger_based" ID="897c2054-1b51-43dc-8a50-738d429dd944" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
+          <InternalElement Name="Trigger_based" ID="897c2054-1b51-43dc-8a50-738d429dd944" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>897c2054-1b51-43dc-8a50-738d429dd944</Value>
             </Attribute>
@@ -3859,7 +3865,9 @@
               <Value>Trigger_based</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Regression" ID="20cfa7db-0c1a-431f-9150-158d32d9ad31" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3870,7 +3878,9 @@
               <Value>Regression</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Classification" ID="3a3b160a-34f3-45e0-99fb-f9433555fb2f" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3881,7 +3891,9 @@
               <Value>Classification</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Safe_configuration" ID="db71dddc-7e36-4885-9225-017839360f50" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3892,7 +3904,9 @@
               <Value>Safe_configuration</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Load_configuration" ID="7f449536-6ee8-4aa0-84ed-0cc8e094a7a0" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3903,7 +3917,9 @@
               <Value>Load_configuration</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Absolute_position_change" ID="9d468926-5b5f-4d7e-91dc-eb53fb669831" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3914,7 +3930,9 @@
               <Value>Absolute_position_change</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Relative_position_change" ID="9343a8f6-ae66-4634-9cd5-ac44b89ca196" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3925,7 +3943,9 @@
               <Value>Relative_position_change</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Find_position" ID="32797321-1fce-4e05-abe2-dab1de3730e6" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3936,7 +3956,9 @@
               <Value>Find_position</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Zeroing" ID="3d1eb2fc-0673-485a-9c21-a952362ff9f0" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3947,7 +3969,9 @@
               <Value>Zeroing</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Save_position" ID="637d9336-3b5e-4712-bc08-2e99ffa03d14" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -3958,10 +3982,12 @@
               <Value>Save_position</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Illumination_Continous" ID="84f0a4cf-c6d9-49bb-b53b-42ce704df9e9" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
+          <InternalElement Name="Continous" ID="84f0a4cf-c6d9-49bb-b53b-42ce704df9e9" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>84f0a4cf-c6d9-49bb-b53b-42ce704df9e9</Value>
             </Attribute>
@@ -3969,10 +3995,12 @@
               <Value>Continous</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Illumination_Strobe_mode" ID="361cf932-4abd-48a5-9969-67c7f6e51980" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
+          <InternalElement Name="Strobe_mode" ID="361cf932-4abd-48a5-9969-67c7f6e51980" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>361cf932-4abd-48a5-9969-67c7f6e51980</Value>
             </Attribute>
@@ -3980,10 +4008,12 @@
               <Value>Illumination_Strobe_mode</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
-          <InternalElement Name="Illumination_Trigger_based" ID="728230ce-f8aa-453e-b1e3-f03d4fdd05e6" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
+          <InternalElement Name="Trigger_based" ID="728230ce-f8aa-453e-b1e3-f03d4fdd05e6" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
             <Attribute Name="RefID" AttributeDataType="xs:ID">
               <Value>728230ce-f8aa-453e-b1e3-f03d4fdd05e6</Value>
             </Attribute>
@@ -3991,7 +4021,9 @@
               <Value>Trigger_based</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <InternalElement Name="Lens_Configure" ID="d9288a66-68e8-42e0-b4c4-065290141976" RefBaseSystemUnitPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/HealthStateView">
@@ -4002,7 +4034,9 @@
               <Value>Configure</Value>
             </Attribute>
             <Attribute Name="TagDescription" AttributeDataType="xs:string" />
-            <Attribute Name="WQC" AttributeDataType="xs:string" />
+            <Attribute Name="WQC" AttributeDataType="xs:string">
+              <Value>255</Value>
+            </Attribute>
             <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
           </InternalElement>
           <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -4025,8 +4059,8 @@
       <InternalElement Name="Services" ID="70417af4-c746-4345-a442-39b800a0c6c0" RefBaseSystemUnitPath="MTPServiceSUCLib/ServiceSet">
         <ExternalInterface Name="ServiceReference" ID="c8a6e0bb-4163-4987-934a-f5d019893850" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
           <Attribute Name="refURI" AttributeDataType="xs:IDREF" RefAttributeType="AutomationMLBaseAttributeTypeLib/refURI">
-            <DefaultValue>Services/</DefaultValue>
-            <Value>Services/</Value>
+            <DefaultValue>329dabea-7fc9-4389-8be4-3d07a90b275b</DefaultValue>
+            <Value>329dabea-7fc9-4389-8be4-3d07a90b275b</Value>
           </Attribute>
         </ExternalInterface>
         <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
@@ -4034,7 +4068,7 @@
       <RoleRequirements RefBaseRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
     </InternalElement>
   </InstanceHierarchy>
-  <InstanceHierarchy Name="Services" ID="Services/">
+  <InstanceHierarchy Name="Services" ID="329dabea-7fc9-4389-8be4-3d07a90b275b">
     <Version>0</Version>
     <InternalElement Name="Raw_data_aquisition" ID="df2f2079-d6e3-4d14-9e16-44d39c0531f4" RefBaseSystemUnitPath="MTPServiceSUCLib/Service">
       <Attribute Name="RefID" AttributeDataType="xs:IDREF">
@@ -4048,12 +4082,12 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>0</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>1</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
-          <Value>false</Value>
+          <Value>true</Value>
         </Attribute>
         <InternalElement Name="Shutter_speed_setpoint" ID="ab986beb-dc37-4784-a92a-9798b3f3402f" RefBaseSystemUnitPath="MTPServiceSUCLib/ServicParameter/ProcedureParameter">
           <Attribute Name="RefID" AttributeDataType="xs:IDREF">
@@ -4149,8 +4183,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>1</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>2</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4250,8 +4284,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>2</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>3</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4369,8 +4403,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>0</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>1</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4398,8 +4432,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>0</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>1</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4439,8 +4473,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>1</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>2</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4486,8 +4520,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>0</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>1</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4509,8 +4543,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>1</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>2</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4538,8 +4572,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>0</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>1</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4627,8 +4661,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>1</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>2</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4716,8 +4750,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>2</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>3</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4782,7 +4816,7 @@
           <Value>true</Value>
         </Attribute>
         <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>0</Value>
+          <Value>1</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4798,8 +4832,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>1</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>2</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4869,12 +4903,12 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>0</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>1</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
-          <Value>false</Value>
+          <Value>true</Value>
         </Attribute>
         <InternalElement Name="Wavelength_setpoint" ID="0f884352-0b62-420f-8993-6d4783405b0d" RefBaseSystemUnitPath="MTPServiceSUCLib/ServicParameter/ProcedureParameter">
           <Attribute Name="RefID" AttributeDataType="xs:IDREF">
@@ -4904,8 +4938,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>1</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>2</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4951,8 +4985,8 @@
           <DefaultValue>false</DefaultValue>
           <Value>false</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int">
-          <Value>2</Value>
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>3</Value>
         </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
@@ -4998,10 +5032,12 @@
           <DefaultValue>false</DefaultValue>
           <Value>true</Value>
         </Attribute>
-        <Attribute Name="ProcedureId" AttributeDataType="xs:int" />
+        <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt">
+          <Value>1</Value>
+        </Attribute>
         <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
           <DefaultValue>false</DefaultValue>
-          <Value>false</Value>
+          <Value>true</Value>
         </Attribute>
         <InternalElement Name="Absolute_focus_setpoint" ID="c7842e89-6f98-4129-90e4-d8019618b0e1" RefBaseSystemUnitPath="MTPServiceSUCLib/ServicParameter/ProcedureParameter">
           <Attribute Name="RefID" AttributeDataType="xs:IDREF">
@@ -6993,7 +7029,7 @@
         <DefaultValue>false</DefaultValue>
         <Value>false</Value>
       </Attribute>
-      <Attribute Name="ProcedureId" AttributeDataType="xs:int" />
+      <Attribute Name="ProcedureId" AttributeDataType="xs:unsignedInt" />
       <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
         <DefaultValue>false</DefaultValue>
         <Value>false</Value>

@@ -3,12 +3,10 @@ from Raw_data_archiving import Raw_data_archiving
 from Data_Processing import Data_Processing
 from IndicatorElements import AnaView, StringView
 from opcua import Client
-from time import sleep
 from PEA_Video_stream import PEA_Video_stream
 from OperationElements import AnaServParam,StringServParam,DIntServParam
-from threading import Thread
 from Illumination import Illuminaton
-#from New_image import New_image
+
 
 
 address='opc.tcp://localhost:4840'
@@ -28,10 +26,10 @@ S_Raw_data_aq_ROI_y_delta=AnaServParam(node=f'ns=1;s={Serv_previx_rda}.ROI_y_del
 S_Raw_data_aq_Gain_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_rda}.Gain_setpoint',client=client,opc_address=address)
 S_Raw_data_aq_Auto_brightness_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_rda}.Auto_brightness_setpoint',client=client,opc_address=address)
 S_Raw_data_aq_Time_interval_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_rda}.Time_interval_setpoint',client=client,opc_address=address)
-S_Raw_data_aq_Shutter_speed_feedback=AnaView(node=f'ns=1;s={Serv_previx_rda}.Shutter_Speed_feedback',client=client)
+S_Raw_data_aq_Shutter_speed_feedback=AnaView(node=f'ns=1;s={Serv_previx_rda}.Shutter_speed_feedback',client=client)
 S_Raw_data_aq_Resolution_feedback=AnaView(node=f'ns=1;s={Serv_previx_rda}.Resolution_feedback',client=client)
 S_Raw_data_aq_Gain_feedback=AnaView(node=f'ns=1;s={Serv_previx_rda}.Gain_feedback',client=client)
-S_Raw_data_aq_Auto_Brightness_feedback=AnaView(node=f'ns=1;s={Serv_previx_rda}.Auto_Brightness_feedback',client=client)
+S_Raw_data_aq_Auto_Brightness_feedback=AnaView(node=f'ns=1;s={Serv_previx_rda}.Auto_brightness_feedback',client=client)
 S_Raw_data_aq_Webserver_endpoint=StringView(node=f'ns=1;s={Serv_previx_rda}.Webserver_endpoint',client=client)
 
 S_Raw_data_aq=Raw_data_aq(node=f'ns=1;s={Serv_previx_rda}.ServiceControl',client=client,opc_address=address,VideoStream=stream,
@@ -50,11 +48,11 @@ S_Raw_data_aq=Raw_data_aq(node=f'ns=1;s={Serv_previx_rda}.ServiceControl',client
                           Auto_Brightness_feedback=S_Raw_data_aq_Auto_Brightness_feedback,
                           Webserver_endpoint=S_Raw_data_aq_Webserver_endpoint)
 
-Serv_previx_dp='Data_Processing'
+Serv_previx_dp='Data_processing'
 S_Data_processing_Model_ID=DIntServParam(node=f'ns=1;s={Serv_previx_dp}.Model_ID',client=client,opc_address=address)
 S_Data_processing_Result=AnaView(node=f'ns=1;s={Serv_previx_dp}.Result',client=client)
 S_Data_processing_Confidence_interval=AnaView(node=f'ns=1;s={Serv_previx_dp}.Confidence_interval',client=client)
-S_Data_processing_Status_message=StringView(node=f'ns=1;s={Serv_previx_dp}.Status_message',client=client)
+S_Data_processing_Status_message=StringView(node=f'ns=1;s={Serv_previx_dp}.Status_message_data_processing',client=client)
 S_Data_processing=Data_Processing(node=f'ns=1;s={Serv_previx_dp}.ServiceControl',client=client,opc_address=address,VideoStream=stream,
                                   Result=S_Data_processing_Result,
                                   Model_ID=S_Data_processing_Model_ID,
@@ -64,7 +62,7 @@ S_Data_processing=Data_Processing(node=f'ns=1;s={Serv_previx_dp}.ServiceControl'
 Serv_previx_da='Raw_data_archiving'
 S_Raw_data_arch_Data_sink=StringServParam(node=f'ns=1;s={Serv_previx_da}.Data_sink',client=client,opc_address=address)
 S_Raw_data_arch_Data_format=StringServParam(node=f'ns=1;s={Serv_previx_da}.Data_format',client=client,opc_address=address)
-S_Raw_data_arch_Status_message=StringView(node=f'ns=1;s={Serv_previx_da}.Status_message',client=client)
+S_Raw_data_arch_Status_message=StringView(node=f'ns=1;s={Serv_previx_da}.Status_message_data_archiving',client=client)
 S_Raw_data_archiving=Raw_data_archiving(node=f'ns=1;s={Serv_previx_da}.ServiceControl',client=client,opc_address=address,VideoStream=stream,
                                         Model_Result=S_Data_processing_Result,
                                         Data_sink=S_Raw_data_arch_Data_sink,
@@ -74,7 +72,7 @@ S_Raw_data_archiving=Raw_data_archiving(node=f'ns=1;s={Serv_previx_da}.ServiceCo
 Serv_previx_i='Illumination'
 S_Illumination_Wavelength=AnaServParam(node=f'ns=1;s={Serv_previx_i}.Wavelength_setpoint',client=client,opc_address=address)
 S_Illumination_Intensity_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_i}.Intensity_setpoint',client=client,opc_address=address)
-S_Illumination_Frequency_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_i}.Frequenzy_setpoint',client=client,opc_address=address)
+S_Illumination_Frequency_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_i}.Frequency_setpoint',client=client,opc_address=address)
 S_Illumination_Duration_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_i}.Duration_setpoint',client=client,opc_address=address)
 S_Illumination_Intensity_feedback=AnaView(node=f'ns=1;s={Serv_previx_i}.Intensity_feedback',client=client)
 #S_Illumination_Light_trigger=BinProcessValueIn(node=,client=client,opc_address=address)

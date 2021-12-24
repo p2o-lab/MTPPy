@@ -37,7 +37,7 @@ Service_control_dict={
             'SrcIntAut':{'init':False,'datatype':1},
         }
 AnaView_dict={'TagName': {'init': 'TagName','datatype':12},
-            'TagDescription': {'init': 'TagDescription','datatype':12},
+             'TagDescription': {'init': 'TagDescription','datatype':12},
              'WQC':{'init':0,'datatype':6},
              'V':{'init':0,'datatype':10},
              'VSclMin':{'init':0,'datatype':10},
@@ -165,12 +165,12 @@ BinProcessValueIn_dict={'TagName': {'init': 'TagName','datatype':12},
                         'VState1':{'init':'VState1','datatype':1}}
 
 structure_dict={
-    'Data_Processing':{'ServiceControl': Service_control_dict,
+    'Data_processing':{'ServiceControl': Service_control_dict,
                        'Model_ID': DIntServ_dict,
 
                        'Result':AnaView_dict,
                        'Confidence_interval':AnaView_dict,
-                        'Status_message':StringView_dict
+                        'Status_message_data_processing':StringView_dict
            },
     'Raw_data_aquisitoion':{'ServiceControl': Service_control_dict,
                             'Shutter_speed_setpoint':AnaServ_dict,
@@ -183,20 +183,20 @@ structure_dict={
                             'Auto_brightness_setpoint':AnaServ_dict,
                             'Time_interval_setpoint':AnaServ_dict,
 
-                            'Shutter_Speed_feedback':AnaView_dict,
+                            'Shutter_speed_feedback':AnaView_dict,
                             'Resolution_feedback':AnaView_dict,
                             'Gain_feedback':AnaView_dict,
-                            'Auto_Brightness_feedback':AnaView_dict,
+                            'Auto_brightness_feedback':AnaView_dict,
                             'Webserver_endpoint':StringView_dict,
 
-                            #'Data_aq_trigger':BinProcessValueIn_dict,
+                            'Data_aq_trigger':BinProcessValueIn_dict,
                             },
 
     'Raw_data_archiving':{'ServiceControl':Service_control_dict,
                         'Data_sink':StringServ_dict,
                         'Data_format':StringServ_dict,
 
-                        'Status_message':StringView_dict,
+                        'Status_message_data_archiving':StringView_dict,
                         },
 
     'Configuration_Mode':{'ServiceControl': Service_control_dict,
@@ -204,13 +204,13 @@ structure_dict={
                           'Current_configuration_ID': DintView_dict,
                           },
 
-    'Camera_Positioning':{'ServiceControl':Service_control_dict,
-                          'Absolute_X_setpoint':AnaServ_dict,
-                          'Absolute_Y_setpoint':AnaServ_dict,
-                          'Absolute_Z_setpoint':AnaServ_dict,
-                          'Absolute_angle_X_Y_setpoint':AnaServ_dict,
-                          'Absolute_angle_X_Z_setpoint':AnaServ_dict,
-                          'Absolute_angle_Y_Z_setpoint':AnaServ_dict,
+    'Camera_positioning':{'ServiceControl':Service_control_dict,
+                          'Absolute_X_setpoint_camera_pos':AnaServ_dict,
+                          'Absolute_Y_setpoint_camera_pos':AnaServ_dict,
+                          'Absolute_Z_setpoint_camera_pos':AnaServ_dict,
+                          'Absolute_angle_X_Y_setpoint_camera_pos':AnaServ_dict,
+                          'Absolute_angle_X_Z_setpoint_camera_pos':AnaServ_dict,
+                          'Absolute_angle_Y_Z_setpoint_camera_pos':AnaServ_dict,
 
                           'Absolute_X_camera_pos': AnaView_dict,
                           'Absolute_Y_camera_pos': AnaView_dict,
@@ -218,23 +218,25 @@ structure_dict={
                           'Absolute_angle_X_Y_camera_pos': AnaView_dict,
                           'Absolute_angle_X_Z_camera_pos': AnaView_dict,
                           'Absolute_angle_Y_Z_camera_pos': AnaView_dict,
-                          'Position_ID_camera_pos':AnaView_dict
+                          'Position_ID_camera_pos':DIntServ_dict
                           },
 
     'Camera_position_update':{'ServiceControl': Service_control_dict,
-                               'Absolute_X': AnaView_dict,
-                               'Absolute_Y': AnaView_dict,
-                               'Absolute_Z': AnaView_dict,
-                               'Absolute_angle_X_Y': AnaView_dict,
-                               'Absolute_angle_X_Z': AnaView_dict,
-                               'Absolute_angle_Y_Z': AnaView_dict,
+                               'Absolute_X_camera_upd': AnaView_dict,
+                               'Absolute_Y_camera_upd': AnaView_dict,
+                               'Absolute_Z_camera_upd': AnaView_dict,
+                               'Absolute_angle_X_Y_camera_upd': AnaView_dict,
+                               'Absolute_angle_X_Z_camera_upd': AnaView_dict,
+                               'Absolute_angle_Y_Z_camera_upd': AnaView_dict,
+                               'Position_ID_camera_upd':DIntServ_dict,
                                'Position_ID_camera_upd1':DintView_dict
+
                                },
 
     'Illumination':{'ServiceControl':Service_control_dict,
                     'Wavelength_setpoint':AnaServ_dict,
                     'Intensity_setpoint':AnaServ_dict,
-                    'Frequenzy_setpoint':AnaServ_dict,
+                    'Frequency_setpoint':AnaServ_dict,
                     'Duration_setpoint':AnaServ_dict,
 
                     'Intensity_feedback': AnaView_dict,
@@ -243,14 +245,14 @@ structure_dict={
                     },
 
     'Lens':{'ServiceControl':Service_control_dict,
-            'Absolute_fokus_setpoint':AnaServ_dict,
+            'Absolute_focus_setpoint':AnaServ_dict,
             'Absolute_iris_setpoint':AnaServ_dict,
-            'Auto_fokus_setpoint':AnaServ_dict,
+            'Auto_focus_setpoint':AnaServ_dict,
             'Auto_iris_setpoint':AnaServ_dict,
 
-            'Absolute_fokus_feedback': AnaView_dict,
+            'Absolute_focus_feedback': AnaView_dict,
             'Absolute_iris_feedback': AnaView_dict,
-            'Auto_fokus_feedback': AnaView_dict,
+            'Auto_focus_feedback': AnaView_dict,
             'Auto_iris_feedback': AnaView_dict,
             },
 }

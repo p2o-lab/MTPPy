@@ -59,6 +59,7 @@ class Data_Processing(Service_control):
                     #self.client.get_node(f'ns=1;s=V').set_value(self.Result.V)
                     self.VideoStream.model_frame = edge
                     self.VideoStream.new_img_flag_process = False
+
                 if self.stop_execute:
                     break
 
