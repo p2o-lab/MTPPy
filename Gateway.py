@@ -9,12 +9,12 @@ from Illumination import Illuminaton
 
 
 
-address='opc.tcp://localhost:4840'
+address='opc.tcp://0.0.0.0:4840'
 client = Client(address)
 client.connect()
 
 stream=PEA_Video_stream()
-stream.start_vid_stream(host_name='192.168.178.69',port=23336)
+stream.start_vid_stream(host_name='0.0.0.0',port=23336)
 
 Serv_previx_rda='Raw_data_aquisitoion'
 S_Raw_data_aq_Shutter_speed_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_rda}.Shutter_speed_setpoint',client=client,opc_address=address)

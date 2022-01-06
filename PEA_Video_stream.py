@@ -17,6 +17,7 @@ class PEA_Video_stream():
         self.new_img_flag_archive = False
         self.new_img_flag_process = False
         self.N=1
+
     def start_vid_stream(self,host_name,port):
         self.host_name=host_name
         self.port=port
@@ -30,7 +31,8 @@ class PEA_Video_stream():
         def graph():
             #bar = self.create_plot()
             #return render_template('index2.html', plot=bar)
-            return render_template('index2.html', plot=self.graphJSON)
+            plot=self.create_plot()
+            return render_template('index2.html', plot=plot)
 
 
         @app.route('/model_out')
@@ -43,7 +45,7 @@ class PEA_Video_stream():
             return render_template('index.html')
 
 
-        threading.Thread(target=self.create_plot).start()
+        #threading.Thread(target=self.create_plot).start()
         threading.Thread(target=lambda: app.run(host=host_name, port=port, debug=False, use_reloader=False)).start()
 
     def disp_frames(self):
@@ -60,20 +62,20 @@ class PEA_Video_stream():
 
     def create_plot(self):
         #this function will be executed in data processing and write on the self.graphJSON variable
-        while True:
-            self.N +=1
-            random_x = np.random.randn(self.N)
-            random_y = np.random.randn(self.N)
 
-            # Create a trace
-            data = [go.Scatter(
-                x=random_x,
-                y=random_y,
-                mode='markers'
-            )]
+        self.N +=1000
+        random_x = np.random.randn(self.N)
+        random_y = np.random.randn(self.N)
 
-            self.graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
-            sleep(1)
+        # Create a trace
+        data = [go.Scatter(
+            x=random_x,
+            y=random_y,
+            mode='markers'
+        )]
+
+        graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
+        return graphJSON
 
         #return graphJSON
 

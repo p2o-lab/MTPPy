@@ -258,7 +258,7 @@ structure_dict={
 }
 
 server=Server()
-server.set_endpoint("opc.tcp://localhost:4840")
+server.set_endpoint("opc.tcp://0.0.0.0:4840")
 server.set_server_name("Test_PEA_OPCUA_Server")
 root=server.get_objects_node()
 ns=1
