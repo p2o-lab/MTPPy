@@ -1,7 +1,7 @@
 from Service_control import Service_control
 from Procedure import Procedure
 from PEA_Video_stream import PEA_Video_stream
-import requests
+#import requests
 import cv2
 from time import sleep
 

@@ -6,15 +6,27 @@ from opcua import Client
 from PEA_Video_stream import PEA_Video_stream
 from OperationElements import AnaServParam,StringServParam,DIntServParam
 from Illumination import Illuminaton
+from Module_OPCUA import Module_OPCUA_class
 
+print('Starting mdule opcua server')
 
+OPCUA=Module_OPCUA_class()
+OPCUA.start_OPCUA()
 
-address='opc.tcp://0.0.0.0:4840'
+print('\nConnecting client to module opcua server')
+
+address='opc.tcp://localhost:4840'
 client = Client(address)
 client.connect()
 
+print('\nClient succsessfully connected to module opcua server')
+
+print('\nStarting Flask server for complex data streams')
+
 stream=PEA_Video_stream()
 stream.start_vid_stream(host_name='0.0.0.0',port=23336)
+
+print('\nFlask server started generating service objects')
 
 Serv_previx_rda='Raw_data_aquisitoion'
 S_Raw_data_aq_Shutter_speed_setpoint=AnaServParam(node=f'ns=1;s={Serv_previx_rda}.Shutter_speed_setpoint',client=client,opc_address=address)
@@ -88,7 +100,7 @@ S_Illumination=Illuminaton(node=f'ns=1;s={Serv_previx_i}.ServiceControl',client=
 
 class Module_handler(object):
     def datachange_notification(self, node, val, data):
-        print(f'{node} {val}')
+        #print(f'{node} {val}')
         ns=node.nodeid.NamespaceIndex
         identifier = node.nodeid.Identifier
 
@@ -119,11 +131,14 @@ class Module_handler(object):
 
 
 
+print('\nGetting module nodes')
 
 Module_Nodes=[]
 for node_1 in client.get_objects_node().get_children()[1:]:
     for node_2 in client.get_node(node_1).get_children():
         for node_3 in client.get_node(node_2).get_children(): Module_Nodes.append(node_3)
+
+print('\nStart subscribing to module nodes')
 
 handler = Module_handler()
 handler_client = Client(address)
@@ -131,4 +146,9 @@ handler_client.connect()
 sub = handler_client.create_subscription(500, handler)
 handle = sub.subscribe_data_change(Module_Nodes)
 
+print('\nSubscribing to module nodes finished')
+
+print('\nModule is now running with device IP adress')
+
+print('\nHave fun with your AI module  ^^')
 
