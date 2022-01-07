@@ -100,8 +100,8 @@ S_Illumination=Illuminaton(node=f'ns=1;s={Serv_previx_i}.ServiceControl',client=
 
 class Module_handler(object):
     def datachange_notification(self, node, val, data):
-        #print(f'{node} {val}')
-        ns=node.nodeid.NamespaceIndex
+        print(f'{node} {val}')
+        #ns=node.nodeid.NamespaceIndex
         identifier = node.nodeid.Identifier
 
         if f'{Serv_previx_dp}.ServiceControl' in identifier: S_Data_processing.Handler_sync(node, val, identifier)
