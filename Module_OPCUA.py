@@ -280,5 +280,5 @@ class Module_OPCUA_class:
 
 
         server.start()
-        print('OPCUA server started')
+        print('\nOPCUA server started')
 
