@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
 import json
+from LoadSpectrum import read_spa
 
 class PEA_Video_stream():
     def __init__(self):
@@ -61,18 +62,22 @@ class PEA_Video_stream():
             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + model_frame + b'\r\n')
 
     def create_plot(self):
-        #this function will be executed in data processing and write on the self.graphJSON variable
 
-        self.N +=1000
-        random_x = np.random.randn(self.N)
-        random_y = np.random.randn(self.N)
+        #path = 'templates/cy785lo.SPA'
+        #path2='templates/naph785lo.SPA'
+        path2='templates/Acetominophen Caffeine Acetylsalicylic acid.SPA'
+        spectra_tmp, wavelength_tmp, title_tmp = read_spa(path2)
+        #spectra_tmp2, _, _ = read_spa(path2)
 
-        # Create a trace
-        data = [go.Scatter(
-            x=random_x,
-            y=random_y,
-            mode='markers'
-        )]
+        data = [go.Line(
+            x=1/wavelength_tmp,
+            y=spectra_tmp)]
+
+        #z_data = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/api_docs/mt_bruno_elevation.csv')
+
+        #graph = [1 / wavelength_tmp, spectra_tmp, spectra_tmp, spectra_tmp, spectra_tmp]
+        #df = pd.DataFrame(graph)
+        #data = [go.Surface(z=df.values)]
 
         graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
         return graphJSON
@@ -81,3 +86,4 @@ class PEA_Video_stream():
 
 # source video stream https://towardsdatascience.com/video-streaming-in-web-browsers-with-opencv-flask-93a38846fe00
 # source graph https://blog.heptanalytics.com/flask-plotly-dashboard/
+
