@@ -64,7 +64,7 @@ class Raw_data_aq(Service_control):
         self.Gain_setpoint.Sync=True
         self.Auto_brightness_setpoint.Sync=True
         self.Time_interval_setpoint.Sync=True
-
+        self.camera = cv2.VideoCapture(0)
         self.Video_stream.frame = cv2.imread('templates/Timo_kristall.jpg')
 
     def Idle(self):
@@ -83,7 +83,7 @@ class Raw_data_aq(Service_control):
     def Execute(self):
 ##Todo if no bild is captured change to hold
         if self.ProcedureCur == self.Free_run.ProcedureId:
-            self.camera = cv2.VideoCapture(0)
+
             while True:
 
                 _, frame3 = self.camera.read()
@@ -96,7 +96,7 @@ class Raw_data_aq(Service_control):
                         break
 
         if self.ProcedureCur == self.Snapshot.ProcedureId:
-            self.camera = cv2.VideoCapture(0)
+
             _, frame3 = self.camera.read()
             self.Video_stream.frame = frame3
             self.Video_stream.new_img_flag_archive = True
@@ -108,7 +108,7 @@ class Raw_data_aq(Service_control):
             Trigger=False
             while True:
                 if Trigger:
-                    self.camera = cv2.VideoCapture(0)
+
                     _, frame3 = self.camera.read()
                     self.Video_stream.frame = frame3
                     self.Video_stream.new_img_flag_archive = True
@@ -119,7 +119,7 @@ class Raw_data_aq(Service_control):
 
     def Completing(self):
         self.Video_stream.data_aq_active = False
-        _,frame2=self.camera.read()
+        #_,frame2=self.camera.read()
         self.Video_stream.frame = cv2.imread('templates/novid.jpg')
     ##todo set idle frame for other prod in Reset
         #requests.get(' http://192.168.178.69:23336/shutdown')
