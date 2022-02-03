@@ -3,12 +3,15 @@ from src.variable import Variable
 
 class ProcedureControl:
 
-    def __init__(self, opcua_server, opcua_ns, opcua_prefix):
+    def __init__(self, opcua_server, opcua_ns, opcua_prefix, source_mode, operation_mode):
         self.procedure_op = 0
         self.procedure_int = 0
         self.procedure_ext = 0
-        self.procedure_current = 0
         self.procedure_requested = 0
+        self.procedure_current = 0
+
+        self.source_mode = source_mode
+        self.operation_mode = operation_mode
 
         self.variables = {}
 
@@ -24,8 +27,8 @@ class ProcedureControl:
             'ProcedureOp': {'init_value': 0, 'callback': self.set_ProcedureOp, 'writable': True},
             'ProcedureInt': {'init_value': 0, 'callback': self.set_ProcedureInt, 'writable': True},
             'ProcedureExt': {'init_value': 0, 'callback': self.set_ProcedureExt, 'writable': True},
-            'ProcedureCur': {'init_value': 0, 'callback': self.set_ProcedureCur, 'writable': False},
-            'ProcedureReq': {'init_value': 0, 'callback': self.set_ProcedureReq, 'writable': False},
+            'ProcedureCur': {'init_value': 0, 'callback': None, 'writable': False},
+            'ProcedureReq': {'init_value': 0, 'callback': None, 'writable': False},
         }
 
         for var_name, var_dict in variables.items():
@@ -40,15 +43,24 @@ class ProcedureControl:
         print('procedure op to %s' % value)
 
     def set_ProcedureInt(self, value):
-        self.procedure_op = value
+        self.procedure_int = value
         print('procedure int to %s' % value)
 
     def set_ProcedureExt(self, value):
-        self.procedure_op = value
+        self.procedure_ext = value
         print('procedure ext to %s' % value)
 
-    def set_ProcedureCur(self, value):
-        pass
+    def select_procedure(self):
+        if self.source_mode.mode is not 'off':
+            if self.source_mode.variables['StateOpAct']:
+                self.procedure_requested = self.procedure_op
+                self.procedure_current = self.procedure_requested
+            elif self.source_mode.variables['StateAutAct'] and self.operation_mode.variables['SrcIntAct']:
+                self.procedure_requested = self.procedure_int
+                self.procedure_current = self.procedure_requested
+            elif self.source_mode.variables['StateAutAct'] and self.operation_mode.variables['SrcExtAct']:
+                self.procedure_requested = self.procedure_ext
+                self.procedure_current = self.procedure_requested
 
-    def set_ProcedureReq(self, value):
-        pass
+            self.variables['ProcedureReq'].write_value(self.procedure_requested)
+            self.variables['ProcedureCur'].write_value(self.procedure_current)

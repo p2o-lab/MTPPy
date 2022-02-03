@@ -32,7 +32,7 @@ def run_opcua_server():
     services_folder = objects.add_folder(idx, "services")
 
     services = {'data_collection':
-        Service(tag_name='data_collection', opcua_server=server, opcua_ns=idx)
+                    Service(tag_name='data_collection', opcua_server=server, opcua_ns=idx)
                 }
 
     subscription_list = []
@@ -40,26 +40,14 @@ def run_opcua_server():
     # Service data collection
     for service in services.values():
         service_folder = services_folder.add_folder(idx, service.tag_name)
-        for variable in service.variables.values():
-            service_folder.add_variable(variable.opcua_node_obj.nodeid, variable.name,
-                                        variable.init_value).set_writable(variable.writable)
-            opcua_node = server.get_node(variable.opcua_node_obj)
-            #subscriptions[variable.opcua_node_obj.nodeid] = {'opcua_node': opcua_node,
-            #                                                 'callback': variable.write_value}
 
-        service_source_mode_folder = service_folder.add_folder(idx, "source_mode")
-        for variable in service.source_mode.variables.values():
-            service_source_mode_folder.add_variable(variable.opcua_node_obj.nodeid, variable.name,
-                                                    variable.init_value).set_writable(variable.writable)
-            opcua_node = server.get_node(variable.opcua_node_obj)
-            subscription_list.append(opcua_node)
-
-        service_op_mode_folder = service_folder.add_folder(idx, "operation_mode")
-        for variable in service.operation_mode.variables.values():
-            service_op_mode_folder.add_variable(variable.opcua_node_obj.nodeid, variable.name,
-                                                    variable.init_value).set_writable(variable.writable)
-            opcua_node = server.get_node(variable.opcua_node_obj)
-            subscription_list.append(opcua_node)
+        for folder in ['source_mode', 'operation_mode', 'procedure_control', 'command_control']:
+            service_section_folder = service_folder.add_folder(idx, folder)
+            for variable in eval(f'service.{folder}.variables.values()'):
+                service_section_folder.add_variable(variable.opcua_node_obj.nodeid, variable.name, variable.init_value).\
+                    set_writable(variable.writable)
+                opcua_node = server.get_node(variable.opcua_node_obj)
+                subscription_list.append(opcua_node)
 
     # starting!
     server.start()
