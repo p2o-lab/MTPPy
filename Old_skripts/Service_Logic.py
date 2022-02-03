@@ -39,47 +39,47 @@ class Logic_Class():
                 self.Service.Service.StateOpOp = False
                 self.Service.Service.StateOffOp = True
 
-            self.Service.Service.Service_operation_mode()
+            self.Service.Service.service_operation_mode()
             self.Service.Service.update_feedback()
 
 
 
-            client2.get_node(f'ns={curr_nsi};s=StateAutOp').set_value(self.Service.Service.StateAutOp)
-            client2.get_node(f'ns={curr_nsi};s=StateOpOp').set_value(self.Service.Service.StateOpOp)
-            client2.get_node(f'ns={curr_nsi};s=StateOffOp').set_value(self.Service.Service.StateOffOp)
+            client2.get_node(f'ns={curr_nsi};s=StateAutOp').write_value(self.Service.Service.StateAutOp)
+            client2.get_node(f'ns={curr_nsi};s=StateOpOp').write_value(self.Service.Service.StateOpOp)
+            client2.get_node(f'ns={curr_nsi};s=StateOffOp').write_value(self.Service.Service.StateOffOp)
 
-            client2.get_node(f'ns={curr_nsi};s=StateAutAut').set_value(self.Service.Service.StateAutAut)
-            client2.get_node(f'ns={curr_nsi};s=StateOpAut').set_value(self.Service.Service.StateOpAut)
-            client2.get_node(f'ns={curr_nsi};s=StateOffAut').set_value(self.Service.Service.StateOffAut)
+            client2.get_node(f'ns={curr_nsi};s=StateAutAut').write_value(self.Service.Service.StateAutAut)
+            client2.get_node(f'ns={curr_nsi};s=StateOpAut').write_value(self.Service.Service.StateOpAut)
+            client2.get_node(f'ns={curr_nsi};s=StateOffAut').write_value(self.Service.Service.StateOffAut)
 
-            client2.get_node(f'ns={curr_nsi};s=StateOpAct').set_value(self.Service.Service.StateOpAct)
-            client2.get_node(f'ns={curr_nsi};s=StateAutAct').set_value(self.Service.Service.StateAutAct)
-            client2.get_node(f'ns={curr_nsi};s=StateOffAct').set_value(self.Service.Service.StateOffAct)
+            client2.get_node(f'ns={curr_nsi};s=StateOpAct').write_value(self.Service.Service.StateOpAct)
+            client2.get_node(f'ns={curr_nsi};s=StateAutAct').write_value(self.Service.Service.StateAutAct)
+            client2.get_node(f'ns={curr_nsi};s=StateOffAct').write_value(self.Service.Service.StateOffAct)
 
         if curr_name in ['CommandOp', 'CommandInt', 'CommandExt']:
         #if curr_name in ['CommandOp']:
 
             if curr_name == 'CommandOp' and self.Service.Service.StateOpAct == True:
                 self.Service.Service.CommandOP=val
-                self.Service.Service.State_control()
+                self.Service.Service.state_control()
                 self.Service.Service.update_feedback()
                 self.Service.execute_state()
 
             if curr_name == 'CommandInt' and self.Service.Service.StateAutAct == True \
                     and self.Service.Service.SrcIntAct == True:
                 self.Service.Service.CommandInt=val
-                self.Service.Service.State_control()
+                self.Service.Service.state_control()
                 self.Service.Service.update_feedback()
                 self.Service.execute_state()
 
             if curr_name == 'CommandExt' and self.Service.Service.StateAutAct == True \
                     and self.Service.Service.SrcExtAct == True:
                 self.Service.Service.CommandExt = val
-                self.Service.Service.State_control()
+                self.Service.Service.state_control()
                 self.Service.Service.update_feedback()
                 self.Service.execute_state()
 
-            client2.get_node(f'ns={curr_nsi};s=StateCur').set_value(self.Service.Service.StateCur)
-            client2.get_node(f'ns={curr_nsi};s=CommandEn').set_value(self.Service.Service.CommandEn)
+            client2.get_node(f'ns={curr_nsi};s=StateCur').write_value(self.Service.Service.StateCur)
+            client2.get_node(f'ns={curr_nsi};s=CommandEn').write_value(self.Service.Service.CommandEn)
         client2.disconnect()
 

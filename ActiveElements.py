@@ -1,4 +1,4 @@
-from DataAssembly import DataAssembly
+from src.DataAssembly import DataAssembly
 
 class ActiveElement(DataAssembly):
     def __init__(self):

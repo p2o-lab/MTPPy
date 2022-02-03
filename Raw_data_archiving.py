@@ -1,10 +1,10 @@
 from Service_control import Service_control
-from Procedure import Procedure
+from src.Procedure import Procedure
 import os
 import json
 import datetime
 import cv2
-from time import sleep
+
 
 class Trigger_based(Procedure):
     def __init__(self):

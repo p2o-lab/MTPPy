@@ -1,5 +1,4 @@
-from Service_control import Service_control
-from Procedure import Procedure
+from src.Procedure import Procedure
 
 
 class Prod_Template(Procedure):

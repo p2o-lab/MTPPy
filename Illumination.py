@@ -1,8 +1,7 @@
 from Service_control import Service_control
-from Procedure import Procedure
+from src.Procedure import Procedure
 
 #import RPi.GPIO as GPIO
-from time import sleep
 
 class Continous(Procedure):
     def __init__(self):

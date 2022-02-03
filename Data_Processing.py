@@ -1,8 +1,8 @@
 from Service_control import Service_control
-from Procedure import Procedure
+from src.Procedure import Procedure
 from time import sleep
 import cv2
-from IndicatorElements import AnaView
+
 
 class Regression(Procedure):
     def __init__(self):

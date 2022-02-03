@@ -1,16 +1,16 @@
-from Raw_data_aq import Raw_data_aq
+from src.Raw_data_aq import Raw_data_aq
 from Raw_data_archiving import Raw_data_archiving
 from Data_Processing import Data_Processing
-from IndicatorElements import AnaView, StringView
+from src.IndicatorElements import AnaView, StringView
 from opcua import Client
 from PEA_Video_stream import PEA_Video_stream
-from OperationElements import AnaServParam,StringServParam,DIntServParam
+from src.OperationElements import AnaServParam,StringServParam,DIntServParam
 from Illumination import Illuminaton
-from Module_OPCUA import Module_OPCUA_class
+from src.Module_OPCUA import PEAServer
 
 print('Starting mdule opcua server')
 
-OPCUA=Module_OPCUA_class()
+OPCUA=PEAServer()
 OPCUA.start_OPCUA()
 
 print('\nConnecting client to module opcua server')
@@ -107,7 +107,7 @@ class Module_handler(object):
         if f'{Serv_previx_dp}.ServiceControl' in identifier: S_Data_processing.Handler_sync(node, val, identifier)
         if f'{Serv_previx_dp}.Model_ID' in identifier: S_Data_processing_Model_ID.Handler_sync(node, val, identifier)
 
-        if f'{Serv_previx_rda}.ServiceControl' in identifier: S_Raw_data_aq.Handler_sync(node, val, identifier)
+        if f'{Serv_previx_rda}.ServiceControl' in identifier: S_Raw_data_aq.handler_sync(node, val, identifier)
         if f'{Serv_previx_rda}.Shutter_speed_setpoint' in identifier: S_Raw_data_aq_Shutter_speed_setpoint.Handler_sync(node, val, identifier)
         if f'{Serv_previx_rda}.Resolution_setpoint' in identifier: S_Raw_data_aq_Resolution_setpoint.Handler_sync(node, val, identifier)
         if f'{Serv_previx_rda}.ROI_x0' in identifier: S_Raw_data_aq_ROI_x0.Handler_sync(node, val, identifier)
