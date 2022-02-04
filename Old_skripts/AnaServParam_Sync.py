@@ -59,7 +59,7 @@ class AnaServParam_Sync():
     def sync_and_execute(self):
         self.Sync_POL_PEA()
         self.AnaServParam.operation_mode()
-        self.AnaServParam.source_mode()
+        self.AnaServParam.operation_mode()
         self.AnaServParam.scale_check()
         self.AnaServParam.limit_check()
         self.AnaServParam.set_req_value()

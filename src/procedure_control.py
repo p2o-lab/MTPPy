@@ -1,4 +1,5 @@
 from src.variable import Variable
+from opcua import ua
 
 
 class ProcedureControl:
@@ -21,46 +22,57 @@ class ProcedureControl:
 
         self._attach_opcua_nodes()
 
+        self.procedures = []
+
     def _attach_opcua_nodes(self):
 
         variables = {
-            'ProcedureOp': {'init_value': 0, 'callback': self.set_ProcedureOp, 'writable': True},
-            'ProcedureInt': {'init_value': 0, 'callback': self.set_ProcedureInt, 'writable': True},
-            'ProcedureExt': {'init_value': 0, 'callback': self.set_ProcedureExt, 'writable': True},
-            'ProcedureCur': {'init_value': 0, 'callback': None, 'writable': False},
-            'ProcedureReq': {'init_value': 0, 'callback': None, 'writable': False},
+            'ProcedureOp': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': self.set_ProcedureOp, 'writable': True},
+            'ProcedureInt': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': self.set_ProcedureInt, 'writable': True},
+            'ProcedureExt': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': self.set_ProcedureExt, 'writable': True},
+            'ProcedureCur': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': None, 'writable': False},
+            'ProcedureReq': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': None, 'writable': False},
         }
 
         for var_name, var_dict in variables.items():
             var_opcua_node_obj = self.opcua_server.get_node(f'ns={self.opcua_ns};s={self.opcua_prefix}.{var_name}')
             self.variables[var_name] = Variable(var_name, init_value=var_dict['init_value'],
+                                                opcua_type=var_dict['type'],
                                                 opcua_node_obj=var_opcua_node_obj,
                                                 writable=var_dict['writable'],
                                                 callback=var_dict['callback'])
 
     def set_ProcedureOp(self, value):
         self.procedure_op = value
-        print('procedure op to %s' % value)
+        print('ProcedureOp set to %s' % value)
+        self.select_procedure()
 
     def set_ProcedureInt(self, value):
         self.procedure_int = value
-        print('procedure int to %s' % value)
+        print('ProcedureInt set to %s' % value)
+        self.select_procedure()
 
     def set_ProcedureExt(self, value):
         self.procedure_ext = value
-        print('procedure ext to %s' % value)
+        print('ProcedureExt set to %s' % value)
+        self.select_procedure()
 
     def select_procedure(self):
-        if self.source_mode.mode is not 'off':
-            if self.source_mode.variables['StateOpAct']:
+        if self.operation_mode.mode is not 'off':
+            if self.operation_mode.variables['StateOpAct']:
                 self.procedure_requested = self.procedure_op
                 self.procedure_current = self.procedure_requested
-            elif self.source_mode.variables['StateAutAct'] and self.operation_mode.variables['SrcIntAct']:
+            elif self.operation_mode.variables['StateAutAct'] and self.source_mode.variables['SrcIntAct']:
                 self.procedure_requested = self.procedure_int
                 self.procedure_current = self.procedure_requested
-            elif self.source_mode.variables['StateAutAct'] and self.operation_mode.variables['SrcExtAct']:
+            elif self.operation_mode.variables['StateAutAct'] and self.source_mode.variables['SrcExtAct']:
                 self.procedure_requested = self.procedure_ext
                 self.procedure_current = self.procedure_requested
 
             self.variables['ProcedureReq'].write_value(self.procedure_requested)
             self.variables['ProcedureCur'].write_value(self.procedure_current)
+            print('ProcedureReq set to %s' % self.procedure_requested)
+            print('ProcedureCur set to %s' % self.procedure_current)
+
+    def add_procedure(self, procedure):
+        self.procedures.append(procedure)

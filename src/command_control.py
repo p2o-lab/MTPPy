@@ -1,4 +1,5 @@
 from src.variable import Variable
+from opcua import ua
 
 
 class CommandControl:
@@ -18,14 +19,16 @@ class CommandControl:
     def _attach_opcua_nodes(self):
 
         variables = {
-            'CommandOp': {'init_value': 0, 'callback': self.set_CommandOp, 'writable': True},
-            'CommandInt': {'init_value': 0, 'callback': self.set_CommandInt, 'writable': True},
-            'CommandExt': {'init_value': 0, 'callback': self.set_CommandExt, 'writable': True},
+            'CommandOp': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': self.set_CommandOp, 'writable': True},
+            'CommandInt': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': self.set_CommandInt, 'writable': True},
+            'CommandExt': {'type': ua.VariantType.UInt32, 'init_value': 0, 'callback': self.set_CommandExt, 'writable': True},
         }
 
         for var_name, var_dict in variables.items():
             var_opcua_node_obj = self.opcua_server.get_node(f'ns={self.opcua_ns};s={self.opcua_prefix}.{var_name}')
-            self.variables[var_name] = Variable(var_name, init_value=var_dict['init_value'],
+            self.variables[var_name] = Variable(var_name,
+                                                opcua_type=var_dict['type'],
+                                                init_value=var_dict['init_value'],
                                                 opcua_node_obj=var_opcua_node_obj,
                                                 writable=var_dict['writable'],
                                                 callback=var_dict['callback'])
