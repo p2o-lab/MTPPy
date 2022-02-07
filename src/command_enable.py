@@ -1,17 +1,17 @@
 class CommandEn:
     def __init__(self):
         self.commands = {
-            'Undefined': {'default': False, 'value': False, 'bit_no': 0, 'int': 1},
-            'Reset': {'default': False, 'value': False, 'bit_no': 1, 'int': 2},
-            'Start': {'default': False, 'value': False, 'bit_no': 2, 'int': 4},
-            'Stop': {'default': True, 'value': True, 'bit_no': 3, 'int': 8},
-            'Hold': {'default': False, 'value': False, 'bit_no': 4, 'int': 16},
-            'Unhold': {'default': False, 'value': False, 'bit_no': 5, 'int': 32},
-            'Pause': {'default': False, 'value': False, 'bit_no': 6, 'int': 64},
-            'Resume': {'default': False, 'value': False, 'bit_no': 7, 'int': 128},
-            'Abort': {'default': True, 'value': True, 'bit_no': 8, 'int': 256},
-            'Restart': {'default': False, 'value': False, 'bit_no': 9, 'int': 512},
-            'Complete': {'default': False, 'value': False, 'bit_no': 10, 'int': 1024},
+            'undefined': {'default': False, 'value': False, 'bit_no': 0, 'int': 1},
+            'reset': {'default': False, 'value': False, 'bit_no': 1, 'int': 2},
+            'start': {'default': False, 'value': False, 'bit_no': 2, 'int': 4},
+            'stop': {'default': True, 'value': True, 'bit_no': 3, 'int': 8},
+            'hold': {'default': False, 'value': False, 'bit_no': 4, 'int': 16},
+            'unhold': {'default': False, 'value': False, 'bit_no': 5, 'int': 32},
+            'pause': {'default': False, 'value': False, 'bit_no': 6, 'int': 64},
+            'resume': {'default': False, 'value': False, 'bit_no': 7, 'int': 128},
+            'abort': {'default': True, 'value': True, 'bit_no': 8, 'int': 256},
+            'restart': {'default': False, 'value': False, 'bit_no': 9, 'int': 512},
+            'complete': {'default': False, 'value': False, 'bit_no': 10, 'int': 1024},
         }
 
     def set_command(self, command, value):

@@ -63,7 +63,7 @@ class Illuminaton(Service_control):
         self.G.start(0)
         self.B.start(0)
 
-        self.Service_SM.Start(SC=True)
+        self.Service_SM.Start(sc=True)
 
     def Execute(self):
         R1, G1, B1 = self.wavelength_to_rgb(self.Wavelength.VOut)

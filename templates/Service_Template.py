@@ -13,7 +13,7 @@ class Service_template():
        pass
 
     def Starting(self):
-        self.Service_SM.Start(SC=True)
+        self.Service_SM.Start(sc=True)
 
     def Execute(self):
         pass

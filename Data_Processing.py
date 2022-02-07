@@ -45,7 +45,7 @@ class Data_Processing(Service_control):
         pass
     def Starting(self):
         #print('Service 1 is starting')
-        self.Service_SM.Start( SC=True)
+        self.Service_SM.Start(sc=True)
 
     def Execute(self):
 #Todo generate flga to trigger archivin service

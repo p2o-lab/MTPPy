@@ -1,68 +1,46 @@
-from src.variable import Variable
-from opcua import ua
+from src.attribute import Attribute
 
 
 class ControlElementsBinServParam:
 
-    def __init__(self, opcua_server, opcua_ns, opcua_prefix, source_mode, operation_mode, v_state_0='false', v_state_1='true'):
+    def __init__(self, op_src_mode, v_state_0='false', v_state_1='true'):
         self.v_state_0 = v_state_0
         self.v_state_1 = v_state_1
 
-        self.source_mode = source_mode
-        self.operation_mode = operation_mode
+        self.op_src_mode = op_src_mode
 
-        self.variables = {}
+        self.attributes = {}
+        self._init_attributes()
 
-        self.opcua_server = opcua_server
-        self.opcua_ns = opcua_ns
-        self.opcua_prefix = f'{opcua_prefix}.control_elements'
-
-        self.source_mode = None
-        self._attach_opcua_nodes()
-
-    def _attach_opcua_nodes(self):
-
-        variables = {
-            'VExt': {'type': ua.VariantType.Float, 'init_value': 0, 'callback': self.set_VExt, 'writable': True},
-            'VOp': {'type': ua.VariantType.Float, 'init_value': 0, 'callback': self.set_VOp, 'writable': True},
-            'VInt': {'type': ua.VariantType.Float, 'init_value': 0, 'callback': self.set_VInt, 'writable': True},
-            'VReq': {'type': ua.VariantType.Float, 'init_value': 0, 'callback': None, 'writable': False},
-            'VOut': {'type': ua.VariantType.Float, 'init_value': 0, 'callback': None, 'writable': False},
-            'VFbk': {'type': ua.VariantType.Float, 'init_value': 0, 'callback': None, 'writable': False},
-            'VState0': {'type': ua.VariantType.Float, 'init_value': self.v_state_0, 'callback': None, 'writable': False},
-            'VState1': {'type': ua.VariantType.Float, 'init_value': self.v_state_1, 'callback': None, 'writable': False},
-            'Sync': {'type': ua.VariantType.Boolean, 'init_value': False, 'callback': None, 'writable': False}
+    def _init_attributes(self):
+        self.attributes = {
+            'VOp': Attribute('VOp', bool, init_value=False, cb_value_change=self.set_v_op),
+            'VInt': Attribute('VInt', bool, init_value=False, cb_value_change=self.set_v_int),
+            'VExt': Attribute('VExt', bool, init_value=False, cb_value_change=self.set_v_ext),
+            'VReq': Attribute('VReq', bool, init_value=False),
+            'VOut': Attribute('VOut', bool, init_value=False),
         }
 
-        for var_name, var_dict in variables.items():
-            var_opcua_node_obj = self.opcua_server.get_node(f'ns={self.opcua_ns};s={self.opcua_prefix}.{var_name}')
-            self.variables[var_name] = Variable(var_name,
-                                                opcua_type=var_dict['type'],
-                                                init_value=var_dict['init_value'],
-                                                opcua_node_obj=var_opcua_node_obj,
-                                                writable=var_dict['writable'],
-                                                callback=var_dict['callback'])
-
-    def set_VOp(self, value):
+    def set_v_op(self, value):
         print('VOp set to %s' % value)
-        if self.operation_mode.mode is 'op':
-            self.set_VReq(value)
+        if self.op_src_mode.attributes['StateOpAct']:
+            self.set_v_req(value)
 
-    def set_VInt(self, value):
+    def set_v_int(self, value):
         print('VInt set to %s' % value)
-        if self.operation_mode.mode is 'aut' and self.source_mode.mode is 'int':
-            self.set_VReq(value)
+        if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcIntAct']:
+            self.set_v_req(value)
 
-    def set_VExt(self, value):
+    def set_v_ext(self, value):
         print('VExt set to %s' % value)
-        if self.operation_mode.mode is 'aut' and self.source_mode.mode is 'ext':
-            self.set_VReq(value)
+        if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcExtAct']:
+            self.set_v_req(value)
 
-    def set_VReq(self, value):
-        self.variables['VReq'].write_value(value)
+    def set_v_req(self, value):
+        self.attributes['VReq'].set_value(value)
         print('VReq set to %s' % value)
 
-    def set_VOut(self):
-        v_req = self.variables['VReq'].value
-        self.variables['VOut'].write_value(v_req)
+    def set_v_out(self):
+        v_req = self.attributes['VReq'].value
+        self.attributes['VOut'].set_value(v_req)
         print('VOut set to %s' % v_req)

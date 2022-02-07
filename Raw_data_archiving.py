@@ -33,7 +33,7 @@ class Raw_data_archiving(Service_control):
             os.mkdir(self.save_path)
 
         self.meta_dict={'Img_name':'0','Date':'0','Model_Result':0}
-        self.Service_SM.Start(SC=True)
+        self.Service_SM.Start(sc=True)
 
     def Execute(self):
         self.Status_Message.set_text(f'Saving results to {self.save_path} as {self.save_format}')
