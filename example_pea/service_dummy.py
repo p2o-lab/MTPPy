@@ -3,78 +3,83 @@ import time
 
 
 class ServiceDummy(Service):
-    def __init__(self, tag_name, opcua_server, opcua_ns):
-        super().__init__(tag_name, opcua_server, opcua_ns)
+    def __init__(self, tag_name, tag_description):
+        super().__init__(tag_name, tag_description)
 
-    def Idle(self):
-        pass
-
-    def Starting(self):
-        print('Starting')
-        self.state_machine.Start()
-
-    def Execute(self):
-        print('Execute')
+    def idle(self):
+        print('- Idle -')
         cycle = 0
         while True:
-            if self.state_stop_flags['execute']:
+            if self.thread_ctrl.get_flag('idle'):
                 break
-
             print('Cycle %i' % cycle)
-            print('ServParameter %s has value %f'
+            cycle += 1
+            time.sleep(1)
+
+    def starting(self):
+        print('- Starting -')
+        self.state_machine.start()
+
+    def execute(self):
+        print('- Execute -')
+        cycle = 0
+        while True:
+            if self.thread_ctrl.get_flag('execute'):
+                break
+            print('Cycle %i' % cycle)
+            print(f'ProcedureCur is {self.procedure_control.get_procedure_cur()}')
+            print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_ana'].tag_name,
-                     self.configuration_parameters['serv_param_ana'].control_elements.variables['VOut'].value))
-
-            print('ServParameter %s has value %i'
+                     self.configuration_parameters['serv_param_ana'].control_elements.attributes['VOut'].value))
+            print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_dint'].tag_name,
-                     self.configuration_parameters['serv_param_dint'].control_elements.variables['VOut'].value))
-
+                     self.configuration_parameters['serv_param_dint'].control_elements.attributes['VOut'].value))
             print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_bin'].tag_name,
-                     self.configuration_parameters['serv_param_bin'].control_elements.variables['VOut'].value))
+                     self.configuration_parameters['serv_param_bin'].control_elements.attributes['VOut'].value))
+            print('ServParameter %s has value %r'
+                  % (self.configuration_parameters['serv_param_str'].tag_name,
+                     self.configuration_parameters['serv_param_str'].control_elements.attributes['VOut'].value))
 
-            print('ServParameter %s has value %s'
-                  % (self.configuration_parameters['serv_param_string'].tag_name,
-                     self.configuration_parameters['serv_param_string'].control_elements.variables['VOut'].value))
             cycle += 1
-            time.sleep(0.5)
+            time.sleep(1)
 
-    def Completing(self):
-        self.state_machine.Complete()
+    def completing(self):
+        self.state_machine.complete()
 
-    def Completed(self):
+    def completed(self):
         pass
 
-    def Pausing(self):
+    def pausing(self):
         pass
 
-    def Paused(self):
+    def paused(self):
         pass
 
-    def Resuming(self):
+    def resuming(self):
         pass
 
-    def Holding(self):
+    def holding(self):
         pass
 
-    def Held(self):
+    def held(self):
         pass
 
-    def Unholding(self):
+    def unholding(self):
         pass
 
-    def Stopping(self):
+    def stopping(self):
         pass
 
-    def Stopped(self):
+    def stopped(self):
         pass
 
-    def Aborting(self):
+    def aborting(self):
         pass
 
-    def Aborted(self):
+    def aborted(self):
         pass
 
-    def Resetting(self):
-        print('Resetting')
-        self.state_machine.Reset()
+    def resetting(self):
+        print('- Resetting -')
+        self.state_machine.reset()

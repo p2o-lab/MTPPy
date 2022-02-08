@@ -2,7 +2,7 @@ from opcua import Server, ua
 from src.communication_object import OPCUACommunicationObject
 
 
-class PEA:
+class OPCUAServerPEA:
     def __init__(self, endpoint='opc.tcp://0.0.0.0:4840/'):
         self.service_set = {}
         self.endpoint = endpoint
@@ -29,6 +29,11 @@ class PEA:
         self.opcua_server.start()
         self.build_opcua_server()
         self.start_subscription()
+        #self.set_services_in_idle()
+
+    def set_services_in_idle(self):
+        for service in self.service_set.values():
+            service.init_idle_state()
 
     def build_opcua_server(self):
         ns = self.opcua_ns
@@ -41,16 +46,16 @@ class PEA:
 
     def _create_opcua_objects_for_data_assemblies(self, data_assembly, parent_opcua_prefix, parent_opcua_object):
         da_node_id = f'{parent_opcua_prefix}.{data_assembly.tag_name}'
-        print(da_node_id)
         da_node = parent_opcua_object.add_folder(da_node_id, data_assembly.tag_name)
-        for section_name in ['op_src_mode', 'state_machine', 'control_elements', 'configuration_parameters']:
+        for section_name in ['op_src_mode', 'state_machine', 'control_elements', 'configuration_parameters',
+                             'procedure_control']:
             if not hasattr(data_assembly, section_name):
                 continue
             section = eval(f'data_assembly.{section_name}')
             section_node_id = f'{da_node_id}.{section_name}'
             print(section_node_id)
             section_node = da_node.add_folder(section_node_id, section_name)
-            if section_name in ['op_src_mode', 'state_machine', 'control_elements']:
+            if section_name in ['op_src_mode', 'state_machine', 'control_elements', 'procedure_control']:
                 self._create_opcua_objects_for_attributes(section, section_node_id, section_node)
             elif section_name in ['configuration_parameters']:
                 for parameter in data_assembly.configuration_parameters.values():
@@ -63,6 +68,7 @@ class PEA:
             # We attach communication objects to be able to write values on opcua server on attributes change
             opcua_node_obj = parent_opcua_object.add_variable(attribute_node_id, attr.name, attr.init_value,
                                                               datatype=None)
+            print(f'OPCUA Node: {attribute_node_id}, Name: {attr.name}, Value: {attr.init_value}')
             opcua_node_obj.set_writable(False)
             opcua_comm_obj = OPCUACommunicationObject(opcua_node_obj, node_id=opcua_node_obj)
             attr.attach_communication_object(opcua_comm_obj)

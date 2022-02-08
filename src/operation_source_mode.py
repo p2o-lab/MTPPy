@@ -1,12 +1,15 @@
 from src.attribute import Attribute
 
 
-class OperationStateMode:
+class OperationSourceMode:
 
     def __init__(self):
         self.attributes = {}
         self._init_attributes()
-        self.cb_exit_offline_opmode = None
+        self.exit_offline_callbacks = []
+
+    def add_exit_offline_callback(self, callback: callable):
+        self.exit_offline_callbacks.append(callback)
 
     def _init_attributes(self):
         self.attributes = {
@@ -41,9 +44,9 @@ class OperationStateMode:
         self.attributes['StateAutAct'].set_value(True)
         self.attributes['StateOffAct'].set_value(False)
 
-        if self.cb_exit_offline_opmode is not None:
-            print('Applying exit offline mode callback')
-            self.cb_exit_offline_opmode()
+        if self.exit_offline_callbacks is not None:
+            print('Applying exit offline mode callbacks')
+            [cb() for cb in self.exit_offline_callbacks]
         print('Operation mode is now aut')
         self._src_to_int()
 
@@ -51,9 +54,9 @@ class OperationStateMode:
         self.attributes['StateOpAct'].set_value(True)
         self.attributes['StateAutAct'].set_value(False)
         self.attributes['StateOffAct'].set_value(False)
-        if self.cb_exit_offline_opmode is not None:
-            print('Applying exit offline mode callback')
-            self.cb_exit_offline_opmode()
+        if self.exit_offline_callbacks is not None:
+            print('Applying exit offline mode callbacks')
+            [cb() for cb in self.exit_offline_callbacks]
         print('Operation mode is now op')
 
     def set_state_channel(self, value):
