@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+from src.suc_data_assembly import SUCServiceControl
 from src.attribute import Attribute
 from src.thread_control import ThreadControl
 from src.operation_source_mode import OperationSourceMode
@@ -9,34 +10,24 @@ from src.state_codes import StateCodes
 StateCodes = StateCodes()
 
 
-class Service:
+class Service(SUCServiceControl):
     def __init__(self, tag_name, tag_description):
-        self.tag_name = tag_name
-        self.tag_description = tag_description
+        super().__init__(tag_name, tag_description)
 
         self.thread_ctrl = ThreadControl()
         self.op_src_mode = OperationSourceMode()
         self.op_src_mode.add_exit_offline_callback(self.set_configuration_parameters)
 
-        self.state_machine = StateMachine(operation_source_mode=self.op_src_mode,
-                                          execution_routine=self.execute_state)
+        self.procedures = {}
+        self.procedure_control = ProcedureControl(self.procedures, self.op_src_mode)
 
-        self.procedure_control = ProcedureControl(self.op_src_mode)
-        self.op_src_mode.add_exit_offline_callback(self.procedure_control.set_procedure_cur)
-
-        self._init_attributes()
         self.configuration_parameters = {}
 
         self.op_src_mode.add_exit_offline_callback(self.init_idle_state)
 
-    def _init_attributes(self):
-        self.attributes = {
-            'PosTextID': Attribute('StateChannel', bool, init_value=0),
-            'InteractQuestionID': Attribute('StateOffAut', bool, init_value=0),
-            'InteractAnswerID': Attribute('StateOpAut', bool, init_value=0),
-            'WQC': Attribute('WQC', int, init_value=255),
-            'OSLevel': Attribute('OSLevel', int, init_value=0),
-        }
+        self.state_machine = StateMachine(operation_source_mode=self.op_src_mode,
+                                          procedure_control=self.procedure_control,
+                                          execution_routine=self.execute_state)
 
     def init_idle_state(self):
         self.execute_state(forced=True)
@@ -56,10 +47,15 @@ class Service:
     def set_configuration_parameters(self):
         print('Applying service configuration parameters')
         for configuration_parameter in self.configuration_parameters.values():
-            configuration_parameter.control_elements.set_v_out()
+            configuration_parameter.set_v_out()
 
     def add_procedure(self, procedure):
-        self.procedure_control.add_procedure(procedure)
+        self.procedures[procedure.attributes['ProcedureId'].value] = procedure
+        if procedure.attributes['IsDefault'].value:
+            self.procedure_control.default_procedure_id = procedure.attributes['ProcedureId'].value
+            self.procedure_control.attributes['ProcedureOp'].init_value = self.procedure_control.default_procedure_id
+            self.procedure_control.attributes['ProcedureInt'].init_value = self.procedure_control.default_procedure_id
+            self.procedure_control.attributes['ProcedureExt'].init_value = self.procedure_control.default_procedure_id
 
     @abstractmethod
     def idle(self):

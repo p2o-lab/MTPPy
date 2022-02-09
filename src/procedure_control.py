@@ -3,9 +3,9 @@ from src.attribute import Attribute
 
 class ProcedureControl:
 
-    def __init__(self, service_op_src_mode):
+    def __init__(self, procedures, service_op_src_mode):
+        self.procedures = procedures
         self.op_src_mode = service_op_src_mode
-        self.procedures = {}
         self.default_procedure_id = None
 
         self.attributes = {}
@@ -19,14 +19,6 @@ class ProcedureControl:
             'ProcedureCur': Attribute('ProcedureCur', int, init_value=0),
             'ProcedureReq': Attribute('ProcedureReq', int, init_value=0),
         }
-
-    def add_procedure(self, procedure):
-        self.procedures[procedure.procedure_id] = procedure
-        if procedure.is_default:
-            self.default_procedure_id = procedure.procedure_id
-            self.attributes['ProcedureOp'].init_value = self.default_procedure_id
-            self.attributes['ProcedureInt'].init_value = self.default_procedure_id
-            self.attributes['ProcedureExt'].init_value = self.default_procedure_id
 
     def set_procedure_op(self, value):
         print('ProcedureOP set to %s' % value)

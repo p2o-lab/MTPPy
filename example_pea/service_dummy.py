@@ -1,5 +1,6 @@
 from src.service import Service
 import time
+import random
 
 
 class ServiceDummy(Service):
@@ -30,16 +31,22 @@ class ServiceDummy(Service):
             print(f'ProcedureCur is {self.procedure_control.get_procedure_cur()}')
             print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_ana'].tag_name,
-                     self.configuration_parameters['serv_param_ana'].control_elements.attributes['VOut'].value))
+                     self.configuration_parameters['serv_param_ana'].get_v_out()))
             print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_dint'].tag_name,
-                     self.configuration_parameters['serv_param_dint'].control_elements.attributes['VOut'].value))
+                     self.configuration_parameters['serv_param_dint'].get_v_out()))
             print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_bin'].tag_name,
-                     self.configuration_parameters['serv_param_bin'].control_elements.attributes['VOut'].value))
+                     self.configuration_parameters['serv_param_bin'].get_v_out()))
             print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_str'].tag_name,
-                     self.configuration_parameters['serv_param_str'].control_elements.attributes['VOut'].value))
+                     self.configuration_parameters['serv_param_str'].get_v_out()))
+
+            if self.procedure_control.get_procedure_cur() == 2:
+                self.procedures[2].report_values['proc_rv_ana'].set_v(random.random())
+                self.procedures[2].report_values['proc_rv_bin'].set_v(not self.procedures[2].report_values['proc_rv_bin'].attributes['V'].value)
+                self.procedures[2].report_values['proc_rv_dint'].set_v(random.randint(-100, 100))
+                self.procedures[2].report_values['proc_rv_str'].set_v(str(random.random()))
 
             cycle += 1
             time.sleep(1)

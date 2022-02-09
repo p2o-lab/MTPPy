@@ -4,11 +4,12 @@ from src.control_element_d_int_serv_param import ControlElementsDIntServParam
 from src.control_element_ana_serv_param import ControlElementsAnaServParam
 from src.control_element_string_serv_param import ControlElementsStringServParam
 
+from src.suc_data_assembly import SUCOperationElement
 
-class BinServParam:
+
+class BinServParam(SUCOperationElement):
     def __init__(self, tag_name, tag_description='', v_state_0='false', v_state_1='true'):
-        self.tag_name = tag_name
-        self.tag_description = tag_description
+        super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
         self.control_elements = ControlElementsBinServParam(v_state_0=v_state_0,
@@ -16,10 +17,9 @@ class BinServParam:
                                                             op_src_mode=self.op_src_mode)
 
 
-class DIntServParam:
+class DIntServParam(SUCOperationElement):
     def __init__(self, tag_name, tag_description='', v_min=0, v_max=100, v_scl_min=0, v_scl_max=100, v_unit=0):
-        self.tag_name = tag_name
-        self.tag_description = tag_description
+        super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
         self.control_elements = ControlElementsDIntServParam(v_min=v_min,
@@ -30,10 +30,9 @@ class DIntServParam:
                                                              op_src_mode=self.op_src_mode)
 
 
-class AnaServParam:
+class AnaServParam(SUCOperationElement):
     def __init__(self, tag_name, tag_description='', v_min=0, v_max=100, v_scl_min=0, v_scl_max=100, v_unit=0):
-        self.tag_name = tag_name
-        self.tag_description = tag_description
+        super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
         self.control_elements = ControlElementsAnaServParam(v_min=v_min,
@@ -44,10 +43,9 @@ class AnaServParam:
                                                             op_src_mode=self.op_src_mode)
 
 
-class StringServParam:
+class StringServParam(SUCOperationElement):
     def __init__(self, tag_name, tag_description=''):
-        self.tag_name = tag_name
-        self.tag_description = tag_description
+        super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
         self.control_elements = ControlElementsStringServParam(op_src_mode=self.op_src_mode)

@@ -1,8 +1,9 @@
-class Procedure:
-    def __init__(self, procedure_id, is_self_completing=False, is_default=False):
-        self.procedure_id = procedure_id
-        self.is_self_completing = is_self_completing
-        self.is_default = is_default
+from src.suc_data_assembly import SUCServiceProcedure
+
+
+class Procedure(SUCServiceProcedure):
+    def __init__(self, procedure_id, tag_name, tag_description='', is_self_completing=False, is_default=False):
+        super().__init__(procedure_id, tag_name, tag_description, is_self_completing, is_default)
         self.procedure_parameters = {}
         self.process_value_ins = {}
         self.report_values = {}

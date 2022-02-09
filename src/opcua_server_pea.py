@@ -42,26 +42,34 @@ class OPCUAServerPEA:
         services_node_id = f'ns={ns};s=services'
         services_node = server.add_folder(services_node_id, "services")
         for service in self.service_set.values():
-            self._create_opcua_objects_for_data_assemblies(service, services_node_id, services_node)
+            self._create_opcua_objects_for_folders(service, services_node_id, services_node)
 
-    def _create_opcua_objects_for_data_assemblies(self, data_assembly, parent_opcua_prefix, parent_opcua_object):
+    def _create_opcua_objects_for_folders(self, data_assembly, parent_opcua_prefix, parent_opcua_object):
         da_node_id = f'{parent_opcua_prefix}.{data_assembly.tag_name}'
         da_node = parent_opcua_object.add_folder(da_node_id, data_assembly.tag_name)
-        for section_name in ['op_src_mode', 'state_machine', 'control_elements', 'configuration_parameters',
-                             'procedure_control']:
+
+        folders = ['configuration_parameters',
+                   'procedures',
+                   'procedure_parameters', 'process_value_ins', 'report_values', 'process_value_outs']
+        leaves = ['op_src_mode', 'state_machine', 'procedure_control']
+
+        if hasattr(data_assembly, 'attributes'):
+            self._create_opcua_objects_for_leaves(data_assembly, da_node_id, da_node)
+
+        for section_name in folders+leaves:
             if not hasattr(data_assembly, section_name):
                 continue
             section = eval(f'data_assembly.{section_name}')
             section_node_id = f'{da_node_id}.{section_name}'
             print(section_node_id)
             section_node = da_node.add_folder(section_node_id, section_name)
-            if section_name in ['op_src_mode', 'state_machine', 'control_elements', 'procedure_control']:
-                self._create_opcua_objects_for_attributes(section, section_node_id, section_node)
-            elif section_name in ['configuration_parameters']:
-                for parameter in data_assembly.configuration_parameters.values():
-                    self._create_opcua_objects_for_data_assemblies(parameter, section_node_id, section_node)
+            if section_name in folders:
+                for parameter in eval(f'data_assembly.{section_name}.values()'):
+                    self._create_opcua_objects_for_folders(parameter, section_node_id, section_node)
+            if section_name in leaves:
+                self._create_opcua_objects_for_leaves(section, section_node_id, section_node)
 
-    def _create_opcua_objects_for_attributes(self, object, parent_opcua_prefix, parent_opcua_object):
+    def _create_opcua_objects_for_leaves(self, object, parent_opcua_prefix, parent_opcua_object):
         for attr in object.attributes.values():
             attribute_node_id = f'{parent_opcua_prefix}.{attr.name}'
 

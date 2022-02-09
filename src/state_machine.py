@@ -7,14 +7,18 @@ CommandCodes = CommandCodes()
 
 
 class StateMachine:
-    def __init__(self, operation_source_mode, execution_routine):
-        self.attributes = {}
-        self._init_attributes()
+    def __init__(self, operation_source_mode, procedure_control, execution_routine):
+
         self.op_src_mode = operation_source_mode
-        self.act_state = StateCodes.idle
-        self.prev_state = StateCodes.idle
+        self.procedure_control = procedure_control
         self.execution_routine = execution_routine
         self.command_en_ctrl = CommandEnControl()
+
+        self.act_state = StateCodes.idle
+        self.prev_state = StateCodes.idle
+
+        self.attributes = {}
+        self._init_attributes()
 
     def _init_attributes(self):
         self.attributes = {
@@ -47,28 +51,11 @@ class StateMachine:
         if not self.command_en_ctrl.get_command(cmd_str):
             print(f'CommandEn does not permit to execute {cmd_str}')
             return
+        else:
+            print(f'CommandEn permits to execute {cmd_str}')
 
-        print(f'CommandEn permits to execute {cmd_str}')
-        if com_var == 2:
-            self.reset(sc)
-        elif com_var == 4:
-            self.start(sc)
-        elif com_var == 8:
-            self.stop(sc)
-        elif com_var == 16:
-            self.hold(sc)
-        elif com_var == 32:
-            self.unhold(sc)
-        elif com_var == 64:
-            self.pause(sc)
-        elif com_var == 128:
-            self.resume(sc)
-        elif com_var == 256:
-            self.abort(sc)
-        elif com_var == 512:
-            self.restart(sc)
-        elif com_var == 1024:
-            self.complete(sc)
+        eval(f'self.{CommandCodes.int_code[com_var]}(sc)')
+        return
 
     def change_state_to(self, new_state):
         self.act_state = new_state
@@ -85,6 +72,7 @@ class StateMachine:
 
     def start(self, sc=True):
         if self.act_state == StateCodes.idle:
+            self.procedure_control.set_procedure_cur()
             self.change_state_to(StateCodes.starting)
         elif self.act_state == StateCodes.starting and sc:
             self.change_state_to(StateCodes.execute)
