@@ -1,0 +1,2 @@
+opcua~=0.98.13
+setuptools~=59.2.0

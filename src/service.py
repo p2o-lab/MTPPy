@@ -1,7 +1,6 @@
 from abc import abstractmethod
 
 from src.suc_data_assembly import SUCServiceControl
-from src.attribute import Attribute
 from src.thread_control import ThreadControl
 from src.operation_source_mode import OperationSourceMode
 from src.state_machine import StateMachine
