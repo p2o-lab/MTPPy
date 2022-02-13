@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='MTPPy',
-    version='0.0.5',
+    version='0.0.6',
     url='',
     license='',
     author='Valentin Khaydarov, Tobias Kock',

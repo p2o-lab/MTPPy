@@ -76,7 +76,7 @@ class OPCUAServerPEA:
             # We attach communication objects to be able to write values on opcua server on attributes change
             opcua_type = self.infere_data_type(attr.type)
             opcua_node_obj = parent_opcua_object.add_variable(attribute_node_id, attr.name, attr.init_value,
-                                                              datatype=opcua_type)
+                                                              varianttype=opcua_type)
             print(f'OPCUA Node: {attribute_node_id}, Name: {attr.name}, Value: {attr.init_value}')
             opcua_node_obj.set_writable(False)
             opcua_comm_obj = OPCUACommunicationObject(opcua_node_obj, node_id=opcua_node_obj)
