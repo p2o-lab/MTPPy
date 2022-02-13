@@ -11,8 +11,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: check tag
+    - name: Check tag
       run: echo ${GITHUB_REF##*/}
+    - name: Update version tag
+      run: echo "__version__ = '${GITHUB_REF##*/}'" > /src/mtppy/__init__.py
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
