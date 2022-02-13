@@ -1,5 +1,5 @@
 from opcua import Server, ua
-from src.communication_object import OPCUACommunicationObject
+from mtppy.communication_object import OPCUACommunicationObject
 
 
 class OPCUAServerPEA:
@@ -74,17 +74,18 @@ class OPCUAServerPEA:
             attribute_node_id = f'{parent_opcua_prefix}.{attr.name}'
 
             # We attach communication objects to be able to write values on opcua server on attributes change
+            opcua_type = self.infere_data_type(attr.type)
             opcua_node_obj = parent_opcua_object.add_variable(attribute_node_id, attr.name, attr.init_value,
-                                                              datatype=None)
+                                                              datatype=opcua_type)
             print(f'OPCUA Node: {attribute_node_id}, Name: {attr.name}, Value: {attr.init_value}')
             opcua_node_obj.set_writable(False)
             opcua_comm_obj = OPCUACommunicationObject(opcua_node_obj, node_id=opcua_node_obj)
             attr.attach_communication_object(opcua_comm_obj)
 
             # We subscribe to nodes that are writable attributes
-            if attr.cb_value_change is not None:
+            if attr.sub_cb is not None:
                 opcua_node_obj.set_writable(True)
-                self.subscription_list.append(opcua_node_obj, attr.cb_value_change)
+                self.subscription_list.append(opcua_node_obj, attr.sub_cb)
 
     def infere_data_type(self, attribute_data_type):
         if attribute_data_type == int:

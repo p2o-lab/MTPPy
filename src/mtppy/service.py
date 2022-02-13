@@ -1,11 +1,11 @@
 from abc import abstractmethod
 
-from src.suc_data_assembly import SUCServiceControl
-from src.thread_control import ThreadControl
-from src.operation_source_mode import OperationSourceMode
-from src.state_machine import StateMachine
-from src.procedure_control import ProcedureControl
-from src.state_codes import StateCodes
+from mtppy.suc_data_assembly import SUCServiceControl
+from mtppy.thread_control import ThreadControl
+from mtppy.operation_source_mode import OperationSourceMode
+from mtppy.state_machine import StateMachine
+from mtppy.procedure_control import ProcedureControl
+from mtppy.state_codes import StateCodes
 StateCodes = StateCodes()
 
 

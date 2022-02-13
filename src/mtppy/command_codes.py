@@ -1,6 +1,6 @@
 class CommandCodes:
     def __init__(self):
-        self.reset = 1
+        self.reset = 2
         self.start = 4
         self.stop = 8
         self.hold = 16
@@ -12,7 +12,7 @@ class CommandCodes:
         self.complete = 1024
 
         self.int_code = {}
-        self.int_code[1] ='reset'
+        self.int_code[2] ='reset'
         self.int_code[4] = 'start'
         self.int_code[8] = 'stop'
         self.int_code[16] = 'hold'

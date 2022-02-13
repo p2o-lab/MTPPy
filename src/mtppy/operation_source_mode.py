@@ -1,4 +1,4 @@
-from src.attribute import Attribute
+from mtppy.attribute import Attribute
 
 
 class OperationSourceMode:
@@ -13,22 +13,22 @@ class OperationSourceMode:
 
     def _init_attributes(self):
         self.attributes = {
-            'StateChannel': Attribute('StateChannel', bool, init_value=False, cb_value_change=self.set_state_channel),
-            'StateOffAut': Attribute('StateOffAut', bool, init_value=False, cb_value_change=self.set_state_off_aut),
-            'StateOpAut': Attribute('StateOpAut', bool, init_value=False, cb_value_change=self.set_state_op_aut),
-            'StateAutAut': Attribute('StateAutAut', bool, init_value=False, cb_value_change=self.set_state_aut_aut),
-            'StateOffOp': Attribute('StateOffOp', bool, init_value=False, cb_value_change=self.set_state_off_op),
-            'StateOpOp': Attribute('StateOpOp', bool, init_value=False, cb_value_change=self.set_state_op_op),
-            'StateAutOp': Attribute('StateAutOp', bool, init_value=False, cb_value_change=self.set_state_aut_op),
+            'StateChannel': Attribute('StateChannel', bool, init_value=False, sub_cb=self.set_state_channel),
+            'StateOffAut': Attribute('StateOffAut', bool, init_value=False, sub_cb=self.set_state_off_aut),
+            'StateOpAut': Attribute('StateOpAut', bool, init_value=False, sub_cb=self.set_state_op_aut),
+            'StateAutAut': Attribute('StateAutAut', bool, init_value=False, sub_cb=self.set_state_aut_aut),
+            'StateOffOp': Attribute('StateOffOp', bool, init_value=False, sub_cb=self.set_state_off_op),
+            'StateOpOp': Attribute('StateOpOp', bool, init_value=False, sub_cb=self.set_state_op_op),
+            'StateAutOp': Attribute('StateAutOp', bool, init_value=False, sub_cb=self.set_state_aut_op),
             'StateOpAct': Attribute('StateOpAct', bool, init_value=False),
             'StateAutAct': Attribute('StateAutAct', bool, init_value=False),
             'StateOffAct': Attribute('StateOffAct', bool, init_value=True),
 
-            'SrcChannel': Attribute('SrcChannel', bool, init_value=False, cb_value_change=self.set_src_channel),
-            'SrcExtAut': Attribute('SrcExtAut', bool, init_value=False, cb_value_change=self.set_src_ext_aut),
-            'SrcIntOp': Attribute('SrcIntOp', bool, init_value=False, cb_value_change=self.set_src_int_op),
-            'SrcIntAut': Attribute('SrcIntAut', bool, init_value=False, cb_value_change=self.set_src_int_aut),
-            'SrcExtOp': Attribute('SrcExtOp', bool, init_value=False, cb_value_change=self.set_src_ext_op),
+            'SrcChannel': Attribute('SrcChannel', bool, init_value=False, sub_cb=self.set_src_channel),
+            'SrcExtAut': Attribute('SrcExtAut', bool, init_value=False, sub_cb=self.set_src_ext_aut),
+            'SrcIntOp': Attribute('SrcIntOp', bool, init_value=False, sub_cb=self.set_src_int_op),
+            'SrcIntAut': Attribute('SrcIntAut', bool, init_value=False, sub_cb=self.set_src_int_aut),
+            'SrcExtOp': Attribute('SrcExtOp', bool, init_value=False, sub_cb=self.set_src_ext_op),
             'SrcIntAct': Attribute('SrcIntAct', bool, init_value=False),
             'SrcExtAct': Attribute('SrcExtAct', bool, init_value=False)
         }

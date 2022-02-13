@@ -1,4 +1,4 @@
-from src.attribute import Attribute
+from mtppy.attribute import Attribute
 
 
 class SUCDataAssembly:

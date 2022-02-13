@@ -1,9 +1,8 @@
-from setuptools import setup
+import setuptools
 
-setup(
-    name='MTyPy',
-    version='0.0.1',
-    packages=[''],
+setuptools.setup(
+    name='MTPPy',
+    version='0.0.5',
     url='',
     license='',
     author='Valentin Khaydarov, Tobias Kock',
@@ -11,5 +10,7 @@ setup(
     description='Open-source modular automation',
     install_requires=[
         'opcua~=0.98.13'
-    ]
+    ],
+    package_dir={"": "src"},
+    packages=setuptools.find_packages(where="src")
 )
