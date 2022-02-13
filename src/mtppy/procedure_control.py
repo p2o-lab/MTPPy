@@ -1,4 +1,4 @@
-from src.attribute import Attribute
+from mtppy.attribute import Attribute
 
 
 class ProcedureControl:
@@ -13,9 +13,9 @@ class ProcedureControl:
 
     def _init_attributes(self):
         self.attributes = {
-            'ProcedureOp': Attribute('ProcedureOp', int, init_value=0, cb_value_change=self.set_procedure_op),
-            'ProcedureInt': Attribute('ProcedureInt', int, init_value=0, cb_value_change=self.set_procedure_int),
-            'ProcedureExt': Attribute('ProcedureExt', int, init_value=0, cb_value_change=self.set_procedure_ext),
+            'ProcedureOp': Attribute('ProcedureOp', int, init_value=0, sub_cb=self.set_procedure_op),
+            'ProcedureInt': Attribute('ProcedureInt', int, init_value=0, sub_cb=self.set_procedure_int),
+            'ProcedureExt': Attribute('ProcedureExt', int, init_value=0, sub_cb=self.set_procedure_ext),
             'ProcedureCur': Attribute('ProcedureCur', int, init_value=0),
             'ProcedureReq': Attribute('ProcedureReq', int, init_value=0),
         }

@@ -1,4 +1,4 @@
-from src.suc_data_assembly import SUCServiceProcedure
+from mtppy.suc_data_assembly import SUCServiceProcedure
 
 
 class Procedure(SUCServiceProcedure):

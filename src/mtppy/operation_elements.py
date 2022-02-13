@@ -1,7 +1,7 @@
-from src.attribute import Attribute
+from mtppy.attribute import Attribute
 
-from src.operation_source_mode import OperationSourceMode
-from src.suc_data_assembly import SUCOperationElement
+from mtppy.operation_source_mode import OperationSourceMode
+from mtppy.suc_data_assembly import SUCOperationElement
 
 
 class AnaServParam(SUCOperationElement):
@@ -16,9 +16,9 @@ class AnaServParam(SUCOperationElement):
         self.v_scl_max = v_scl_max
         self.v_unit = v_unit
 
-        self._add_attribute(Attribute('VOp', float, init_value=0, cb_value_change=self.set_v_op))
-        self._add_attribute(Attribute('VInt', float, init_value=0, cb_value_change=self.set_v_int))
-        self._add_attribute(Attribute('VExt', float, init_value=0, cb_value_change=self.set_v_ext))
+        self._add_attribute(Attribute('VOp', float, init_value=0, sub_cb=self.set_v_op))
+        self._add_attribute(Attribute('VInt', float, init_value=0, sub_cb=self.set_v_int))
+        self._add_attribute(Attribute('VExt', float, init_value=0, sub_cb=self.set_v_ext))
         self._add_attribute(Attribute('VReq', float, init_value=0))
         self._add_attribute(Attribute('VOut', float, init_value=0))
         self._add_attribute(Attribute('VFbk', float, init_value=0))
@@ -80,9 +80,9 @@ class BinServParam(SUCOperationElement):
         self.v_state_0 = v_state_0
         self.v_state_1 = v_state_1
 
-        self._add_attribute(Attribute('VOp', bool, init_value=False, cb_value_change=self.set_v_op))
-        self._add_attribute(Attribute('VInt', bool, init_value=False, cb_value_change=self.set_v_int))
-        self._add_attribute(Attribute('VExt', bool, init_value=False, cb_value_change=self.set_v_ext))
+        self._add_attribute(Attribute('VOp', bool, init_value=False, sub_cb=self.set_v_op))
+        self._add_attribute(Attribute('VInt', bool, init_value=False, sub_cb=self.set_v_int))
+        self._add_attribute(Attribute('VExt', bool, init_value=False, sub_cb=self.set_v_ext))
         self._add_attribute(Attribute('VReq', bool, init_value=False))
         self._add_attribute(Attribute('VOut', bool, init_value=False))
         self._add_attribute(Attribute('VFbk', bool, init_value=False))
@@ -135,9 +135,9 @@ class DIntServParam(SUCOperationElement):
         self.v_scl_max = v_scl_max
         self.v_unit = v_unit
 
-        self._add_attribute(Attribute('VOp', int, init_value=0, cb_value_change=self.set_v_op))
-        self._add_attribute(Attribute('VInt', int, init_value=0, cb_value_change=self.set_v_int))
-        self._add_attribute(Attribute('VExt', int, init_value=0, cb_value_change=self.set_v_ext))
+        self._add_attribute(Attribute('VOp', int, init_value=0, sub_cb=self.set_v_op))
+        self._add_attribute(Attribute('VInt', int, init_value=0, sub_cb=self.set_v_int))
+        self._add_attribute(Attribute('VExt', int, init_value=0, sub_cb=self.set_v_ext))
         self._add_attribute(Attribute('VReq', int, init_value=0))
         self._add_attribute(Attribute('VOut', int, init_value=0))
         self._add_attribute(Attribute('VFbk', int, init_value=0))
@@ -196,9 +196,9 @@ class StringServParam(SUCOperationElement):
 
         self.op_src_mode = OperationSourceMode()
 
-        self._add_attribute(Attribute('VOp', str, init_value='', cb_value_change=self.set_v_op))
-        self._add_attribute(Attribute('VInt', str, init_value='', cb_value_change=self.set_v_int))
-        self._add_attribute(Attribute('VExt', str, init_value='', cb_value_change=self.set_v_ext))
+        self._add_attribute(Attribute('VOp', str, init_value='', sub_cb=self.set_v_op))
+        self._add_attribute(Attribute('VInt', str, init_value='', sub_cb=self.set_v_int))
+        self._add_attribute(Attribute('VExt', str, init_value='', sub_cb=self.set_v_ext))
         self._add_attribute(Attribute('VReq', str, init_value=''))
         self._add_attribute(Attribute('VOut', str, init_value=''))
         self._add_attribute(Attribute('VFbk', str, init_value=''))
