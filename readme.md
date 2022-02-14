@@ -11,3 +11,5 @@ To upload the package into PyPi repository run following:
 py -m twine upload --repository pypi dist/*
 ```
 
+To integrate MTPPy in your software install the corresponding package from PyPi:
+https://pypi.org/project/MTPPy/
