@@ -7,6 +7,10 @@ class OperationSourceMode:
         self.attributes = {}
         self._init_attributes()
         self.exit_offline_callbacks = []
+        self.switch_to_offline_mode_allowed = False
+
+    def allow_switch_to_offline_mode(self, allow_flag):
+        self.switch_to_offline_mode_allowed = allow_flag
 
     def add_exit_offline_callback(self, callback: callable):
         self.exit_offline_callbacks.append(callback)
@@ -75,13 +79,13 @@ class OperationSourceMode:
                 self.attributes['StateAutOp'].set_value(False)
 
     def set_state_off_aut(self, value):
-        if self.attributes['StateChannel'].value and value:
+        if self.attributes['StateChannel'].value and value and self.switch_to_offline_mode_allowed:
             if self.attributes['StateAutAct'] or self.attributes['StateOpAct']:
                 self._opmode_to_off()
                 self.attributes['StateOffAut'].set_value(False)
 
     def set_state_off_op(self, value):
-        if not self.attributes['StateChannel'].value and value:
+        if not self.attributes['StateChannel'].value and value and self.switch_to_offline_mode_allowed:
             if self.attributes['StateAutAct'] or self.attributes['StateOpAct']:
                 self._opmode_to_off()
                 self.attributes['StateOffOp'].set_value(False)
