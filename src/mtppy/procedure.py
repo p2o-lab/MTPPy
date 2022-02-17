@@ -20,3 +20,8 @@ class Procedure(SUCServiceProcedure):
 
     def add_procedure_value_out(self, process_value_out):
         self.process_value_outs[process_value_out.tag_name] = process_value_out
+
+    def apply_procedure_parameters(self):
+        print('Applying procedure parameters')
+        for procedure_parameter in self.procedure_parameters.values():
+            procedure_parameter.set_v_out()

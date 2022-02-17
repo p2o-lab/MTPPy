@@ -2,20 +2,7 @@ from mtppy.attribute import Attribute
 
 
 class OperationSourceMode:
-
     def __init__(self):
-        self.attributes = {}
-        self._init_attributes()
-        self.exit_offline_callbacks = []
-        self.switch_to_offline_mode_allowed = False
-
-    def allow_switch_to_offline_mode(self, allow_flag):
-        self.switch_to_offline_mode_allowed = allow_flag
-
-    def add_exit_offline_callback(self, callback: callable):
-        self.exit_offline_callbacks.append(callback)
-
-    def _init_attributes(self):
         self.attributes = {
             'StateChannel': Attribute('StateChannel', bool, init_value=False, sub_cb=self.set_state_channel),
             'StateOffAut': Attribute('StateOffAut', bool, init_value=False, sub_cb=self.set_state_off_aut),
@@ -36,6 +23,14 @@ class OperationSourceMode:
             'SrcIntAct': Attribute('SrcIntAct', bool, init_value=False),
             'SrcExtAct': Attribute('SrcExtAct', bool, init_value=False)
         }
+        self.exit_offline_callbacks = []
+        self.switch_to_offline_mode_allowed = False
+
+    def allow_switch_to_offline_mode(self, allow_flag):
+        self.switch_to_offline_mode_allowed = allow_flag
+
+    def add_exit_offline_callback(self, callback: callable):
+        self.exit_offline_callbacks.append(callback)
 
     def _opmode_to_off(self):
         self.attributes['StateOpAct'].set_value(False)

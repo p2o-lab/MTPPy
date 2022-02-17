@@ -9,18 +9,6 @@ CommandCodes = CommandCodes()
 class StateMachine:
     def __init__(self, operation_source_mode, procedure_control, execution_routine):
 
-        self.op_src_mode = operation_source_mode
-        self.procedure_control = procedure_control
-        self.execution_routine = execution_routine
-        self.command_en_ctrl = CommandEnControl()
-
-        self.act_state = StateCodes.idle
-        self.prev_state = StateCodes.idle
-
-        self.attributes = {}
-        self._init_attributes()
-
-    def _init_attributes(self):
         self.attributes = {
             'CommandOp': Attribute('CommandOp', int, init_value=0, sub_cb=self.set_command_op),
             'CommandInt': Attribute('CommandInt', int, init_value=0, sub_cb=self.set_command_int),
@@ -29,6 +17,14 @@ class StateMachine:
             'StateCur': Attribute('StateCur', int, init_value=16),
             'CommandEn': Attribute('CommandEn', int, init_value=0),
         }
+
+        self.op_src_mode = operation_source_mode
+        self.procedure_control = procedure_control
+        self.execution_routine = execution_routine
+        self.command_en_ctrl = CommandEnControl()
+
+        self.act_state = StateCodes.idle
+        self.prev_state = StateCodes.idle
 
     def set_command_op(self, value):
         if self.op_src_mode.attributes['StateOpAct']:
@@ -73,7 +69,7 @@ class StateMachine:
     def start(self, sc=True):
         if self.act_state == StateCodes.idle:
             self.procedure_control.set_procedure_cur()
-            self.apply_procedure_parameters()
+            self.procedure_control.apply_procedure_parameters()
             self.change_state_to(StateCodes.starting)
         elif self.act_state == StateCodes.starting and sc:
             self.change_state_to(StateCodes.execute)
@@ -145,7 +141,7 @@ class StateMachine:
         return StateCodes.int_code[self.act_state]
 
     def is_state_str(self, state_str):
-        return self.act_state == eval(f'self.{state_str}')
+        return self.act_state == eval(f'StateCodes.{state_str}')
 
     def is_state_int(self, state_int):
         return self.act_state == state_int
@@ -158,8 +154,3 @@ class StateMachine:
 
     def update_prev_state(self):
         self.prev_state = self.act_state
-
-    def apply_procedure_parameters(self):
-        procedure = self.procedure_control.procedures[self.procedure_control.get_procedure_cur()]
-        for parameter in procedure.procedure_parameters.values():
-            parameter.set_v_out()

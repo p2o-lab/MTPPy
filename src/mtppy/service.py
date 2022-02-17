@@ -36,14 +36,13 @@ class Service(SUCServiceControl):
         #    return
         if not self.state_machine.is_state(self.state_machine.prev_state) or forced:
             state_str = self.state_machine.get_current_state_str()
-            self.state_machine.command_en_ctrl.execute(state_str)
-            self.thread_ctrl.execute(state_str, eval(f'self.{state_str}'))
             if self.state_machine.is_state('idle'):
                 self.op_src_mode.allow_switch_to_offline_mode(True)
             else:
                 self.op_src_mode.allow_switch_to_offline_mode(False)
+            self.state_machine.command_en_ctrl.execute(state_str)
+            self.thread_ctrl.execute(state_str, eval(f'self.{state_str}'))
             self.state_machine.update_prev_state()
-
 
     def add_configuration_parameter(self, configuration_parameter):
         self.configuration_parameters[configuration_parameter.tag_name] = configuration_parameter

@@ -2,16 +2,7 @@ from mtppy.attribute import Attribute
 
 
 class ProcedureControl:
-
     def __init__(self, procedures, service_op_src_mode):
-        self.procedures = procedures
-        self.op_src_mode = service_op_src_mode
-        self.default_procedure_id = None
-
-        self.attributes = {}
-        self._init_attributes()
-
-    def _init_attributes(self):
         self.attributes = {
             'ProcedureOp': Attribute('ProcedureOp', int, init_value=0, sub_cb=self.set_procedure_op),
             'ProcedureInt': Attribute('ProcedureInt', int, init_value=0, sub_cb=self.set_procedure_int),
@@ -19,6 +10,10 @@ class ProcedureControl:
             'ProcedureCur': Attribute('ProcedureCur', int, init_value=0),
             'ProcedureReq': Attribute('ProcedureReq', int, init_value=0),
         }
+
+        self.procedures = procedures
+        self.op_src_mode = service_op_src_mode
+        self.default_procedure_id = None
 
     def set_procedure_op(self, value):
         print('ProcedureOP set to %s' % value)
@@ -55,3 +50,6 @@ class ProcedureControl:
 
     def get_procedure_cur(self):
         return self.attributes['ProcedureCur'].value
+
+    def apply_procedure_parameters(self):
+        self.procedures[self.get_procedure_cur()].apply_procedure_parameters()
