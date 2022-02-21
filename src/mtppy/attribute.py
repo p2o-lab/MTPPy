@@ -17,6 +17,8 @@ class Attribute:
         if self.comm_obj is not None:
             if self.comm_obj.write_value_callback is not None:
                 self.comm_obj.write_value_callback(self.value)
+
+        print(f'New value for {self.name} is {self.value}')
         return True
 
     def correct_type(self, value):
