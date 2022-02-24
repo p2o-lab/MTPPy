@@ -1,0 +1,151 @@
+@startuml
+skinparam linetype ortho
+
+class DataAssembly << SystemUnitClass >> {
+TagName
+TagDescription
+}
+
+together {
+class IndicatorElement << SystemUnitClass >> {
+WQC
+}
+
+class BinView << SystemUnitClass >> {
+}
+
+class DIntView << SystemUnitClass >> {
+}
+
+class AnaView << SystemUnitClass >> {
+}
+
+class StringView << SystemUnitClass >> {
+}
+}
+
+together {
+class OperationElement << SystemUnitClass >> {
+OSLevel
+}
+
+class BinMan << SystemUnitClass >> {
+}
+
+class BinManInt << SystemUnitClass >> {
+WQC
+}
+
+class DIntMan << SystemUnitClass >> {
+}
+
+class DIntManInt << SystemUnitClass >> {
+WQC
+}
+
+class AnaMan << SystemUnitClass >> {
+}
+
+class AnaManInt << SystemUnitClass >> {
+WQC
+}
+}
+
+together {
+class InputElement << SystemUnitClass >> {
+WQC
+}
+
+class BinProcessValueIn << SystemUnitClass >> {
+}
+
+class DIntProcessValueIn << SystemUnitClass >> {
+}
+
+class AnaProcessValueIn << SystemUnitClass >> {
+}
+}
+
+together {
+class OperationElement << SystemUnitClass >> {
+OSLevel
+}
+
+class BinServParam << SystemUnitClass >> {
+WQC
+}
+
+class DIntServParam << SystemUnitClass >> {
+WQC
+}
+
+class AnaServParam << SystemUnitClass >> {
+WQC
+}
+
+class StringServParam << SystemUnitClass >> {
+WQC
+}
+}
+
+class DiagnosticElement << SystemUnitClass >> {
+WQC
+}
+
+class HealthStateView << SystemUnitClass >> {
+}
+
+class ServiceControl << SystemUnitClass >> {
+WQC
+OSLevel
+}
+
+
+DataAssembly <|-- IndicatorElement
+IndicatorElement <|-- BinView
+IndicatorElement <|-- DIntView
+IndicatorElement <|-- AnaView
+IndicatorElement <|-- StringView
+
+DataAssembly <|-- OperationElement
+OperationElement <|-- BinMan
+BinMan <|-- BinManInt
+OperationElement <|-- DIntMan
+DIntMan <|-- DIntManInt
+OperationElement <|-- AnaMan
+AnaMan <|-- AnaManInt
+
+OperationElement <|-- BinServParam
+OperationElement <|-- DIntServParam
+OperationElement <|-- AnaServParam
+OperationElement <|-- StringServParam
+
+DataAssembly <|-- InputElement
+InputElement <|-- BinProcessValueIn
+InputElement <|-- DIntProcessValueIn
+InputElement <|-- AnaProcessValueIn
+
+DataAssembly <|-- DiagnosticElement
+DiagnosticElement <|-- HealthStateView
+
+DataAssembly <|-- ServiceControl
+
+
+DataAssembly -[hidden]r- ServiceSet
+
+IndicatorElement -[hidden]r- OperationElement
+OperationElement -[hidden]r- InputElement
+InputElement -[hidden]r- DiagnosticElement
+DiagnosticElement -[hidden]r- ServiceControl
+
+BinView -[hidden]d- DIntView
+DIntView -[hidden]d- AnaView
+AnaView -[hidden]d- StringView
+
+BinServParam -[hidden]d- DIntServParam
+DIntServParam -[hidden]d- AnaServParam
+AnaServParam -[hidden]d- StringServParam
+
+ServiceProcedure -[hidden]r- ConfigurationParameter
+
+@enduml

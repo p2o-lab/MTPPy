@@ -17,6 +17,14 @@ class CommandEnControl:
         self.pause_enabled = True
         self.restart_enabled = True
 
+    def set_default(self):
+        for command_en in self.command_en:
+            self.command_en[command_en]['value'] = self.command_en[command_en]['default']
+
+    def disable_all(self):
+        for command_en in self.command_en:
+            self.command_en[command_en]['value'] = False
+
     def get_command(self, cmd):
         return self.command_en[cmd]['value']
 
@@ -24,7 +32,7 @@ class CommandEnControl:
         command_en_sum = 0
         for command in self.command_en.values():
             if command['value']:
-                command_en_sum = + command['int']
+                command_en_sum += command['int']
         return command_en_sum
 
     def set_command(self, cmd, value):
@@ -41,9 +49,9 @@ class CommandEnControl:
 
     def execute(self, state):
         print(f'CommandEn changed to correspond {state}')
-        exec(f'self.execute_{state}()')
+        exec(f'self._execute_{state}()')
 
-    def execute_idle(self):
+    def _execute_idle(self):
         self.set_command('reset', False)
         self.set_command('start', True)
         self.set_command('stop', True)
@@ -58,7 +66,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', False)
 
-    def execute_starting(self):
+    def _execute_starting(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -73,7 +81,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', True)
 
-    def execute_execute(self):
+    def _execute_execute(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -88,7 +96,7 @@ class CommandEnControl:
             self.set_command('restart', True)
         self.set_command('complete', True)
 
-    def execute_completing(self):
+    def _execute_completing(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -103,7 +111,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', True)
 
-    def execute_completed(self):
+    def _execute_completed(self):
         self.set_command('reset', True)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -118,7 +126,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', True)
 
-    def execute_resuming(self):
+    def _execute_resuming(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -133,7 +141,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', True)
 
-    def execute_paused(self):
+    def _execute_paused(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -148,7 +156,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', True)
 
-    def execute_pausing(self):
+    def _execute_pausing(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -163,7 +171,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', True)
 
-    def execute_holding(self):
+    def _execute_holding(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -178,7 +186,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', True)
 
-    def execute_held(self):
+    def _execute_held(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -193,7 +201,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', False)
 
-    def execute_unholding(self):
+    def _execute_unholding(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', True)
@@ -208,7 +216,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', False)
 
-    def execute_stopping(self):
+    def _execute_stopping(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', False)
@@ -223,7 +231,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', False)
 
-    def execute_stopped(self):
+    def _execute_stopped(self):
         self.set_command('reset', True)
         self.set_command('start', False)
         self.set_command('stop', False)
@@ -238,7 +246,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', False)
 
-    def execute_aborting(self):
+    def _execute_aborting(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', False)
@@ -253,7 +261,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', False)
 
-    def execute_aborted(self):
+    def _execute_aborted(self):
         self.set_command('reset', True)
         self.set_command('start', False)
         self.set_command('stop', False)
@@ -268,7 +276,7 @@ class CommandEnControl:
             self.set_command('restart', False)
         self.set_command('complete', False)
 
-    def execute_resetting(self):
+    def _execute_resetting(self):
         self.set_command('reset', False)
         self.set_command('start', False)
         self.set_command('stop', False)
@@ -282,4 +290,3 @@ class CommandEnControl:
         if self.restart_enabled:
             self.set_command('restart', False)
         self.set_command('complete', False)
-

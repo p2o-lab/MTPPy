@@ -32,11 +32,12 @@ class Service(SUCServiceControl):
         self.execute_state(forced=True)
 
     def execute_state(self, forced=False):
-        #if self.op_src_mode.attributes['StateOffAct']:
-        #    return
-        if not self.state_machine.is_state(self.state_machine.prev_state) or forced:
-            state_str = self.state_machine.get_current_state_str()
-            if self.state_machine.is_state('idle'):
+        if self.op_src_mode.attributes['StateOffAct'].value:
+            return
+
+        state_str = self.state_machine.get_current_state_str()
+        if not state_str == self.state_machine.prev_state or forced:
+            if state_str == 'idle':
                 self.op_src_mode.allow_switch_to_offline_mode(True)
             else:
                 self.op_src_mode.allow_switch_to_offline_mode(False)
