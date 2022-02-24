@@ -26,7 +26,10 @@ class CommandEnControl:
             self.command_en[command_en]['value'] = False
 
     def get_command(self, cmd):
-        return self.command_en[cmd]['value']
+        if cmd in self.command_en.keys():
+            return self.command_en[cmd]['value']
+        else:
+            return None
 
     def get_command_en(self):
         command_en_sum = 0
@@ -36,7 +39,8 @@ class CommandEnControl:
         return command_en_sum
 
     def set_command(self, cmd, value):
-        self.command_en[cmd]['value'] = value
+        if cmd in self.command_en.keys():
+            self.command_en[cmd]['value'] = value
 
     def enable_hold_loop(self, value: bool):
         self.hold_enabled = value
@@ -50,6 +54,9 @@ class CommandEnControl:
     def execute(self, state):
         print(f'CommandEn changed to correspond {state}')
         exec(f'self._execute_{state}()')
+
+    def _execute_undefined(self):
+        self.disable_all()
 
     def _execute_idle(self):
         self.set_command('reset', False)
@@ -109,7 +116,7 @@ class CommandEnControl:
         self.set_command('abort', True)
         if self.restart_enabled:
             self.set_command('restart', False)
-        self.set_command('complete', True)
+        self.set_command('complete', False)
 
     def _execute_completed(self):
         self.set_command('reset', True)
@@ -124,7 +131,7 @@ class CommandEnControl:
         self.set_command('abort', True)
         if self.restart_enabled:
             self.set_command('restart', False)
-        self.set_command('complete', True)
+        self.set_command('complete', False)
 
     def _execute_resuming(self):
         self.set_command('reset', False)
@@ -184,7 +191,7 @@ class CommandEnControl:
         self.set_command('abort', True)
         if self.restart_enabled:
             self.set_command('restart', False)
-        self.set_command('complete', True)
+        self.set_command('complete', False)
 
     def _execute_held(self):
         self.set_command('reset', False)
@@ -214,7 +221,7 @@ class CommandEnControl:
         self.set_command('abort', True)
         if self.restart_enabled:
             self.set_command('restart', False)
-        self.set_command('complete', False)
+        self.set_command('complete', True)
 
     def _execute_stopping(self):
         self.set_command('reset', False)

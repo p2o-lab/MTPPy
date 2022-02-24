@@ -23,11 +23,16 @@ class OperationSourceMode:
             'SrcIntAct': Attribute('SrcIntAct', bool, init_value=False),
             'SrcExtAct': Attribute('SrcExtAct', bool, init_value=False)
         }
-        self.exit_offline_callbacks = []
         self.switch_to_offline_mode_allowed = False
+
+        self.enter_offline_callbacks = []
+        self.exit_offline_callbacks = []
 
     def allow_switch_to_offline_mode(self, allow_flag):
         self.switch_to_offline_mode_allowed = allow_flag
+
+    def add_enter_offline_callback(self, callback: callable):
+        self.enter_offline_callbacks.append(callback)
 
     def add_exit_offline_callback(self, callback: callable):
         self.exit_offline_callbacks.append(callback)

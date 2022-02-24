@@ -15,18 +15,21 @@ class Service(SUCServiceControl):
 
         self.thread_ctrl = ThreadControl()
         self.op_src_mode = OperationSourceMode()
-        self.op_src_mode.add_exit_offline_callback(self.set_configuration_parameters)
+
+        self.configuration_parameters = {}
 
         self.procedures = {}
         self.procedure_control = ProcedureControl(self.procedures, self.op_src_mode)
 
-        self.configuration_parameters = {}
-
-        self.op_src_mode.add_exit_offline_callback(self.init_idle_state)
-
         self.state_machine = StateMachine(operation_source_mode=self.op_src_mode,
                                           procedure_control=self.procedure_control,
                                           execution_routine=self.execute_state)
+
+        self.op_src_mode.add_enter_offline_callback(self.state_machine.command_en_ctrl.disable_all)
+
+        self.op_src_mode.add_exit_offline_callback(self.state_machine.command_en_ctrl.set_default)
+        self.op_src_mode.add_exit_offline_callback(self.set_configuration_parameters)
+        self.op_src_mode.add_exit_offline_callback(self.init_idle_state)
 
     def init_idle_state(self):
         self.execute_state(forced=True)
