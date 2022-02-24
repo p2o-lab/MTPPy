@@ -2,7 +2,7 @@ from mtppy.attribute import Attribute
 
 
 class SUCDataAssembly:
-    def __init__(self, tag_name, tag_description=''):
+    def __init__(self, tag_name: str, tag_description=''):
         self.tag_name = tag_name
         self.tag_description = tag_description
         self.attributes = {
@@ -39,18 +39,19 @@ class SUCServiceControl(SUCDataAssembly):
 
 
 class SUCDiagnosticElement(SUCDataAssembly):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
         self._add_attribute(Attribute('WQC', int, init_value=255))
 
 
 class SUCHealthStateView(SUCDiagnosticElement):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
 
 
 class SUCServiceProcedure(SUCOperationElement):
-    def __init__(self, procedure_id, tag_name, tag_description, is_self_completing=False, is_default=True):
+    def __init__(self, procedure_id: int, tag_name: str, tag_description: str, is_self_completing=False,
+                 is_default=True):
         super().__init__(tag_name, tag_description)
         self._add_attribute(Attribute('IsSelfCompleting', bool, init_value=is_self_completing))
         self._add_attribute(Attribute('ProcedureId', int, init_value=procedure_id))

@@ -6,11 +6,13 @@ from mtppy.operation_source_mode import OperationSourceMode
 from mtppy.state_machine import StateMachine
 from mtppy.procedure_control import ProcedureControl
 from mtppy.state_codes import StateCodes
+from mtppy.procedure import Procedure
+from mtppy.suc_data_assembly import SUCOperationElement
 StateCodes = StateCodes()
 
 
 class Service(SUCServiceControl):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
 
         self.thread_ctrl = ThreadControl()
@@ -28,7 +30,7 @@ class Service(SUCServiceControl):
         self.op_src_mode.add_enter_offline_callback(self.state_machine.command_en_ctrl.disable_all)
 
         self.op_src_mode.add_exit_offline_callback(self.state_machine.command_en_ctrl.set_default)
-        self.op_src_mode.add_exit_offline_callback(self.set_configuration_parameters)
+        self.op_src_mode.add_exit_offline_callback(self.apply_configuration_parameters)
         self.op_src_mode.add_exit_offline_callback(self.init_idle_state)
 
     def init_idle_state(self):
@@ -48,15 +50,15 @@ class Service(SUCServiceControl):
             self.thread_ctrl.execute(state_str, eval(f'self.{state_str}'))
             self.state_machine.update_prev_state()
 
-    def add_configuration_parameter(self, configuration_parameter):
+    def add_configuration_parameter(self, configuration_parameter: SUCOperationElement):
         self.configuration_parameters[configuration_parameter.tag_name] = configuration_parameter
 
-    def set_configuration_parameters(self):
+    def apply_configuration_parameters(self):
         print('Applying service configuration parameters')
         for configuration_parameter in self.configuration_parameters.values():
             configuration_parameter.set_v_out()
 
-    def add_procedure(self, procedure):
+    def add_procedure(self, procedure: Procedure):
         self.procedures[procedure.attributes['ProcedureId'].value] = procedure
         if procedure.attributes['IsDefault'].value:
             self.procedure_control.default_procedure_id = procedure.attributes['ProcedureId'].value

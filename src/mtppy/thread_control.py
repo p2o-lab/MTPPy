@@ -24,25 +24,25 @@ class ThreadControl:
             'resetting': {'default': False, 'value': False},
         }
 
-    def set_flag(self, flag, value):
+    def set_flag(self, flag: str, value: bool):
         self.thread_stop_flags[flag]['value'] = value
 
-    def set_all_true_except(self, flag_exc):
+    def set_all_true_except(self, flag_exc: str):
         print(f'Flag {flag_exc} set to False (rest are True)')
         for flag_key in self.thread_stop_flags:
             if flag_key == flag_exc:
                 continue
             self.set_flag(flag_key, True)
 
-    def get_flag(self, flag):
+    def get_flag(self, flag: str):
         return self.thread_stop_flags[flag]['value']
 
-    def execute_mod(self, state, function):
+    def execute_mod(self, state: str, function: callable):
         print(f'Execute thread control of state {state}')
         self.set_all_true_except(state)
         Thread(target=function).start()
 
-    def execute(self, state, function):
+    def execute(self, state:str, function: callable):
         print(f'Execute thread control of state {state}')
         exec(f'self.execute_{state}()')
         Thread(target=function).start()

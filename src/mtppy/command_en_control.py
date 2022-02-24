@@ -25,7 +25,7 @@ class CommandEnControl:
         for command_en in self.command_en:
             self.command_en[command_en]['value'] = False
 
-    def get_command(self, cmd):
+    def get_command(self, cmd: str):
         if cmd in self.command_en.keys():
             return self.command_en[cmd]['value']
         else:
@@ -38,7 +38,7 @@ class CommandEnControl:
                 command_en_sum += command['int']
         return command_en_sum
 
-    def set_command(self, cmd, value):
+    def set_command(self, cmd: str, value: bool):
         if cmd in self.command_en.keys():
             self.command_en[cmd]['value'] = value
 
@@ -51,7 +51,7 @@ class CommandEnControl:
     def enable_restart(self, value: bool):
         self.restart_enabled = value
 
-    def execute(self, state):
+    def execute(self, state: str):
         print(f'CommandEn changed to correspond {state}')
         exec(f'self._execute_{state}()')
 

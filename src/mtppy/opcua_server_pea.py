@@ -1,5 +1,6 @@
 from opcua import Server, ua
 from mtppy.communication_object import OPCUACommunicationObject
+from mtppy.service import Service
 
 
 class OPCUAServerPEA:
@@ -11,7 +12,7 @@ class OPCUAServerPEA:
         self.subscription_list = SubscriptionList()
         self.init_opcua_server()
 
-    def add_service(self, service):
+    def add_service(self, service: Service):
         self.service_set[service.tag_name] = service
 
     def init_opcua_server(self):

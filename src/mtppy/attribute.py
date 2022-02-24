@@ -1,5 +1,5 @@
 class Attribute:
-    def __init__(self, name, data_type, init_value, sub_cb=None):
+    def __init__(self, name: str, data_type, init_value, sub_cb=None):
         self.name = name
         self.type = data_type
         corrected_value = self.correct_type(init_value)

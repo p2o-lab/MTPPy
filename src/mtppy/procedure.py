@@ -2,7 +2,7 @@ from mtppy.suc_data_assembly import *
 
 
 class Procedure(SUCServiceProcedure):
-    def __init__(self, procedure_id, tag_name, tag_description='', is_self_completing=False, is_default=False):
+    def __init__(self, procedure_id: int, tag_name: str, tag_description='', is_self_completing=False, is_default=False):
         super().__init__(procedure_id, tag_name, tag_description, is_self_completing, is_default)
         self.procedure_parameters = {}
         self.process_value_ins = {}
