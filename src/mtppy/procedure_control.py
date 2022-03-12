@@ -18,17 +18,17 @@ class ProcedureControl:
 
     def set_procedure_op(self, value: int):
         print('ProcedureOP set to %s' % value)
-        if self.op_src_mode.attributes['StateOpAct']:
+        if self.op_src_mode.attributes['StateOpAct'].value:
             self.set_procedure_req(value)
 
     def set_procedure_int(self, value: int):
         print('ProcedureInt set to %s' % value)
-        if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcIntAct']:
+        if self.op_src_mode.attributes['StateAutAct'].value and self.op_src_mode.attributes['SrcIntAct'].value:
             self.set_procedure_req(value)
 
     def set_procedure_ext(self, value: int):
         print('ProcedureExt set to %s' % value)
-        if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcExtAct']:
+        if self.op_src_mode.attributes['StateAutAct'].value and self.op_src_mode.attributes['SrcExtAct'].value:
             self.set_procedure_req(value)
 
     def valid_value(self, value: int):

@@ -46,7 +46,6 @@ class Service(SUCServiceControl):
                 self.op_src_mode.allow_switch_to_offline_mode(True)
             else:
                 self.op_src_mode.allow_switch_to_offline_mode(False)
-            self.state_machine.command_en_ctrl.execute(state_str)
             self.thread_ctrl.execute(state_str, eval(f'self.{state_str}'))
             self.state_machine.update_prev_state()
 

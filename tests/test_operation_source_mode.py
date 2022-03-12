@@ -6,7 +6,6 @@ def init_op_source_mode(op_mode='off',
                         src_mode='int',
                         src_channel=False,
                         allow_switch_to_offline=True):
-
     op_src_mode = OperationSourceMode()
 
     if allow_switch_to_offline:

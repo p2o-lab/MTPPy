@@ -3,7 +3,7 @@ class CommandEnControl:
         self.command_en = {
             'undefined': {'default': False, 'value': False, 'bit_no': 0, 'int': 1},
             'reset': {'default': False, 'value': False, 'bit_no': 1, 'int': 2},
-            'start': {'default': False, 'value': False, 'bit_no': 2, 'int': 4},
+            'start': {'default': True, 'value': True, 'bit_no': 2, 'int': 4},
             'stop': {'default': True, 'value': True, 'bit_no': 3, 'int': 8},
             'hold': {'default': False, 'value': False, 'bit_no': 4, 'int': 16},
             'unhold': {'default': False, 'value': False, 'bit_no': 5, 'int': 32},
@@ -38,7 +38,7 @@ class CommandEnControl:
                 command_en_sum += command['int']
         return command_en_sum
 
-    def set_command(self, cmd: str, value: bool):
+    def _set_command(self, cmd: str, value: bool):
         if cmd in self.command_en.keys():
             self.command_en[cmd]['value'] = value
 
@@ -59,241 +59,241 @@ class CommandEnControl:
         self.disable_all()
 
     def _execute_idle(self):
-        self.set_command('reset', False)
-        self.set_command('start', True)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', True)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_starting(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', True)
-            self.set_command('unhold', False)
+            self._set_command('hold', True)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', True)
+            self._set_command('restart', False)
+        self._set_command('complete', True)
 
     def _execute_execute(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', True)
-            self.set_command('unhold', False)
+            self._set_command('hold', True)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', True)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', True)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', True)
-        self.set_command('complete', True)
+            self._set_command('restart', True)
+        self._set_command('complete', True)
 
     def _execute_completing(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', True)
-            self.set_command('unhold', False)
+            self._set_command('hold', True)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_completed(self):
-        self.set_command('reset', True)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', True)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_resuming(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', True)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', True)
+            self._set_command('restart', False)
+        self._set_command('complete', True)
 
     def _execute_paused(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', True)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', True)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', True)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', True)
+            self._set_command('restart', False)
+        self._set_command('complete', True)
 
     def _execute_pausing(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', True)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', True)
+            self._set_command('restart', False)
+        self._set_command('complete', True)
 
     def _execute_holding(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_held(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', True)
+            self._set_command('hold', False)
+            self._set_command('unhold', True)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_unholding(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', True)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', True)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', True)
+            self._set_command('restart', False)
+        self._set_command('complete', True)
 
     def _execute_stopping(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', False)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', False)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_stopped(self):
-        self.set_command('reset', True)
-        self.set_command('start', False)
-        self.set_command('stop', False)
+        self._set_command('reset', True)
+        self._set_command('start', False)
+        self._set_command('stop', False)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', True)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_aborting(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', False)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', False)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', False)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', False)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_aborted(self):
-        self.set_command('reset', True)
-        self.set_command('start', False)
-        self.set_command('stop', False)
+        self._set_command('reset', True)
+        self._set_command('start', False)
+        self._set_command('stop', False)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', False)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', False)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)
 
     def _execute_resetting(self):
-        self.set_command('reset', False)
-        self.set_command('start', False)
-        self.set_command('stop', False)
+        self._set_command('reset', False)
+        self._set_command('start', False)
+        self._set_command('stop', True)
         if self.hold_enabled:
-            self.set_command('hold', False)
-            self.set_command('unhold', False)
+            self._set_command('hold', False)
+            self._set_command('unhold', False)
         if self.pause_enabled:
-            self.set_command('pause', False)
-            self.set_command('resume', False)
-        self.set_command('abort', False)
+            self._set_command('pause', False)
+            self._set_command('resume', False)
+        self._set_command('abort', True)
         if self.restart_enabled:
-            self.set_command('restart', False)
-        self.set_command('complete', False)
+            self._set_command('restart', False)
+        self._set_command('complete', False)

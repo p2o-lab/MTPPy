@@ -83,7 +83,7 @@ test_cases = {
                  'reset': False,
                  'start': False,
                  'stop': True,
-                 'hold': False,
+                 'hold': hold_enabled,
                  'unhold': False,
                  'pause': False,
                  'resume': False,
@@ -95,7 +95,7 @@ test_cases = {
                'reset': False,
                'start': False,
                'stop': True,
-               'hold': False,
+               'hold': hold_enabled,
                'unhold': False,
                'pause': False,
                'resume': True,
@@ -107,7 +107,7 @@ test_cases = {
                 'reset': False,
                 'start': False,
                 'stop': True,
-                'hold': False,
+                'hold': hold_enabled,
                 'unhold': False,
                 'pause': False,
                 'resume': False,
@@ -143,7 +143,7 @@ test_cases = {
                   'reset': False,
                   'start': False,
                   'stop': True,
-                  'hold': False,
+                  'hold': hold_enabled,
                   'unhold': False,
                   'pause': False,
                   'resume': False,
@@ -202,12 +202,12 @@ test_cases = {
     'resetting': {'undefined': False,
                   'reset': False,
                   'start': False,
-                  'stop': False,
+                  'stop': True,
                   'hold': False,
                   'unhold': False,
                   'pause': False,
                   'resume': False,
-                  'abort': False,
+                  'abort': True,
                   'restart': False,
                   'complete': False},
 }
@@ -261,10 +261,10 @@ def test_get_command():
 def test_set_command():
     command_en_ctrl = init_state()
     for command_en in command_en_ctrl.command_en:
-        command_en_ctrl.set_command(command_en, True)
-        command_en_ctrl.set_command('not_exist', False)
+        command_en_ctrl._set_command(command_en, True)
+        command_en_ctrl._set_command('not_exist', False)
         assert command_en_ctrl.command_en[command_en]['value'] == True
 
-        command_en_ctrl.set_command(command_en, False)
-        command_en_ctrl.set_command('not_exist', True)
+        command_en_ctrl._set_command(command_en, False)
+        command_en_ctrl._set_command('not_exist', True)
         assert command_en_ctrl.command_en[command_en]['value'] == False

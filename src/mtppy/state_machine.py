@@ -31,106 +31,111 @@ class StateMachine:
         self.prev_state = StateCodes.idle
 
     def set_command_op(self, value: int):
-        if self.op_src_mode.attributes['StateOpAct']:
-            self._exec_command(value, sc=False)
+        if self.op_src_mode.attributes['StateOpAct'].value:
+            self.command_execution(value)
 
     def set_command_int(self, value: int):
-        if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcIntAct']:
-            self._exec_command(value, sc=False)
+        if self.op_src_mode.attributes['StateAutAct'].value and self.op_src_mode.attributes['SrcIntAct'].value:
+            self.command_execution(value)
 
     def set_command_ext(self, value: int):
-        if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcExtAct']:
-            self._exec_command(value, sc=False)
+        if self.op_src_mode.attributes['StateAutAct'].value and self.op_src_mode.attributes['SrcExtAct'].value:
+            self.command_execution(value)
 
-    def _exec_command(self, com_var: int, sc=True):
+    def command_execution(self, com_var: int):
         if com_var not in CommandCodes.get_list_int():
             print(f'Command Code {com_var} does not exist')
             return
 
         cmd_str = CommandCodes.int_code[com_var]
         if not self.command_en_ctrl.get_command(cmd_str):
-            print(f'CommandEn does not permit to execute {cmd_str}')
+            print(f'CommandEn does not permit to execute {cmd_str} from state {self.get_current_state_str()}')
             return
         else:
             print(f'CommandEn permits to execute {cmd_str}')
 
-        eval(f'self.{CommandCodes.int_code[com_var]}(sc)')
-        return
+        eval(f'self.{CommandCodes.int_code[com_var]}()')
 
-    def _change_state_to(self, new_state: int):
-        self.act_state = new_state
-        self.attributes['StateCur'].set_value(new_state)
-        self.attributes['CommandEn'].set_value(self.command_en_ctrl.get_command_en())
-        self.execution_routine()
-        print(f'Service state changed to {new_state}')
-
-    def start(self, sc=True):
+    def start(self):
         if self.act_state == StateCodes.idle:
             self.procedure_control.set_procedure_cur()
             self.procedure_control.apply_procedure_parameters()
             self._change_state_to(StateCodes.starting)
-        elif self.act_state == StateCodes.starting and sc:
-            self._change_state_to(StateCodes.execute)
 
-    def restart(self, sc=True):
+    def restart(self):
         if self.act_state == StateCodes.execute:
             self._change_state_to(StateCodes.starting)
-        elif self.act_state == StateCodes.starting and sc:
-            self._change_state_to(StateCodes.execute)
 
-    def complete(self, sc=True):
-        if self.act_state == StateCodes.execute:
+    def complete(self):
+        if self.act_state in [StateCodes.starting, StateCodes.execute,
+                              StateCodes.pausing, StateCodes.paused, StateCodes.resuming,
+                              StateCodes.unholding]:
             self._change_state_to(StateCodes.completing)
-        elif self.act_state == StateCodes.completing and sc:
-            self._change_state_to(StateCodes.completed)
 
-    def pause(self, sc=True):
+    def pause(self):
         if self.act_state == StateCodes.execute:
             self._change_state_to(StateCodes.pausing)
-        elif self.act_state == StateCodes.pausing and sc:
-            self._change_state_to(StateCodes.paused)
 
-    def resume(self, sc=True):
+    def resume(self):
         if self.act_state == StateCodes.paused:
             self._change_state_to(StateCodes.resuming)
-        elif self.act_state == StateCodes.resuming and sc:
-            self._change_state_to(StateCodes.execute)
 
-    def reset(self, sc=True):
+    def reset(self):
         if self.act_state in [StateCodes.completed, StateCodes.stopped, StateCodes.aborted]:
             self._change_state_to(StateCodes.resetting)
-        elif self.act_state == StateCodes.resetting and sc:
-            self._change_state_to(StateCodes.idle)
 
-    def hold(self, sc=True):
+    def hold(self):
         if self.act_state in [StateCodes.starting, StateCodes.execute, StateCodes.completing,
                               StateCodes.resuming, StateCodes.paused, StateCodes.pausing, StateCodes.unholding]:
             self._change_state_to(StateCodes.holding)
-        elif self.act_state == StateCodes.holding and sc:
-            self._change_state_to(StateCodes.held)
 
-    def unhold(self, sc=True):
+    def unhold(self):
         if self.act_state == StateCodes.held:
             self._change_state_to(StateCodes.unholding)
-        elif self.act_state == StateCodes.unholding and sc:
-            self._change_state_to(StateCodes.execute)
 
-    def stop(self, sc=True):
+    def stop(self):
         if self.act_state in [StateCodes.idle, StateCodes.starting, StateCodes.execute, StateCodes.completing,
                               StateCodes.completed, StateCodes.resuming, StateCodes.paused, StateCodes.pausing,
                               StateCodes.holding, StateCodes.held, StateCodes.unholding, StateCodes.resetting]:
             self._change_state_to(StateCodes.stopping)
-        elif self.act_state == StateCodes.stopping and sc:
-            self._change_state_to(StateCodes.stopped)
 
-    def abort(self, sc=True):
+    def abort(self):
         if self.act_state in [StateCodes.idle, StateCodes.starting, StateCodes.execute, StateCodes.completing,
                               StateCodes.completed, StateCodes.resuming, StateCodes.paused, StateCodes.pausing,
                               StateCodes.holding, StateCodes.held, StateCodes.unholding, StateCodes.stopping,
                               StateCodes.stopped, StateCodes.resetting]:
             self._change_state_to(StateCodes.aborting)
-        elif self.act_state == StateCodes.aborting and sc:
+
+    def state_change(self):
+        if self.act_state == StateCodes.starting:
+            self._change_state_to(StateCodes.execute)
+        elif self.act_state == StateCodes.starting:
+            self._change_state_to(StateCodes.execute)
+        elif self.act_state == StateCodes.completing:
+            self._change_state_to(StateCodes.completed)
+        elif self.act_state == StateCodes.pausing:
+            self._change_state_to(StateCodes.paused)
+        elif self.act_state == StateCodes.resuming:
+            self._change_state_to(StateCodes.execute)
+        elif self.act_state == StateCodes.resetting:
+            self._change_state_to(StateCodes.idle)
+        elif self.act_state == StateCodes.holding:
+            self._change_state_to(StateCodes.held)
+        elif self.act_state == StateCodes.unholding:
+            self._change_state_to(StateCodes.execute)
+        elif self.act_state == StateCodes.stopping:
+            self._change_state_to(StateCodes.stopped)
+        elif self.act_state == StateCodes.aborting:
             self._change_state_to(StateCodes.aborted)
+
+    def _change_state_to(self, new_state: int):
+        self.act_state = new_state
+        self.attributes['StateCur'].set_value(new_state)
+        new_state_str = StateCodes.int_code[new_state]
+        self.command_en_ctrl.execute(new_state_str)
+        self.attributes['CommandEn'].set_value(self.command_en_ctrl.get_command_en())
+        self.execution_routine()
+        print(f'Service state changed to {new_state}')
 
     def get_current_state_int(self):
         return self.act_state

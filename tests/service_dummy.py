@@ -59,7 +59,7 @@ class ServiceDummy(Service):
 
     def starting(self):
         print('- Starting -')
-        self.state_machine.start()
+        self.state_machine.state_change()
 
     def execute(self):
         print('- Execute -')
@@ -92,7 +92,7 @@ class ServiceDummy(Service):
             time.sleep(1)
 
     def completing(self):
-        self.state_machine.complete()
+        self.state_machine.state_change()
 
     def completed(self):
         pass
@@ -129,4 +129,4 @@ class ServiceDummy(Service):
 
     def resetting(self):
         print('- Resetting -')
-        self.state_machine.reset()
+        self.state_machine.state_change()
