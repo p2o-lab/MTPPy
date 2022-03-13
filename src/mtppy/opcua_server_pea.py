@@ -133,6 +133,9 @@ class SubscriptionList:
 
 
 class Marshalling(object):
+    def __init__(self):
+        self.subscription_list = None
+
     def import_subscription_list(self, subscription_list: SubscriptionList):
         self.subscription_list = subscription_list
 
@@ -140,7 +143,10 @@ class Marshalling(object):
         # print("Data change event", node, val)
         callback = self.find_set_callback(node)
         if callback is not None:
-            callback(val)
+            try:
+                callback(val)
+            except Exception as exc:
+                print(f'Something wrong with callback {callback}: {exc}')
 
     def find_set_callback(self, node_id):
         return self.subscription_list.get_callback(node_id)

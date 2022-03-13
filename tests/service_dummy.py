@@ -50,24 +50,20 @@ class ServiceDummy(Service):
     def idle(self):
         print('- Idle -')
         cycle = 0
-        while True:
-            if self.thread_ctrl.get_flag('idle'):
-                break
-            print('Cycle %i' % cycle)
+        while self.is_state('idle'):
+            print('Idle cycle %i' % cycle)
             cycle += 1
             time.sleep(1)
 
     def starting(self):
         print('- Starting -')
-        self.state_machine.state_change()
+        self.state_change()
 
     def execute(self):
         print('- Execute -')
         cycle = 0
-        while True:
-            if self.thread_ctrl.get_flag('execute'):
-                break
-            print('Cycle %i' % cycle)
+        while self.is_state('execute'):
+            print('Execute cycle %i' % cycle)
             print(f'ProcedureCur is {self.procedure_control.get_procedure_cur()}')
             print('ServParameter %s has value %r'
                   % (self.configuration_parameters['serv_param_ana'].tag_name,
@@ -92,7 +88,7 @@ class ServiceDummy(Service):
             time.sleep(1)
 
     def completing(self):
-        self.state_machine.state_change()
+        self.state_change()
 
     def completed(self):
         pass
@@ -129,4 +125,4 @@ class ServiceDummy(Service):
 
     def resetting(self):
         print('- Resetting -')
-        self.state_machine.state_change()
+        self.state_change()

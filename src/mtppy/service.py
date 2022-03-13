@@ -8,6 +8,7 @@ from mtppy.procedure_control import ProcedureControl
 from mtppy.state_codes import StateCodes
 from mtppy.procedure import Procedure
 from mtppy.suc_data_assembly import SUCOperationElement
+
 StateCodes = StateCodes()
 
 
@@ -25,7 +26,7 @@ class Service(SUCServiceControl):
 
         self.state_machine = StateMachine(operation_source_mode=self.op_src_mode,
                                           procedure_control=self.procedure_control,
-                                          execution_routine=self.execute_state)
+                                          execution_routine=self.state_change_callback)
 
         self.op_src_mode.add_enter_offline_callback(self.state_machine.command_en_ctrl.disable_all)
 
@@ -34,20 +35,30 @@ class Service(SUCServiceControl):
         self.op_src_mode.add_exit_offline_callback(self.init_idle_state)
 
     def init_idle_state(self):
-        self.execute_state(forced=True)
+        self.state_change_callback()
 
-    def execute_state(self, forced=False):
+    def state_change_callback(self):
         if self.op_src_mode.attributes['StateOffAct'].value:
             return
 
         state_str = self.state_machine.get_current_state_str()
-        if not state_str == self.state_machine.prev_state or forced:
-            if state_str == 'idle':
-                self.op_src_mode.allow_switch_to_offline_mode(True)
-            else:
-                self.op_src_mode.allow_switch_to_offline_mode(False)
-            self.thread_ctrl.execute(state_str, eval(f'self.{state_str}'))
-            self.state_machine.update_prev_state()
+        function_to_execute = eval(f'self.{state_str}')
+        self.thread_ctrl.request_state(state_str, function_to_execute)
+        self.thread_ctrl.reallocate_running_thread()
+        if state_str == 'idle':
+            self.op_src_mode.allow_switch_to_offline_mode(True)
+        else:
+            self.op_src_mode.allow_switch_to_offline_mode(False)
+
+    def is_state(self, state_str):
+        if state_str is self.state_machine.get_current_state_str():
+            return True
+        else:
+            self.thread_ctrl.reallocate_running_thread()
+            return False
+
+    def state_change(self):
+        self.state_machine.state_change()
 
     def add_configuration_parameter(self, configuration_parameter: SUCOperationElement):
         self.configuration_parameters[configuration_parameter.tag_name] = configuration_parameter

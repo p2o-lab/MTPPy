@@ -1,7 +1,8 @@
-from tests.test_procedure_control import init_procedure_control
+from test_procedure_control import init_procedure_control
 from mtppy.state_machine import StateMachine
 from mtppy.state_codes import StateCodes
 from mtppy.command_codes import CommandCodes
+
 
 import time
 

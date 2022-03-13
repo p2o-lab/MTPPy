@@ -1,6 +1,6 @@
 from mtppy.procedure_control import ProcedureControl
 from mtppy.procedure import Procedure
-from tests.test_operation_source_mode import init_op_source_mode
+from test_operation_source_mode import init_op_source_mode
 
 
 def init_procedure_control(op_mode='off', src_mode='int'):

@@ -44,7 +44,7 @@ time.sleep(2)
 
 print('--- Start service dummy ---')
 opcua_server.get_node('ns=3;s=services.dummy.state_machine.CommandOp').set_value(4)
-time.sleep(5)
+time.sleep(500)
 
 print('--- Try to unhold service dummy ---')
 opcua_server.get_node('ns=3;s=services.dummy.state_machine.CommandOp').set_value(32)
