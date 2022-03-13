@@ -6,49 +6,69 @@ from mtppy.operation_source_mode import OperationSourceMode
 from mtppy.state_machine import StateMachine
 from mtppy.procedure_control import ProcedureControl
 from mtppy.state_codes import StateCodes
+from mtppy.procedure import Procedure
+from mtppy.suc_data_assembly import SUCOperationElement
+
 StateCodes = StateCodes()
 
 
 class Service(SUCServiceControl):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
 
         self.thread_ctrl = ThreadControl()
         self.op_src_mode = OperationSourceMode()
-        self.op_src_mode.add_exit_offline_callback(self.set_configuration_parameters)
+
+        self.configuration_parameters = {}
 
         self.procedures = {}
         self.procedure_control = ProcedureControl(self.procedures, self.op_src_mode)
 
-        self.configuration_parameters = {}
-
-        self.op_src_mode.add_exit_offline_callback(self.init_idle_state)
-
         self.state_machine = StateMachine(operation_source_mode=self.op_src_mode,
                                           procedure_control=self.procedure_control,
-                                          execution_routine=self.execute_state)
+                                          execution_routine=self.state_change_callback)
+
+        self.op_src_mode.add_enter_offline_callback(self.state_machine.command_en_ctrl.disable_all)
+
+        self.op_src_mode.add_exit_offline_callback(self.state_machine.command_en_ctrl.set_default)
+        self.op_src_mode.add_exit_offline_callback(self.apply_configuration_parameters)
+        self.op_src_mode.add_exit_offline_callback(self.init_idle_state)
 
     def init_idle_state(self):
-        self.execute_state(forced=True)
+        self.state_change_callback()
 
-    def execute_state(self, forced=False):
-        #if self.op_src_mode.attributes['StateOffAct']:
-        #    return
-        if not self.state_machine.is_state(self.state_machine.prev_state) or forced:
-            state_str = self.state_machine.get_current_state_str()
-            self.state_machine.command_en_ctrl.execute(state_str)
-            self.thread_ctrl.execute(state_str, eval(f'self.{state_str}'))
-            self.state_machine.update_prev_state()
+    def state_change_callback(self):
+        if self.op_src_mode.attributes['StateOffAct'].value:
+            return
 
-    def add_configuration_parameter(self, configuration_parameter):
+        state_str = self.state_machine.get_current_state_str()
+        function_to_execute = eval(f'self.{state_str}')
+        self.thread_ctrl.request_state(state_str, function_to_execute)
+        self.thread_ctrl.reallocate_running_thread()
+        if state_str == 'idle':
+            self.op_src_mode.allow_switch_to_offline_mode(True)
+        else:
+            self.op_src_mode.allow_switch_to_offline_mode(False)
+
+    def is_state(self, state_str):
+        if state_str is self.state_machine.get_current_state_str():
+            return True
+        else:
+            self.thread_ctrl.reallocate_running_thread()
+            return False
+
+    def state_change(self):
+        self.state_machine.state_change()
+
+    def add_configuration_parameter(self, configuration_parameter: SUCOperationElement):
         self.configuration_parameters[configuration_parameter.tag_name] = configuration_parameter
 
-    def set_configuration_parameters(self):
+    def apply_configuration_parameters(self):
         print('Applying service configuration parameters')
         for configuration_parameter in self.configuration_parameters.values():
             configuration_parameter.set_v_out()
 
-    def add_procedure(self, procedure):
+    def add_procedure(self, procedure: Procedure):
         self.procedures[procedure.attributes['ProcedureId'].value] = procedure
         if procedure.attributes['IsDefault'].value:
             self.procedure_control.default_procedure_id = procedure.attributes['ProcedureId'].value

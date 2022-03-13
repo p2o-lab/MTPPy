@@ -1,6 +1,6 @@
 class StateCodes:
     def __init__(self):
-        self.undefined = 1
+        #self.undefined = 1
         self.stopped = 4
         self.starting = 8
         self.idle = 16
@@ -19,7 +19,7 @@ class StateCodes:
         self.completed = 131072
 
         self.int_code = {}
-        self.int_code[1] ='undefined'
+        #self.int_code[1] ='undefined'
         self.int_code[4] = 'stopped'
         self.int_code[8] = 'starting'
         self.int_code[16] = 'idle'
@@ -37,4 +37,8 @@ class StateCodes:
         self.int_code[65536] = 'completing'
         self.int_code[131072] = 'completed'
 
+    def get_list_int(self):
+        return list(self.int_code.keys())
 
+    def get_list_str(self):
+        return list(self.int_code.values())

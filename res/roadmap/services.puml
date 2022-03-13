@@ -1,0 +1,76 @@
+@startuml
+skinparam linetype ortho
+
+class MTPSet << SystemUnitClass >> {
+}
+
+class TextSet << SystemUnitClass >> {
+}
+
+together {
+class ServiceSet << SystemUnitClass >> {
+}
+
+class Service << SystemUnitClass >> {
+}
+
+
+class ConfigurationParameter << SystemUnitClass >> {
+}
+
+class ServiceProcedure << SystemUnitClass >> {
+IsSelfCompleting
+ProcedureId
+IsDefault
+}
+
+class ServiceParameter << SystemUnitClass >> {
+}
+
+together {
+
+class ProcedureParameter << SystemUnitClass >> {
+}
+
+class ProcessValueIn << SystemUnitClass >> {
+}
+
+class ReportValue << SystemUnitClass >> {
+}
+
+class ProcessValueOut << SystemUnitClass >> {
+}
+
+}
+
+
+class ServiceRelation << SystemUnitClass >> {
+SourceServiceID
+SourceProcedureID
+SourceValue
+TargetServiceID
+TargetProcedureID
+TargetValue
+}
+
+}
+
+MTPSet <|-d- TextSet
+MTPSet <|-d- ServiceSet
+
+ServiceSet *-l- ServiceRelation: 0..*
+ServiceSet *-d- Service: 0..*
+Service *-d- ServiceProcedure: 1..*
+Service *-d- ConfigurationParameter: 0..*
+ConfigurationParameter -l-|> ServiceParameter
+ProcedureParameter -l-|> ServiceParameter
+ProcessValueIn --|> ServiceParameter
+ReportValue --|> ServiceParameter
+ProcessValueOut --|> ServiceParameter
+
+ServiceProcedure *-- ProcedureParameter: 0..*
+ServiceProcedure *-- ProcessValueIn: 0..*
+ServiceProcedure *-- ReportValue: 0..*
+ServiceProcedure *-- ProcessValueOut: 0..*
+
+@enduml

@@ -16,10 +16,10 @@ class AnaServParam(SUCOperationElement):
         self.v_scl_max = v_scl_max
         self.v_unit = v_unit
 
-        self._add_attribute(Attribute('VOp', float, init_value=0, sub_cb=self.set_v_op))
-        self._add_attribute(Attribute('VInt', float, init_value=0, sub_cb=self.set_v_int))
-        self._add_attribute(Attribute('VExt', float, init_value=0, sub_cb=self.set_v_ext))
-        self._add_attribute(Attribute('VReq', float, init_value=0))
+        self._add_attribute(Attribute('VOp', float, init_value=v_min, sub_cb=self.set_v_op))
+        self._add_attribute(Attribute('VInt', float, init_value=v_min, sub_cb=self.set_v_int))
+        self._add_attribute(Attribute('VExt', float, init_value=v_min, sub_cb=self.set_v_ext))
+        self._add_attribute(Attribute('VReq', float, init_value=v_min))
         self._add_attribute(Attribute('VOut', float, init_value=0))
         self._add_attribute(Attribute('VFbk', float, init_value=0))
         self._add_attribute(Attribute('VUnit', int, init_value=self.v_unit))
@@ -135,10 +135,10 @@ class DIntServParam(SUCOperationElement):
         self.v_scl_max = v_scl_max
         self.v_unit = v_unit
 
-        self._add_attribute(Attribute('VOp', int, init_value=0, sub_cb=self.set_v_op))
-        self._add_attribute(Attribute('VInt', int, init_value=0, sub_cb=self.set_v_int))
-        self._add_attribute(Attribute('VExt', int, init_value=0, sub_cb=self.set_v_ext))
-        self._add_attribute(Attribute('VReq', int, init_value=0))
+        self._add_attribute(Attribute('VOp', int, init_value=v_min, sub_cb=self.set_v_op))
+        self._add_attribute(Attribute('VInt', int, init_value=v_min, sub_cb=self.set_v_int))
+        self._add_attribute(Attribute('VExt', int, init_value=v_min, sub_cb=self.set_v_ext))
+        self._add_attribute(Attribute('VReq', int, init_value=v_min))
         self._add_attribute(Attribute('VOut', int, init_value=0))
         self._add_attribute(Attribute('VFbk', int, init_value=0))
         self._add_attribute(Attribute('VUnit', int, init_value=self.v_unit))
