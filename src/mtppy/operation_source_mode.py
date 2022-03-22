@@ -149,3 +149,57 @@ class OperationSourceMode:
             if not self.attributes['SrcChannel'].value:
                 self._src_to_int()
                 self.attributes['SrcIntOp'].set_value(False)
+
+
+class OperationSourceModeActiveElements(OperationSourceMode):
+    def __init__(self):
+        super().__init__()
+        self.attributes = {
+            'StateChannel': Attribute('StateChannel', bool, init_value=False, sub_cb=self.set_state_channel),
+            'StateOffAut': Attribute('StateOffAut', bool, init_value=False, sub_cb=self.set_state_off_aut),
+            'StateOpAut': Attribute('StateOpAut', bool, init_value=False, sub_cb=self.set_state_op_aut),
+            'StateAutAut': Attribute('StateAutAut', bool, init_value=False, sub_cb=self.set_state_aut_aut),
+            'StateOffOp': Attribute('StateOffOp', bool, init_value=False, sub_cb=self.set_state_off_op),
+            'StateOpOp': Attribute('StateOpOp', bool, init_value=False, sub_cb=self.set_state_op_op),
+            'StateAutOp': Attribute('StateAutOp', bool, init_value=False, sub_cb=self.set_state_aut_op),
+            'StateOpAct': Attribute('StateOpAct', bool, init_value=False),
+            'StateAutAct': Attribute('StateAutAct', bool, init_value=False),
+            'StateOffAct': Attribute('StateOffAct', bool, init_value=True),
+
+            'SrcChannel': Attribute('SrcChannel', bool, init_value=False, sub_cb=self.set_src_channel),
+            'SrcManAut': Attribute('SrcManAut', bool, init_value=False, sub_cb=self.set_src_man_aut),
+            'SrcIntOp': Attribute('SrcIntOp', bool, init_value=False, sub_cb=self.set_src_int_op),
+            'SrcIntAut': Attribute('SrcIntAut', bool, init_value=False, sub_cb=self.set_src_int_aut),
+            'SrcManOp': Attribute('SrcManOp', bool, init_value=False, sub_cb=self.set_src_man_op),
+            'SrcIntAct': Attribute('SrcIntAct', bool, init_value=False),
+            'SrcManAct': Attribute('SrcManAct', bool, init_value=False)
+        }
+
+    def _src_to_off(self):
+        self.attributes['SrcIntAct'].set_value(False)
+        self.attributes['SrcManAct'].set_value(False)
+        print('Source mode is now off')
+
+    def _src_to_int(self):
+        self.attributes['SrcIntAct'].set_value(True)
+        self.attributes['SrcManAct'].set_value(False)
+        print('Source mode is now int')
+
+    def _src_to_man(self):
+        self.attributes['SrcIntAct'].set_value(False)
+        self.attributes['SrcManAct'].set_value(True)
+        print('Source mode is now man')
+
+    def set_src_channel(self, value: bool):
+        print('Source mode channel is now %s' % value)
+
+    def set_src_man_aut(self, value: bool):
+        if not self.attributes['StateOffAct'].value and value:
+            if self.attributes['SrcChannel'].value:
+                self._src_to_man()
+
+    def set_src_man_op(self, value: bool):
+        if not self.attributes['StateOffAct'].value and value:
+            if not self.attributes['SrcChannel'].value:
+                self._src_to_man()
+                self.attributes['SrcManOp'].set_value(False)

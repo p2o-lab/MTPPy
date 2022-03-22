@@ -3,9 +3,6 @@ from mtppy.state_machine import StateMachine
 from mtppy.state_codes import StateCodes
 from mtppy.command_codes import CommandCodes
 
-
-import time
-
 StateCodes = StateCodes()
 CommandCodes = CommandCodes()
 
@@ -153,7 +150,7 @@ def init_state_machine(state='idle', op_mode='off', src_mode='int'):
     return state_machine, callback_object
 
 
-def test_set_command_op():
+def test_set_command():
     test_scenario = [('off', 'int', 'set_command_op', False),
                      ('off', 'ext', 'set_command_op', False),
                      ('op', 'int', 'set_command_op', True),
