@@ -3,6 +3,10 @@ from mtppy.attribute import Attribute
 from mtppy.operation_source_mode import OperationSourceModeActiveElements
 from mtppy.suc_data_assembly import SUCActiveElement
 
+from time import sleep
+from threading import Thread
+from simple_pid import PID
+
 
 class AnaDrv(SUCActiveElement):
     def __init__(self, tag_name, tag_description='',
@@ -270,5 +274,190 @@ class AnaDrv(SUCActiveElement):
         return self.attributes['RevFbk'].value
 
 
+class PIDController:
+    def __init__(self, kp=100, ki=10, kd=1, mv_min=0, mv_max=100, sample_time=0.1):
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.mv_min = mv_min
+        self.mv_max = mv_max
+        self.sp = 0
+        self.pv = 0
+        self.mv = 0
+        self.sample_time = sample_time
+
+        self.ctrl = PID(Kp=self.kp, Ki=self.ki, Kd=self.kd, output_limits=(mv_min, mv_max), sample_time=sample_time)
+
+        self.thread = Thread(target=self.loop)
+        self.stop_flag = True
+        self.stopped = True
+
+    def set_limits(self, mv_min, mv_max):
+        self.ctrl.output_limits = (mv_min, mv_max)
+
+    def start(self):
+        self.ctrl.setpoint = self.sp
+        self.stopped = False
+        self.stop_flag = False
+        self.thread.start()
+
+    def stop(self):
+        self.stopped = False
+        self.stop_flag = True
+        while not self.stopped:
+            sleep(0.1)
+        self.ctrl.reset()
+
+    def set_sp(self, sp):
+        self.sp = sp
+        self.ctrl.setpoint = sp
+
+    def set_pv(self, pv):
+        self.pv = pv
+
+    def loop(self):
+        while not self.stop_flag:
+            self.mv = self.ctrl(self.pv)
+            sleep(self.sample_time)
+        self.stopped = True
+
+    def get_mv(self):
+        return self.mv
+
+    def set_kp(self, kp):
+        self.ctrl.Kp = kp
+
+    def set_ki(self, ki):
+        self.ctrl.Ki = ki
+
+    def set_kd(self, kd):
+        self.ctrl.Kd = kd
+
+
 class PIDCtrl(SUCActiveElement):
-    pass
+    def __init__(self, tag_name, tag_description='',
+                 pv_scl_min=0, pv_scl_max=100, pv_unit=0,
+                 sp_man=0, sp_int=0, sp_scl_min=0, sp_scl_max=100, sp_unit=0,
+                 sp_int_min=0, sp_int_max=100, sp_man_min=0, sp_man_max=100,
+                 mv_man=0, mv_min=0, mv_max=1000, mv_unit=0, mv_scl_min=0, mv_scl_max=100,
+                 P=100, Ti=10, Td=1):
+        super().__init__(tag_name, tag_description)
+
+        self.op_src_mode = OperationSourceModeActiveElements()
+
+        self.pv_scl_min = pv_scl_min
+        self.pv_scl_max = pv_scl_max
+        self.pv_unit = pv_unit
+        self.sp_man = sp_man
+        self.sp_int = sp_int
+        self.sp_scl_min = sp_scl_min
+        self.sp_scl_max = sp_scl_max
+        self.sp_unit = sp_unit
+        self.sp_int_min = sp_int_min
+        self.sp_int_max = sp_int_max
+        self.sp_man_min = sp_man_min
+        self.sp_man_max = sp_man_max
+        self.sp = sp_int
+        self.mv_man = mv_man
+        self.mv_min = mv_min
+        self.mv_max = mv_max
+        self.mv_unit = mv_unit
+        self.mv_scl_min = mv_scl_min
+        self.mv_scl_max = mv_scl_max
+        self.P = P
+        self.Ti = Ti
+        self.Td = Td
+
+        self.ctrl = PIDController(kp=P, ki=Ti, kd=Td, mv_min=mv_min, mv_max=mv_max, sample_time=0.1)
+
+        self._add_attribute(Attribute('PV', float, init_value=0))
+        self._add_attribute(Attribute('PVSclMin', float, init_value=pv_scl_min))
+        self._add_attribute(Attribute('PVSclMax', float, init_value=pv_scl_max))
+        self._add_attribute(Attribute('PVUnit', int, init_value=pv_unit))
+        self._add_attribute(Attribute('SPMan', float, init_value=sp_man, sub_cb=self.set_sp_man))
+        self._add_attribute(Attribute('SPInt', float, init_value=sp_int, sub_cb=self.set_sp_int))
+        self._add_attribute(Attribute('SPSclMin', float, init_value=sp_scl_min))
+        self._add_attribute(Attribute('SPSclMax', float, init_value=sp_scl_max))
+        self._add_attribute(Attribute('SPUnit', int, init_value=sp_unit))
+        self._add_attribute(Attribute('SPIntMin', float, init_value=sp_int_min))
+        self._add_attribute(Attribute('SPIntMax', float, init_value=sp_int_max))
+        self._add_attribute(Attribute('SPManMin', float, init_value=sp_man_min))
+        self._add_attribute(Attribute('SPManMax', float, init_value=sp_man_max))
+        self._add_attribute(Attribute('SP', float, init_value=sp_int))
+        self._add_attribute(Attribute('MVMan', float, init_value=mv_man, sub_cb=self.set_mv_man))
+        self._add_attribute(Attribute('MV', float, init_value=0))
+        self._add_attribute(Attribute('MVMin', float, init_value=mv_min))
+        self._add_attribute(Attribute('MVMax', float, init_value=mv_max))
+        self._add_attribute(Attribute('MVUnit', float, init_value=mv_unit))
+        self._add_attribute(Attribute('MVSclMin', float, init_value=mv_scl_min))
+        self._add_attribute(Attribute('MVSclMax', float, init_value=mv_scl_max))
+        self._add_attribute(Attribute('P', float, init_value=P, sub_cb=self.set_p))
+        self._add_attribute(Attribute('Ti', float, init_value=Ti, sub_cb=self.set_ti))
+        self._add_attribute(Attribute('Td', float, init_value=Td, sub_cb=self.set_td))
+
+        self.op_src_mode.add_exit_offline_callback(self.ctrl.start)
+        self.op_src_mode.add_enter_offline_callback(self.ctrl.stop)
+
+        Thread(target=self._update_mv_int_loop).start()
+
+    def set_p(self, value):
+        self.P = value
+        self.ctrl.set_kp(value)
+
+    def set_ti(self, value):
+        self.Ti = value
+        self.ctrl.set_ki(value)
+
+    def set_td(self, value):
+        self.Td = value
+        self.ctrl.set_kd(value)
+
+    def _valid_value(self, value, v_min, v_max):
+        if value < v_min or value > v_max:
+            return False
+        else:
+            return True
+
+    def _set_sp(self, value, v_min, v_max):
+        if self._valid_value(value, v_min, v_max):
+            self.attributes['SP'].set_value(value)
+            self.ctrl.set_sp(value)
+            print('SP set to %s' % value)
+        else:
+            print('SP cannot be set to %s (out of range)' % value)
+
+    def set_sp_man(self, value):
+        print('SPMan set to %s' % value)
+        if self.op_src_mode.attributes['SrcManAct'].value and self.op_src_mode.attributes['StateAutAct'].value:
+            self._set_sp(value, self.sp_man_min, self.sp_man_max)
+
+    def set_sp_int(self, value):
+        print('SPInt set to %s' % value)
+        if self.op_src_mode.attributes['SrcIntAct'].value and self.op_src_mode.attributes['StateAutAct'].value:
+            self._set_sp(value, self.sp_int_min, self.sp_int_max)
+
+    def _set_mv(self, value, v_min, v_max):
+        if self._valid_value(value, v_min, v_max):
+            self.attributes['MV'].set_value(value)
+            print('MV set to %s' % value)
+        else:
+            print('MV cannot be set to %s (out of range)' % value)
+
+    def set_mv_man(self, value):
+        print('MVMan set to %s' % value)
+        if self.op_src_mode.attributes['StateOPAct'].value:
+            self._set_mv(value, self.mv_min, self.mv_max)
+
+    def _update_mv_int_loop(self):
+        while True:
+            if self.op_src_mode.attributes['SrcIntAct'].value:
+                value = self.ctrl.get_mv()
+                self._set_mv(value, self.mv_min, self.mv_max)
+            sleep(0.1)
+
+    def set_pv(self, value):
+        self.attributes['PV'].set_value(value)
+        self.ctrl.set_pv(value)
+
+    def get_mv(self):
+        return self.attributes['MV'].value
