@@ -1,0 +1,141 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class OPCUAServerPEA {
++service_set: dict of Service
++active_elements: dict of SUCActiveElement
++endpoint: str
++opcua_server: opcua.Server
++opcua_ns: int
++subscription_list: SubscriptionList
+}
+OPCUAServerPEA "1"*--"1" SubscriptionList: contains
+OPCUAServerPEA --> Marshalling: uses
+OPCUAServerPEA "1"*--"0..*" Service: contains
+OPCUAServerPEA "1"*--"0..*" SUCActiveElement: contains
+
+class SubscriptionList {
++sub_list: dict
+}
+
+class Marshalling {
++subscription_list: SubscriptionList
+}
+
+class Service {
++thread_ctrl: ThreadControl
++op_src_mode: OperationSourceMode
++configuration_parameters: dict of SUCOperationElement
++procedures: dict of Procedure
++state_machine: StateMachine
+}
+Service "1"*--"1" OperationSourceMode: contains
+Service "1"*--"1..*" Procedure: contains
+Service "1"*--"1*" StateMachine: contains
+
+class OperationSourceMode{
++attributes: dict of Attribute
+}
+OperationSourceMode "1"*--"0..*" Attribute: contains
+
+class OperationSourceModeActiveElements{
++attributes: dict of Attribute
+}
+OperationSourceModeActiveElements "1"*--"0..*" Attribute: contains
+OperationSourceMode <|-- OperationSourceModeActiveElements
+
+class Attribute{
++name: str
++type: str
++init_value
++value
++comm_obj: CommunicationObject
++sub_cb: callable
+}
+Attribute "1"*--"1" CommunicationObject: contains
+
+class CommunicationObject{
++opcua_node_obj
++node_id
++write_value_callback: callable
+}
+
+class Procedure{
++procedure_parameters: dict of SUCOperationElement
++process_value_ins: dict
++report_values: dict of SUCIndicatorElement
++process_value_outs: dict of SUCIndicatorElement
+}
+Procedure "1"*--"0..*" SUCOperationElement: contains
+Procedure "1"*--"0..*" SUCIndicatorElement: contains
+
+class ProcedureControl{
++attributes: dict of Attribute
++procedures: dict of Procedure
++op_src_mode: OperationSourceMode
++default_procedure_id: int
+}
+ProcedureControl "1"*--"0..*" Attribute: contains
+
+class StateMachine{
++attributes: dict of Attribute
++op_src_mode: OperationSourceMode
++procedure_control: ProcedureControl
++execution_routine: callable
++command_en_control: CommandEnControl
++act_state: int
++prev_state: int
+}
+StateMachine "1"*--"0..*" Attribute: contains
+StateMachine "1"*--"1" ProcedureControl: contains
+StateMachine "1"*--"1" CommandEnControl: contains
+
+class CommandEnControl{
++attributes: dict of Attribute
++hold_enabled: bool
++pause_enabled: bool
++restart_enabled: bool
+}
+CommandEnControl "1"*--"0..*" Attribute: contains
+
+class SUCDataAssembly{
++tag_name: str
++tag_description: str
++attributes: dict of Attribute
+}
+SUCDataAssembly "1"*--"0..*" Attribute: contains
+SUCDataAssembly <|-- SUCIndicatorElement
+SUCDataAssembly <|-- SUCOperationElement
+SUCDataAssembly <|-- SUCActiveElement
+SUCDataAssembly <|-- SUCServiceControl
+SUCDataAssembly <|-- SUCServiceProcedure
+
+
+class SUCIndicatorElement{
+}
+SUCIndicatorElement <|-- AnaView
+SUCIndicatorElement <|-- BinView
+SUCIndicatorElement <|-- DIntView
+SUCIndicatorElement <|-- StringView
+
+class SUCOperationElement{
+}
+SUCOperationElement <|-- AnaServParam
+SUCOperationElement <|-- BinServParam
+SUCOperationElement <|-- DIntServParam
+SUCOperationElement <|-- StringServParam
+
+class SUCActiveElement{
+}
+SUCActiveElement <|-- AnaDrv
+SUCActiveElement <|-- PIDCtrl
+
+class SUCServiceControl{
+}
+SUCServiceControl <|-- Service
+
+class SUCServiceProcedure{
+}
+SUCServiceProcedure <|-- Procedure
+
+@enduml

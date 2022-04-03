@@ -1,11 +1,13 @@
 from opcua import Server, ua
 from mtppy.communication_object import OPCUACommunicationObject
 from mtppy.service import Service
+from mtppy.suc_data_assembly import SUCActiveElement
 
 
 class OPCUAServerPEA:
     def __init__(self, endpoint='opc.tcp://0.0.0.0:4840/'):
         self.service_set = {}
+        self.active_elements = {}
         self.endpoint = endpoint
         self.opcua_server = None
         self.opcua_ns = 3
@@ -14,6 +16,9 @@ class OPCUAServerPEA:
 
     def add_service(self, service: Service):
         self.service_set[service.tag_name] = service
+
+    def add_active_element(self, active_element: SUCActiveElement):
+        self.active_elements[active_element.tag_name] = active_element
 
     def init_opcua_server(self):
         self.opcua_server = Server()
@@ -44,6 +49,11 @@ class OPCUAServerPEA:
         services_node = server.add_folder(services_node_id, "services")
         for service in self.service_set.values():
             self._create_opcua_objects_for_folders(service, services_node_id, services_node)
+
+        act_elem_node_id = f'ns={ns};s=active_elements'
+        act_elem_node = server.add_folder(act_elem_node_id, "active_elements")
+        for active_element in self.active_elements.values():
+            self._create_opcua_objects_for_folders(active_element, act_elem_node_id, act_elem_node)
 
     def _create_opcua_objects_for_folders(self, data_assembly, parent_opcua_prefix, parent_opcua_object):
         da_node_id = f'{parent_opcua_prefix}.{data_assembly.tag_name}'

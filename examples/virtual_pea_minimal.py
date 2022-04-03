@@ -3,6 +3,7 @@ from mtppy.service import Service
 from mtppy.procedure import Procedure
 from mtppy.operation_elements import *
 from mtppy.indicator_elements import *
+from mtppy.active_elements import *
 
 import time
 import random
@@ -109,6 +110,10 @@ if __name__ == '__main__':
     # Service definition
     service_1 = RandomNumberGenerator('rand_num_gen', 'This services generates random number')
     module.add_service(service_1)
+
+    # Active element
+    pid_ctrl = PIDCtrl('pid_ctrl')
+    module.add_active_element(pid_ctrl)
 
     # Start server
     print('--- Start OPC UA server ---')
