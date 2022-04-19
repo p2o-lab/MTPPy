@@ -1,0 +1,57 @@
+<CAEXFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" FileName="Manifest.aml" SchemaVersion="2.15" xsi:noNamespaceSchemaLocation="CAEX_ClassModel_V2.15.xsd">
+	<Description />
+	<Version>2.0.0</Version>
+	<Copyright>VDI/VDE GMA 5.16 (c) 2019</Copyright>
+	<AdditionalInformation AutomationMLVersion="2.0" />
+	<AdditionalInformation DocumentVersions="Recommendations">
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-1" Version="1.0.0" />
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-2" Version="1.0.0" />
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-3" Version="1.0.0" />
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-4" Version="0.1.0" />
+	</AdditionalInformation>
+	<AdditionalInformation>
+		<WriterHeader>
+			<WriterName>tud/plt</WriterName>
+			<WriterID>tud/plt</WriterID>
+			<WriterVendor>tud</WriterVendor>
+			<WriterVendorURL>www.tud.de</WriterVendorURL>
+			<WriterVersion>1.0.0</WriterVersion>
+			<WriterRelease />
+			<LastWritingDateTime>2022-04-13 16:52:02.392884</LastWritingDateTime>
+			<WriterProjectTitle>tu/plt/mtp</WriterProjectTitle>
+			<WriterProjectID />
+		</WriterHeader>
+	</AdditionalInformation>
+	<RoleClassLib Name="AutomationMLBaseRoleClassLib">
+        <Description>Automation Markup Language Base Role Class Library - Part 1 Content extended with Part 3 and Part 4 Content</Description>
+        <Version>2.2.2</Version>
+        <RoleClass Name="AutomationMLBaseRole">
+            <RoleClass Name="Group" RefBaseClassPath="AutomationMLBaseRole">
+                <Attribute Name="AssociatedFacet" AttributeDataType="xs:string" />
+                <RoleClass Name="InterlockingSourceGroup" RefBaseClassPath="Group" />
+                <RoleClass Name="InterlockingTargetGroup" RefBaseClassPath="Group" />
+            </RoleClass>
+            <RoleClass Name="Facet" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Port" RefBaseClassPath="AutomationMLBaseRole">
+                <Attribute Name="Direction" AttributeDataType="xs:string" />
+                <Attribute Name="Cardinality">
+                    <Attribute Name="MinOccur" AttributeDataType="xs:unsignedInt" />
+                    <Attribute Name="MaxOccur" AttributeDataType="xs:unsignedInt" />
+                    </Attribute>
+                <Attribute Name="Category" AttributeDataType="xs:string" />
+                <ExternalInterface Name="ConnectionPoint" ID="9942bd9c-c19d-44e4-a197-11b9edf264e7" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/PortConnector" />
+            </RoleClass>
+            <RoleClass Name="Resource" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Product" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Process" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Structure" RefBaseClassPath="AutomationMLBaseRole">
+                <RoleClass Name="ProductStructure" RefBaseClassPath="Structure" />
+                <RoleClass Name="ProcessStructure" RefBaseClassPath="Structure" />
+                <RoleClass Name="ResourceStructure" RefBaseClassPath="Structure" />
+            </RoleClass>
+            <RoleClass Name="PropertySet" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Frame" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="LogicObject" RefBaseClassPath="AutomationMLBaseRole" />
+        </RoleClass>
+    </RoleClassLib>
+</CAEXFile>

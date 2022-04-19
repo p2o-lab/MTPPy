@@ -1,4 +1,5 @@
 from mtppy.opcua_server_pea import OPCUAServerPEA
+from mtppy.MTP_generator import MTP_generator
 from mtppy.service import Service
 from mtppy.procedure import Procedure
 from mtppy.operation_elements import *
@@ -7,6 +8,7 @@ from mtppy.active_elements import *
 
 import time
 import random
+from datetime import datetime
 
 
 class RandomNumberGenerator(Service):
@@ -105,7 +107,15 @@ class RandomNumberGenerator(Service):
 
 
 if __name__ == '__main__':
-    module = OPCUAServerPEA()
+
+    writer_info_dict = {'WriterName': 'tud/plt', 'WriterID': 'tud/plt', 'WriterVendor': 'tud',
+                        'WriterVendorURL': 'www.tud.de',
+                        'WriterVersion': '1.0.0', 'WriterRelease': '', 'LastWritingDateTime': str(datetime.now()),
+                        'WriterProjectTitle': 'tu/plt/mtp', 'WriterProjectID': ''}
+    export_manifest_path = '../manifest_files/example_minimal_manifest.aml'
+    mtp_generator = MTP_generator(writer_info_dict, export_manifest_path)
+
+    module = OPCUAServerPEA(mtp_generator)
 
     # Service definition
     service_1 = RandomNumberGenerator('rand_num_gen', 'This services generates random number')
