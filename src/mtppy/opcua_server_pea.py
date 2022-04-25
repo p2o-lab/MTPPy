@@ -55,20 +55,13 @@ class OPCUAServerPEA:
         # add InternalElement opcua server to ModuleTypePackage/CommunicationSet/SourceList
         self.mtp.add_opcua_server(self.endpoint)
 
-        # service should be added to InstanceHierarchy_Services.
-        # so parent_InstanceHierarchy is mtp.InstanceHierarchy_Service
         for service in self.service_set.values():
-            self._create_opcua_objects_for_folders(service, services_node_id, services_node,
-                                                   parent_InstanceHierarchy=self.mtp.InstanceHierarchy_Service,
-                                                   section='service')
+            self._create_opcua_objects_for_folders(service, services_node_id, services_node)
 
         act_elem_node_id = f'ns={ns};s=active_elements'
         act_elem_node = server.add_folder(act_elem_node_id, "active_elements")
         for active_element in self.active_elements.values():
-            # active element should refer to HMI element. HMI is not implemented yet.
-            # so parent_InstanceHierarchy and section in this case are None
-            self._create_opcua_objects_for_folders(active_element, act_elem_node_id, act_elem_node,
-                                                   parent_InstanceHierarchy=None, section=None)
+            self._create_opcua_objects_for_folders(active_element, act_elem_node_id, act_elem_node)
 
         # add SupportedRoleClass to all InternalElements
         self.mtp.apply_add_SupportedRoleClass()
@@ -76,10 +69,12 @@ class OPCUAServerPEA:
         # export manifest.aml
         self.mtp.export_manifest()
 
-    def _create_opcua_objects_for_folders(self, data_assembly, parent_opcua_prefix, parent_opcua_object,
-                                          parent_InstanceHierarchy, section):
+    def _create_opcua_objects_for_folders(self, data_assembly, parent_opcua_prefix, parent_opcua_object):
         da_node_id = f'{parent_opcua_prefix}.{data_assembly.tag_name}'
         da_node = parent_opcua_object.add_folder(da_node_id, data_assembly.tag_name)
+
+        # type of data assembly (e.g. services, active_elements, procedures etc.)
+        da_type = parent_opcua_prefix.split('=')[-1].split('.')[-1]
 
         folders = ['configuration_parameters',
                    'procedures',
@@ -89,18 +84,12 @@ class OPCUAServerPEA:
         # create instance of  ServiceControl, HealthStateView, DIntServParam etc.
         instance = self.mtp.create_instance(data_assembly, da_node_id)
 
-        # HMI is not implemented, so for active element, parent_InstanceHierarchy and component can only be none.
-        # After implementing HMI, this if-else-block will be removed
-        if parent_InstanceHierarchy is not None:
-            # create components of Services including service, prozedur, ReportValue etc.
-            component, link_id = self.mtp.create_components_for_services(parent_InstanceHierarchy, data_assembly,
-                                                                         section)
-        else:
-            component = None
-            link_id = self.mtp.random_id_generator()
+        link_id = self.mtp.random_id_generator()
+        if da_type == 'services' or da_type in folders:
+            link_id = self.mtp.create_components_for_services(data_assembly, da_type)
 
         if hasattr(data_assembly, 'attributes'):
-            self._create_opcua_objects_for_leaves(data_assembly, da_node_id, da_node, instance, component)
+            self._create_opcua_objects_for_leaves(data_assembly, da_node_id, da_node, instance)
 
         for section_name in folders + leaves:
             if not hasattr(data_assembly, section_name):
@@ -111,17 +100,14 @@ class OPCUAServerPEA:
             section_node = da_node.add_folder(section_node_id, section_name)
             if section_name in folders:
                 for parameter in eval(f'data_assembly.{section_name}.values()'):
-                    self._create_opcua_objects_for_folders(parameter, section_node_id, section_node, component,
-                                                           section_name)
+                    self._create_opcua_objects_for_folders(parameter, section_node_id, section_node)
             if section_name in leaves:
-                self._create_opcua_objects_for_leaves(section, section_node_id, section_node, instance,
-                                                      component)
+                self._create_opcua_objects_for_leaves(section, section_node_id, section_node, instance)
 
         # create linked obj between instance and service component
         self.mtp.add_linked_attr(instance, link_id)
 
-    def _create_opcua_objects_for_leaves(self, object, parent_opcua_prefix, parent_opcua_object, par_instance,
-                                         par_component):
+    def _create_opcua_objects_for_leaves(self, object, parent_opcua_prefix, parent_opcua_object, par_instance):
         """
         :param par_instance: instance under InstanceHierarchy_MTP/CommunicationSet/InstanceList
         :param par_component: element under InstanceHierarchy_Service or InstanceHierarchy_Service (HMI is not implemented)
@@ -150,14 +136,10 @@ class OPCUAServerPEA:
             added to InstanceHierarchy_Service/service/procedure. The other attributes of procedure should belong to 
             InstanceList/HeathStateView
             """
-            if type(object).__name__ != 'Procedure':
+            if type(object).__name__ == 'Procedure' and attr.name in ['ProcedureId', 'IsSelfCompleting', 'IsDefault']:
+                pass
+            else:
                 self.mtp.add_attr_to_instance(par_instance, attr.name, attr.init_value, id)
-
-            if type(object).__name__ == 'Procedure':
-                if attr.name in ['ProcedureId', 'IsSelfCompleting', 'IsDefault']:
-                    self.mtp.add_attr_to_instance(par_component, attr.name, attr.init_value, id)
-                else:
-                    self.mtp.add_attr_to_instance(par_instance, attr.name, attr.init_value, id)
 
             # We subscribe to nodes that are writable attributes
             if attr.sub_cb is not None:

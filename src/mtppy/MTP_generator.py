@@ -15,8 +15,6 @@ class MTP_generator:
         # first layer
         self.InstanceHierarchy_MTP = None
         self.InstanceHierarchy_Service = None
-        self.InterfaceClassLib = None  # not implemented
-        self.SystemUnitClassLib = None  # not implemented
 
         # InstanceHierarchy MTP layer
         self.ModuleTypePackage = None
@@ -32,6 +30,10 @@ class MTP_generator:
         # SourceList layer
         self.OPCUA = None
 
+        # InstanceHierarchy service layer
+        self.Service = None
+        self.ServiceProcedure = None
+
         self.__init_manifest()
         self.__init_InstanceHierarchy()
         self.edit_writer_information()
@@ -39,14 +41,13 @@ class MTP_generator:
     def __init_manifest(self):
         self.InstanceHierarchy_MTP = ET.SubElement(self.root, "InstanceHierarchy")
         self.InstanceHierarchy_Service = ET.SubElement(self.root, "InstanceHierarchy")
-        self.InterfaceClassLib = ET.SubElement(self.root, "InterfaceClassLib")
-        self.SystemUnitClassLib = ET.SubElement(self.root, "SystemUnitClassLib")
 
     def __init_InstanceHierarchy(self):
         self.InstanceHierarchy_MTP.set('Name', 'ModuleTypePackage')
         self.InstanceHierarchy_MTP.set('ID', self.random_id_generator())
-        self.InstanceHierarchy_Service.set('Name', 'Services')
-        self.InstanceHierarchy_Service.set('ID', self.random_id_generator())
+        id = self.random_id_generator()
+        self.InstanceHierarchy_Service.set('Name', id)
+        self.InstanceHierarchy_Service.set('ID', id)
 
     def edit_writer_information(self):
         writerHeader = self.root.find('AdditionalInformation/WriterHeader')
@@ -69,7 +70,7 @@ class MTP_generator:
 
     def add_communicationSet(self):
         self.CommunicationSet = ET.SubElement(self.ModuleTypePackage, 'InternalElement')
-        self.attribute_generator(self.CommunicationSet, 'CommunicationSet', self.random_id_generator(),
+        self.attribute_generator(self.CommunicationSet, 'Communication', self.random_id_generator(),
                                  'MTPSUCLib/CommunicationSet')
         self.InstanceList = ET.SubElement(self.CommunicationSet, 'InternalElement')
         self.attribute_generator(self.InstanceList, 'InstanceList', self.random_id_generator(),
@@ -105,6 +106,8 @@ class MTP_generator:
         :return: instance of data assembly
         """
         instance = ET.SubElement(self.InstanceList, 'InternalElement')
+        name = None
+        refPath = None
 
         if instance_basic_type == 'Service':
             name = instance_name + '.ServiceControl'
@@ -118,16 +121,20 @@ class MTP_generator:
         elif instance_basic_type == 'SUCIndicatorElement':
             name = instance_name
             refPath = 'MTPDataObjectSUCLib/DataAssembly/IndicatorElement/' + instance_type_name
-        else:
+        elif instance_basic_type == 'SUCActiveElement':
             name = instance_name
             refPath = 'MTPDataObjectSUCLib/DataAssembly/ActiveElement/' + instance_type_name
 
-        # add instance attributes
-        self.attribute_generator(instance, name, instance_id, refPath)
+        if name and refPath:
+            # add instance attributes
+            self.attribute_generator(instance, name, instance_id, refPath)
+        else:
+            self.InstanceList.remove(instance)
+            raise TypeError('data assembly type error')
 
         return instance
 
-    def create_components_for_services(self, parent_elem, data_assembly, section):
+    def create_components_for_services(self, data_assembly, section):
         """
         create components for InstanceHierarchy Services
         :param parent_elem: parent element of current component (e.g. parent of a procedure is a service)
@@ -135,44 +142,76 @@ class MTP_generator:
         :return: component of services: eg. service, procedure, config parameter, procedure parameter etc.
         """
         services_component_id = self.random_id_generator()
-        services_component_id_name = data_assembly.tag_name  # name of service component is equal to tag name
-        service_component, link_id = self.add_components_to_services(parent_elem, services_component_id_name,
+        service_component, link_id = self.add_components_to_services(data_assembly,
                                                                      services_component_id, section)
 
         # link_id: each component of services is through link_id linked to an InternalElement in InstanceList
-        return service_component, link_id
+        return link_id
 
-    def add_components_to_services(self, parent_element, sc_name, sc_id, section):
+    def add_components_to_services(self, data_assembly, sc_id, section):
         """
         add services and its components (config param, procedure, procedure param etc.) to InstanceHierarchy: Services
         s_component: service component
         """
-        s_component = ET.SubElement(parent_element, 'InternalElement')
-        s_component.set('Name', sc_name)
-        s_component.set('ID', sc_id)
-        if section == 'service':
+        sc_name = data_assembly.tag_name
+        s_component = None
+        if section == 'services':
+            s_component = ET.SubElement(self.InstanceHierarchy_Service, 'InternalElement')
+            self.Service = s_component
             s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/Service')
 
         elif section == 'configuration_parameters':
-            s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/ServiceParameter')
+            s_component = ET.SubElement(self.Service, 'InternalElement')
+            s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/ServiceParameter/ConfigurationParameter')
 
         elif section == 'procedures':
+            s_component = ET.SubElement(self.Service, 'InternalElement')
+            self.ServiceProcedure = s_component
             s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/ServiceProcedure')
+            attr = ET.SubElement(s_component, 'Attribute')
+            attr.set('Name', 'ProcedureID')
+            attr.set('AttributeDataType', 'xs:IDREF')
+            attr_value = ET.SubElement(attr, 'Value')
+            attr_value.text = str(data_assembly.attributes['ProcedureId'].value)
+
+            attr = ET.SubElement(s_component, 'Attribute')
+            attr.set('Name', 'IsDefault')
+            attr.set('AttributeDataType', 'xs:IDREF')
+            attr_value = ET.SubElement(attr, 'Value')
+            attr_value.text = str(data_assembly.attributes['IsDefault'].value)
+
+            attr = ET.SubElement(s_component, 'Attribute')
+            attr.set('Name', 'IsSelfCompleting')
+            attr.set('AttributeDataType', 'xs:IDREF')
+            attr_value = ET.SubElement(attr, 'Value')
+            attr_value.text = str(data_assembly.attributes['IsSelfCompleting'].value)
 
         elif section == 'procedure_parameters':
+            s_component = ET.SubElement(self.ServiceProcedure, 'InternalElement')
             s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/ServiceParameter/ProcedureParameter')
 
         elif section == 'process_value_ins':
+            s_component = ET.SubElement(self.ServiceProcedure, 'InternalElement')
             s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/ServiceParameter/ProcessValueIn')
 
         elif section == 'report_values':
+            s_component = ET.SubElement(self.ServiceProcedure, 'InternalElement')
             s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/ServiceParameter/ReportValue')
 
         elif section == 'process_value_outs':
+            s_component = ET.SubElement(self.ServiceProcedure, 'InternalElement')
             s_component.set('RefBaseSystemUnitPath', 'MTPServiceSUCLib/ServiceParameter/ProcessValueOut')
 
         link_id = self.random_id_generator()
-        self.add_linked_attr(s_component, link_id)
+
+        if s_component is None:
+            raise TypeError('service components type error')
+
+        else:
+            s_component.set('Name', sc_name)
+            s_component.set('ID', sc_id)
+
+            self.add_linked_attr(s_component, link_id)
 
         return s_component, link_id
 
@@ -299,6 +338,7 @@ class MTP_generator:
 
     def export_manifest(self):
         # export manifest
+        self.root.set('FileName', self.export_path.split('/')[-1])
         self.tree = ET.ElementTree(self.root)
         self.pretty_print(self.root)
         self.tree.write(self.export_path)

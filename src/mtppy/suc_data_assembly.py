@@ -56,7 +56,7 @@ class SUCHealthStateView(SUCDiagnosticElement):
         super().__init__(tag_name, tag_description)
 
 
-class SUCServiceProcedure(SUCOperationElement):
+class SUCServiceProcedure(SUCHealthStateView):
     def __init__(self, procedure_id: int, tag_name: str, tag_description: str, is_self_completing=False,
                  is_default=True):
         super().__init__(tag_name, tag_description)
