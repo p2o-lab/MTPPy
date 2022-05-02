@@ -50,7 +50,7 @@ class OPCUAServerPEA:
         services_node = server.add_folder(services_node_id, "services")
 
         # initiate a new MTP that will be added to InstanceHierarchy: ModuleTypePackage
-        self.mtp.add_ModuleTypePackage('1.0.0', name='mtp_test')
+        self.mtp.add_module_type_package('1.0.0', name='mtp_test', description='')
 
         # add InternalElement opcua server to ModuleTypePackage/CommunicationSet/SourceList
         self.mtp.add_opcua_server(self.endpoint)
@@ -64,7 +64,7 @@ class OPCUAServerPEA:
             self._create_opcua_objects_for_folders(active_element, act_elem_node_id, act_elem_node)
 
         # add SupportedRoleClass to all InternalElements
-        self.mtp.apply_add_SupportedRoleClass()
+        self.mtp.apply_add_supported_role_class()
 
         # export manifest.aml
         self.mtp.export_manifest()
@@ -124,9 +124,9 @@ class OPCUAServerPEA:
             opcua_comm_obj = OPCUACommunicationObject(opcua_node_obj, node_id=opcua_node_obj)
             attr.attach_communication_object(opcua_comm_obj)
 
-            id = self.mtp.random_id_generator()  # create linked-id for opc ua node
+            linked_id = self.mtp.random_id_generator()  # create linked-id for opc ua node
             # add opc ua node and its attributes to ModuleTypePackage/CommunicationSet/SourceList/OPCUAServer
-            self.mtp.add_external_interface(attribute_node_id, id, self.opcua_ns)
+            self.mtp.add_external_interface(attribute_node_id, self.opcua_ns, linked_id)
 
             """
             add attributes of data assembly to corresponding instance under InstanceList 
@@ -139,7 +139,7 @@ class OPCUAServerPEA:
             if type(object).__name__ == 'Procedure' and attr.name in ['ProcedureId', 'IsSelfCompleting', 'IsDefault']:
                 pass
             else:
-                self.mtp.add_attr_to_instance(par_instance, attr.name, attr.init_value, id)
+                self.mtp.add_attr_to_instance(par_instance, attr.name, attr.init_value, linked_id)
 
             # We subscribe to nodes that are writable attributes
             if attr.sub_cb is not None:
