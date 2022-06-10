@@ -443,6 +443,139 @@ class BinVlv(SUCActiveElement):
         return self.attributes['CloseFbk'].value
 
 
+class MonBinVlvValues:
+    def __init__(self, open_aut, open_op, close_aut, close_op):
+        self.open_aut = open_aut
+        self.open_op = open_op
+        self.close_aut = close_aut
+        self.close_op = close_op
+
+
+class MonBinVlv(BinVlv):
+    def __init__(self, tag_name, tag_description='', open_fbk_calc=True, close_fbk_calc=True,
+                 safe_pos=0, safe_pos_en=False, perm_en=False, intl_en=False, prot_en=False,
+                 mon_en=True, mon_safe_pos=True, mon_stat_ti=1, mon_dyn_ti=1):
+        super().__init__(tag_name, tag_description, open_fbk_calc, close_fbk_calc, safe_pos, safe_pos_en, perm_en,
+                         intl_en, prot_en)
+
+        self._add_attribute(Attribute('MonEn', bool, init_value=mon_en))
+        self._add_attribute(Attribute('MonSafePos', bool, init_value=mon_safe_pos))
+        self._add_attribute(Attribute('MonStatErr', bool, init_value=False))
+        self._add_attribute(Attribute('MonDynErr', bool, init_value=False))
+        self._add_attribute(Attribute('MonStatTi', float, init_value=mon_stat_ti))
+        self._add_attribute(Attribute('MonDynTi', float, init_value=mon_dyn_ti))
+        self.monitored_values = MonBinVlvValues(self.attributes['OpenAut'].value, self.attributes['OpenOp'].value,
+                                                self.attributes['CloseAut'].value, self.attributes['CloseOp'].value)
+        self.monitor_static_thread = None
+        self.monitor_dynamic_thread = None
+        self.monitor_stop_signal = False
+
+    def monitor_static_error(self):
+        print('start monitoring static error')
+        while True:
+            if self.monitor_stop_signal:
+                print('static monitoring stopped')
+                break
+            ctrl1 = self.attributes['Ctrl'].value
+            open_op1 = self.monitored_values.open_op
+            open_aut1 = self.monitored_values.open_aut
+            close_op1 = self.monitored_values.close_op
+            close_aut1 = self.monitored_values.close_aut
+
+            sleep(self.attributes['MonStatTi'].value)
+
+            ctrl2 = self.attributes['Ctrl'].value
+            open_op2 = self.monitored_values.open_op
+            open_aut2 = self.monitored_values.open_aut
+            close_op2 = self.monitored_values.close_op
+            close_aut2 = self.monitored_values.close_aut
+            if ctrl1 != ctrl2:
+                if open_op1 == open_op2 and open_aut1 == open_aut2 and close_op1 == close_op2 and close_aut1 == close_aut2:
+                    self.attributes['MonStatErr'].set_value(True)
+                    print('Static error set to True')
+                    if self.attributes['MonSafePos']:
+                        print('set valve to safety position')
+                        if self.attributes['SafePosEn'].value:
+                            self._go_save_pos()
+                        else:
+                            print('Device has no safe position')
+                        self.attributes['SafePosAct'].set_value(True)
+            sleep(0.1)
+
+    def monitor_dynamic_error(self):
+        print('start monitoring dynamic error')
+        while True:
+            if self.monitor_stop_signal:
+                print('dynamic monitoring stopped')
+                break
+            ctrl1 = self.attributes['Ctrl'].value
+            open_op1 = self.monitored_values.open_op
+            open_aut1 = self.monitored_values.open_aut
+            close_op1 = self.monitored_values.close_op
+            close_aut1 = self.monitored_values.close_aut
+
+            sleep(self.attributes['MonDynTi'].value)
+
+            ctrl2 = self.attributes['Ctrl'].value
+            open_op2 = self.monitored_values.open_op
+            open_aut2 = self.monitored_values.open_aut
+            close_op2 = self.monitored_values.close_op
+            close_aut2 = self.monitored_values.close_aut
+
+            if open_op1 != open_op2 or open_aut1 != open_aut2 or close_op1 != close_op2 or close_aut1 != close_aut2:
+                if ctrl1 == ctrl2:
+                    self.attributes['MonDynErr'].set_value(True)
+                    print('Dynamic error set to True')
+                    if self.attributes['MonSafePos']:
+                        print('set valve to safety position')
+                        if self.attributes['SafePosEn'].value:
+                            self._go_save_pos()
+                        else:
+                            print('Device has no safe position')
+                        self.attributes['SafePosAct'].set_value(True)
+            sleep(0.1)
+
+    def start_monitor(self):
+        if self.attributes['MonEn'].value:
+            self.monitor_static_thread = Thread(target=self.monitor_static_error)
+            self.monitor_static_thread.start()
+            self.monitor_dynamic_thread = Thread(target=self.monitor_dynamic_error)
+            self.monitor_dynamic_thread.start()
+
+    def set_open_aut(self, value: bool):
+        self.monitored_values.open_aut = value
+        print('OpenAut set to %s' % value)
+        if self.op_src_mode.attributes['StateAutAct'].value:
+            if value and self._run_allowed():
+                self._run_open_vlv()
+
+    def set_close_aut(self, value: bool):
+        self.monitored_values.close_aut = value
+        print('CloseAut set to %s' % value)
+        if self.op_src_mode.attributes['StateAutAct'].value:
+            if value and self._run_allowed():
+                self._run_close_vlv()
+
+    def set_open_op(self, value: bool):
+        self.monitored_values.open_op = value
+        print('OpenOp set to %s' % value)
+        if self.op_src_mode.attributes['StateOpAct'].value:
+            if value and self._run_allowed():
+                self._run_open_vlv()
+                self.attributes['OpenOp'].value = False
+
+    def set_close_op(self, value: bool):
+        self.monitored_values.close_op = value
+        print('CloseOp set to %s' % value)
+        if self.op_src_mode.attributes['StateOpAct'].value:
+            if value and self._run_allowed():
+                self._run_close_vlv()
+                self.attributes['CloseOp'].value = False
+
+    def set_stop_monitor(self):
+        self.monitor_stop_signal = True
+
+
 class BinDrv(SUCActiveElement):
     def __init__(self, tag_name, tag_description='', rev_fbk_calc=True, fwd_fbk_calc=True, safe_pos=0, fwd_en=True,
                  rev_en=False, perm_en=False, intl_en=False, prot_en=False):
