@@ -69,18 +69,26 @@ class AnaVlv(SUCActiveElement):
         if self._run_allowed():
             self.attributes['SafePosAct'].set_value(False)
         else:
-            self._run_stop_vlv()
+            if self.attributes['SafePosEn'].value:
+                self._go_safe_pos()
+            else:  # hold position
+                print('Device has no safe position')
             self.attributes['SafePosAct'].set_value(True)
-            self._go_safe_pos()
 
     def _go_safe_pos(self):
-        # if interlock or protection is active, valve should be set to safety position
-        value = self._set_safety_pos()
-        self.attributes['Pos'].set_value(value)
-        print('Pos set to safe position %s' % value)
+        if self.attributes['SafePos'].value == 1:
+            self._run_open_vlv()
+            safe_pos = self.attributes['PosMax'].value
+
+        else:
+            self._run_close_vlv()
+            safe_pos = self.attributes['PosMin'].value
+
+        self.attributes['Pos'].set_value(safe_pos)
+        print('Pos set to safe position %s' % safe_pos)
 
         if self.attributes['PosFbkCalc'].value:
-            self.attributes['PosFbk'].set_value(value)
+            self.attributes['PosFbk'].set_value(safe_pos)
 
     def set_open_aut(self, value: bool):
         print('OpenAut set to %s' % value)
@@ -147,19 +155,16 @@ class AnaVlv(SUCActiveElement):
         if self.attributes['CloseFbkCalc']:
             self.attributes['CloseFbk'].set_value(True)
 
-    def _run_stop_vlv(self):
+    def _reset_vlv(self):
+        if self.attributes['ProtEn'].value and self.attributes['Protect'].value == 0:
+            self.attributes['Protect'].set_value(True)
+            self.attributes['SafePosAct'].set_value(False)
         self.attributes['OpenAct'].set_value(False)
         if self.attributes['OpenFbkCalc']:
             self.attributes['OpenFbk'].set_value(False)
         self.attributes['CloseAct'].set_value(False)
         if self.attributes['CloseFbkCalc']:
             self.attributes['CloseFbk'].set_value(False)
-
-    def _reset_vlv(self):
-        if self.attributes['ProtEn'].value and self.attributes['Protect'].value == 0:
-            self.attributes['Protect'].set_value(True)
-            self.attributes['SafePosAct'].set_value(False)
-        self._run_stop_vlv()
 
     def set_pos_int(self, value: float):
         print('PosInt set to %s' % value)
@@ -194,7 +199,8 @@ class AnaVlv(SUCActiveElement):
                 value = self.attributes['PosMin'].value
 
             # if SafePosAct is active, safety setting for the position is accepted
-            elif self.attributes['SafePosAct'].value:
+            elif self.attributes['SafePosAct'].value or \
+                    (self.attributes['PermEn'].value and self.attributes['Permit'].value == 0):
                 print('manual or internal position specification inactive')
                 return
 
@@ -204,18 +210,6 @@ class AnaVlv(SUCActiveElement):
                 self.attributes['PosFbk'].set_value(value)
         else:
             print('Pos cannot be set to %s (out of range)' % value)
-
-    def _set_safety_pos(self):
-        # if SafePosEn is false (device has no safe position), position will be hold in the safety mode
-        if not self.attributes['SafePosEn'].value:
-            value = self.attributes['Pos'].value
-        # if device has safe position, the position will be set to minimum or maximum value according to SafePos
-        # (if SafePos = true: maximum, if SafePos = false: minimum)
-        elif self.attributes['SafePosEn'].value and self.attributes['SafePos'].value == 1:
-            value = self.attributes['PosMax'].value
-        else:
-            value = self.attributes['PosMin'].value
-        return value
 
     def set_pos_rbk(self, value: float):
         corr_value = self._correct_value(value)
@@ -243,8 +237,6 @@ class AnaVlv(SUCActiveElement):
             value = True
         self.attributes['Permit'].set_value(value)
         print('Permit set to %s' % value)
-        if not value:
-            self._run_stop_vlv()
         self.attributes['SafePosAct'].set_value(False)  # safety position should not be activated for permit mode
 
     def set_interlock(self, value: bool):
@@ -320,17 +312,17 @@ class BinVlv(SUCActiveElement):
         if self._run_allowed():
             self.attributes['SafePosAct'].set_value(False)
         else:
-            self.attributes['SafePosAct'].set_value(True)
             if self.attributes['SafePosEn'].value:
                 self._go_save_pos()
             else:
                 print('Device has no safe position')
+            self.attributes['SafePosAct'].set_value(True)
 
     def _go_save_pos(self):
         if self.attributes['SafePos'].value:
             self._run_open_vlv()
         else:
-            self._run_stop_vlv()
+            self._run_close_vlv()
 
     def set_open_aut(self, value: bool):
         print('OpenAut set to %s' % value)
@@ -397,21 +389,19 @@ class BinVlv(SUCActiveElement):
         if self.attributes['CloseFbkCalc']:
             self.attributes['CloseFbk'].set_value(True)
 
-    def _run_stop_vlv(self):
-        self.attributes['Ctrl'].set_value(False)
-        if self.attributes['OpenFbkCalc']:
-            self.attributes['OpenFbk'].set_value(False)
-
-        if self.attributes['CloseFbkCalc']:
-            self.attributes['CloseFbk'].set_value(False)
-
     def _reset_vlv(self):
         if self.attributes['ProtEn'].value and self.attributes['Protect'].value == 0:
             self.attributes['Protect'].set_value(True)
 
         if self.attributes['SafePosEn'].value:
             self.attributes['SafePosAct'].set_value(False)
-        self._run_stop_vlv()
+
+        self.attributes['Ctrl'].set_value(False)
+        if self.attributes['OpenFbkCalc']:
+            self.attributes['OpenFbk'].set_value(False)
+
+        if self.attributes['CloseFbkCalc']:
+            self.attributes['CloseFbk'].set_value(False)
 
     def set_open_fbk(self, value: bool):
         if not self.attributes['OpenFbkCalc'].value:
@@ -427,8 +417,6 @@ class BinVlv(SUCActiveElement):
         if not self.attributes['PermEn'].value:
             value = True
         self.attributes['Permit'].set_value(value)
-        if not value:
-            self._run_stop_vlv()
         print('Permit set to %s' % value)
         self.attributes['SafePosAct'].set_value(False)
 
@@ -624,8 +612,6 @@ class BinDrv(SUCActiveElement):
             value = True
         self.attributes['Permit'].set_value(value)
         print('Permit set to %s' % value)
-        if not value:
-            self._stop_drv()
         self.attributes['SafePosAct'].set_value(False)
 
     def set_interlock(self, value: bool):
