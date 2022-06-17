@@ -1,0 +1,161 @@
+import pytest
+from mtppy.active_elements import MonAnaVlv
+import time
+
+
+def init_mon_ana_vlv(op_mode='off', src_mode='int', open_fbk_calc=True, close_fbk_calc=True, pos_fbk_calc=True,
+                     safe_pos=1, safe_pos_en=True, perm_en=False, intl_en=False, prot_en=False, mon_en=True,
+                     mon_safe_pos=True, mon_stat_ti=1, mon_dyn_ti=1, pos_tolerance=1, mon_pos_ti=1):
+    mon_ana_vlv = MonAnaVlv('tag', tag_description='',
+                            pos_min=2, pos_max=10, pos_scl_min=0, pos_scl_max=10, pos_unit=0,
+                            open_fbk_calc=open_fbk_calc, close_fbk_calc=close_fbk_calc, pos_fbk_calc=pos_fbk_calc,
+                            safe_pos=safe_pos, safe_pos_en=safe_pos_en, perm_en=perm_en, intl_en=intl_en,
+                            prot_en=prot_en, mon_en=mon_en, mon_safe_pos=mon_safe_pos, mon_stat_ti=mon_stat_ti,
+                            mon_dyn_ti=mon_dyn_ti, pos_tolerance=pos_tolerance, mon_pos_ti=mon_pos_ti)
+    if op_mode == 'op':
+        mon_ana_vlv.op_src_mode.attributes['StateOpOp'].set_value(True)
+    elif op_mode == 'aut':
+        mon_ana_vlv.op_src_mode.attributes['StateAutOp'].set_value(True)
+    elif op_mode == 'off':
+        pass
+    else:
+        raise ValueError(f'Operation mode {op_mode} is unknown')
+
+    if src_mode == 'man':
+        mon_ana_vlv.op_src_mode.attributes['SrcManOp'].set_value(True)
+    elif src_mode == 'int':
+        mon_ana_vlv.op_src_mode.attributes['SrcIntOp'].set_value(True)
+    else:
+        raise ValueError(f'Source mode {src_mode} is unknown')
+    return mon_ana_vlv
+
+
+test_scenario_no_control_signals = [('off', 'int', 'set_open_op'),
+                                    ('off', 'man', 'set_open_op'),
+                                    ('aut', 'int', 'set_open_op'),
+                                    ('aut', 'man', 'set_open_op'),
+
+                                    ('off', 'int', 'set_open_aut'),
+                                    ('off', 'man', 'set_open_aut'),
+                                    ('op', 'int', 'set_open_aut'),
+                                    ('op', 'man', 'set_open_aut'),
+
+                                    ('off', 'int', 'set_close_op'),
+                                    ('off', 'man', 'set_close_op'),
+                                    ('aut', 'int', 'set_close_op'),
+                                    ('aut', 'man', 'set_close_op'),
+
+                                    ('off', 'int', 'set_close_aut'),
+                                    ('off', 'man', 'set_close_aut'),
+                                    ('op', 'int', 'set_close_aut'),
+                                    ('op', 'man', 'set_close_aut')]
+
+
+def test_static_error():
+    for op_mode, src_mode, set_command in test_scenario_no_control_signals:
+        for command in [True, False]:
+            mon_ana_vlv = init_mon_ana_vlv(op_mode=op_mode, src_mode=src_mode)
+
+            mon_ana_vlv.start_monitor()
+            time.sleep(0.5)
+            eval(f'mon_ana_vlv.{set_command}({command})')
+            print(f'Scenario: mode {op_mode} {src_mode}, {set_command}')
+
+            mon_ana_vlv.attributes['OpenAct'].set_value(True)  # OpenAct becomes to True without any control signals
+            time.sleep(1.1)
+
+            assert mon_ana_vlv.attributes['MonStatErr'].value == True
+            assert mon_ana_vlv.attributes['MonDynErr'].value == False
+            assert mon_ana_vlv.attributes['SafePosAct'].value == True
+            assert mon_ana_vlv.attributes['OpenAct'].value == True  # safety position of valve is open
+
+            time.sleep(0.5)
+
+            # after valve is set to safety position (open), 
+            # the variable OpenAct becomes to False --> another static error
+            mon_ana_vlv.attributes['OpenAct'].set_value(False)
+            time.sleep(1.1)
+
+            assert mon_ana_vlv.attributes['MonStatErr'].value == True
+            assert mon_ana_vlv.attributes['MonDynErr'].value == False
+            assert mon_ana_vlv.attributes['SafePosAct'].value == True
+            assert mon_ana_vlv.attributes['OpenAct'].value == True  # safety position of valve is open
+
+            mon_ana_vlv.set_stop_monitor()
+            mon_ana_vlv.monitor_static_thread.join()
+            mon_ana_vlv.monitor_dynamic_thread.join()
+
+
+test_scenario_control_signals = [('op', 'int', 'set_open_op', 'set_close_op'),
+                                 ('op', 'man', 'set_open_op', 'set_close_op'),
+
+                                 ('aut', 'int', 'set_open_aut', 'set_close_aut'),
+                                 ('aut', 'man', 'set_open_aut', 'set_close_aut')]
+
+
+def test_dynamic_error_open_close():
+    for op_mode, src_mode, open_command, close_command in test_scenario_control_signals:
+        mon_ana_vlv = init_mon_ana_vlv(op_mode=op_mode, src_mode=src_mode)
+
+        mon_ana_vlv.start_monitor()
+        time.sleep(0.5)
+        eval(f'mon_ana_vlv.{open_command}(True)')
+        print(f'Scenario: mode {op_mode} {src_mode}, {open_command}')
+
+        # OpenAct dose not change (False) after control signal has changed to open
+        mon_ana_vlv.attributes['OpenAct'].set_value(False)
+        time.sleep(1.1)
+
+        assert mon_ana_vlv.attributes['MonDynErr'].value == True
+        assert mon_ana_vlv.attributes['MonStatErr'].value == False
+        assert mon_ana_vlv.attributes['SafePosAct'].value == True
+        assert mon_ana_vlv.attributes['OpenAct'].value == True
+
+        eval(f'mon_ana_vlv.{close_command}(True)')
+        print(f'Scenario: mode {op_mode} {src_mode}, {close_command}')
+
+        # OpenAct dose not change (True) after control signal has changed to close
+        mon_ana_vlv.attributes['OpenAct'].set_value(True)
+        time.sleep(1.1)
+
+        assert mon_ana_vlv.attributes['MonDynErr'].value == True
+        assert mon_ana_vlv.attributes['MonStatErr'].value == False
+        assert mon_ana_vlv.attributes['SafePosAct'].value == True
+        assert mon_ana_vlv.attributes['OpenAct'].value == True
+
+        mon_ana_vlv.set_stop_monitor()
+        mon_ana_vlv.monitor_static_thread.join()
+        mon_ana_vlv.monitor_dynamic_thread.join()
+
+
+test_scenario_pos = [('op', 'int', 'set_pos_int'),
+                     ('aut', 'int', 'set_pos_int'),
+                     ('op', 'man', 'set_pos_man'),
+                     ('aut', 'man', 'set_pos_man')]
+
+
+def test_pos_open():
+    for op_mode, src_mode, set_command in test_scenario_pos:
+        for command in [-2, 4, 7, 10, 100]:
+            mon_ana_vlv = init_mon_ana_vlv(op_mode=op_mode, src_mode=src_mode, pos_fbk_calc=True)
+            if op_mode == 'op':
+                mon_ana_vlv.set_open_op(True)
+            elif op_mode == 'aut':
+                mon_ana_vlv.set_open_aut(True)
+            eval(f'mon_ana_vlv.{set_command}({command})')
+            print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, {command}')
+            mon_ana_vlv.attributes['PosFbk'].set_value(2.5)  # position tolerance is 1, pos_fbk is 2.5 --> pos error
+            time.sleep(1.5)
+            if 2 <= command <= 10:
+                assert mon_ana_vlv.attributes['PosReachedFbk'].value == False
+                assert mon_ana_vlv.attributes['MonPosErr'].value == True
+                assert mon_ana_vlv.attributes['SafePosAct'].value == True
+                assert mon_ana_vlv.attributes['OpenAct'].value == True
+            else:
+                assert mon_ana_vlv.attributes['PosReachedFbk'].value == False
+                assert mon_ana_vlv.attributes['MonPosErr'].value == False
+                assert mon_ana_vlv.attributes['SafePosAct'].value == False
+
+
+if __name__ == '__main__':
+    pytest.main(['test_mon_ana_vlv.py', '-s'])
