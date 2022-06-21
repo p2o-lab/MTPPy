@@ -274,11 +274,13 @@ class AnaVlv(SUCActiveElement):
 
 
 class MonAnaVlvValues:
-    def __init__(self, open_aut, open_op, close_aut, close_op, pos):
+    def __init__(self, open_aut, open_op, close_aut, close_op, reset_aut, reset_op, pos):
         self.open_aut = open_aut
         self.open_op = open_op
         self.close_aut = close_aut
         self.close_op = close_op
+        self.reset_aut = reset_aut
+        self.reset_op = reset_op
         self.pos = pos
         self.lock = threading.Lock()
         self.stop_event_lock = threading.Event()
@@ -311,6 +313,7 @@ class MonAnaVlv(AnaVlv):
         self._add_attribute(Attribute('MonPosErr', bool, init_value=False))
         self.monitored_values = MonAnaVlvValues(self.attributes['OpenAut'].value, self.attributes['OpenOp'].value,
                                                 self.attributes['CloseAut'].value, self.attributes['CloseOp'].value,
+                                                self.attributes['ResetAut'].value, self.attributes['ResetOp'].value,
                                                 self.attributes['Pos'].value)
         self.monitor_static_thread = None
         self.monitor_dynamic_thread = None
@@ -341,63 +344,80 @@ class MonAnaVlv(AnaVlv):
                 self.attributes['PosFbk'].set_value(safe_pos)
 
     def compare_states_control_signals(self, monitor_time):
-
+        """
+        compare states of valve and control signals
+        :param monitor_time: MonStatTi or MonDynTi times
+        :return: results of states and control signals comparisons (a list including True or False)
+        """
         self.monitored_values.lock.acquire()
-        open_act1 = self.attributes['OpenAct'].value
-        close_act1 = self.attributes['CloseAct'].value
+        open_fbk1 = self.attributes['OpenFbk'].value
+        close_fbk1 = self.attributes['CloseFbk'].value
         open_op1 = self.monitored_values.open_op
         open_aut1 = self.monitored_values.open_aut
         close_op1 = self.monitored_values.close_op
         close_aut1 = self.monitored_values.close_aut
+        reset_op1 = self.monitored_values.reset_op
+        reset_aut1 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         sleep(monitor_time)
 
         self.monitored_values.lock.acquire()
-        open_act2 = self.attributes['OpenAct'].value
-        close_act2 = self.attributes['CloseAct'].value
+        open_fbk2 = self.attributes['OpenFbk'].value
+        close_fbk2 = self.attributes['CloseFbk'].value
         open_op2 = self.monitored_values.open_op
         open_aut2 = self.monitored_values.open_aut
         close_op2 = self.monitored_values.close_op
         close_aut2 = self.monitored_values.close_aut
+        reset_op2 = self.monitored_values.reset_op
+        reset_aut2 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         control_signals_comparison = [open_op1 == open_op2, open_aut1 == open_aut2, close_op1 == close_op2,
-                                      close_aut1 == close_aut2]
-        state_comparison = [open_act1 == open_act2, close_act1 == close_act2]
+                                      close_aut1 == close_aut2, reset_op1 == reset_op2, reset_aut1 == reset_aut2]
+        state_comparison = [open_fbk1 == open_fbk2, close_fbk1 == close_fbk2]
 
         return state_comparison, control_signals_comparison
 
     def monitor_static_error(self):
+        """
+        monitor static error
+        """
         while True:
             if self.monitored_values.stop_event_lock.isSet():
                 print('static monitoring stopped')
                 break
             states, control_signals = self.compare_states_control_signals(self.attributes['MonStatTi'].value)
 
-            if not all(states):
-                if all(control_signals):
+            if not all(states):  # if the states of valve changed
+                if all(control_signals):  # but the control signals did not change
                     self.attributes['MonStatErr'].set_value(True)
                     print('Static error set to True')
                     self._handle_monitored_error()
 
     def monitor_dynamic_error(self):
+        """
+        monitor dynamic error
+        """
         while True:
             if self.monitored_values.stop_event_lock.isSet():
                 print('dynamic monitoring stopped')
                 break
             states, control_signals = self.compare_states_control_signals(self.attributes['MonDynTi'].value)
 
-            if all(states):
-                if not all(control_signals):
+            if all(states):  # if the states of valve did not changed
+                if not all(control_signals):  # but a control command is executed
                     self.attributes['MonDynErr'].set_value(True)
                     print('Dynamic error set to True')
                     self._handle_monitored_error()
 
     def monitor_position_reached(self):
+        """
+        monitor postion error
+        """
         pos = self.monitored_values.pos
         sleep(self.attributes['MonPosTi'].value)
-        PosReachedFbk = pos - self.attributes['PosFbk'].value <= self.pos_tolerance
+        PosReachedFbk = abs(self.attributes['PosFbk'].value - pos) <= self.pos_tolerance
         self.attributes['PosReachedFbk'].set_value(PosReachedFbk)
         if not PosReachedFbk:
             self.attributes['MonPosErr'].set_value(True)
@@ -442,6 +462,15 @@ class MonAnaVlv(AnaVlv):
                 print('CloseAut set to %s' % value)
                 self._run_close_vlv()
 
+    def set_reset_aut(self, value: bool):
+        print('ResetAut set to %s' % value)
+        if self.op_src_mode.attributes['StateAutAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_aut = value
+                self.monitored_values.lock.release()
+            self._reset_vlv()
+
     def set_open_op(self, value: bool):
         print('OpenOp set to %s' % value)
         if self.op_src_mode.attributes['StateOpAct'].value:
@@ -464,6 +493,16 @@ class MonAnaVlv(AnaVlv):
                 self._run_close_vlv()
                 self.attributes['CloseOp'].value = False
 
+    def set_reset_op(self, value: bool):
+        print('ResetOp set to %s' % value)
+        if self.op_src_mode.attributes['StateOpAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_op = value
+                self.monitored_values.lock.release()
+            self._reset_vlv()
+            self.attributes['ResetOp'].set_value(False)
+
     def _set_pos(self, value: float):
         if self.valid_value(value):
             # if SafePosAct is inactive -> manual or internal position specification
@@ -482,6 +521,7 @@ class MonAnaVlv(AnaVlv):
             print('Pos set to %s' % value)
 
             # start monitor_pos_thread to after pos has been changed
+            # if the position dose not change, there is no need to check the desired position
             if self.attributes['MonEn'].value:
                 self.monitored_values.pos = value
                 self.monitor_pos_thread = Thread(target=self.monitor_position_reached)
@@ -674,11 +714,13 @@ class BinVlv(SUCActiveElement):
 
 
 class MonBinVlvValues:
-    def __init__(self, open_aut, open_op, close_aut, close_op):
+    def __init__(self, open_aut, open_op, close_aut, close_op, reset_aut, reset_op):
         self.open_aut = open_aut
         self.open_op = open_op
         self.close_aut = close_aut
         self.close_op = close_op
+        self.reset_aut = reset_aut
+        self.reset_op = reset_op
         self.lock = threading.Lock()
         self.stop_event_lock = threading.Event()
 
@@ -690,6 +732,11 @@ class MonBinVlv(BinVlv):
         super().__init__(tag_name, tag_description, open_fbk_calc, close_fbk_calc, safe_pos, safe_pos_en, perm_en,
                          intl_en, prot_en)
 
+        self.mon_en = mon_en
+        self.mon_safe_pos = mon_safe_pos
+        self.mon_stat_ti = mon_stat_ti
+        self.mon_dyn_ti = mon_dyn_ti
+
         self._add_attribute(Attribute('MonEn', bool, init_value=mon_en))
         self._add_attribute(Attribute('MonSafePos', bool, init_value=mon_safe_pos))
         self._add_attribute(Attribute('MonStatErr', bool, init_value=False))
@@ -697,58 +744,74 @@ class MonBinVlv(BinVlv):
         self._add_attribute(Attribute('MonStatTi', float, init_value=mon_stat_ti))
         self._add_attribute(Attribute('MonDynTi', float, init_value=mon_dyn_ti))
         self.monitored_values = MonBinVlvValues(self.attributes['OpenAut'].value, self.attributes['OpenOp'].value,
-                                                self.attributes['CloseAut'].value, self.attributes['CloseOp'].value)
+                                                self.attributes['CloseAut'].value, self.attributes['CloseOp'].value,
+                                                self.attributes['ResetAut'].value, self.attributes['ResetOp'].value)
         self.monitor_static_thread = None
         self.monitor_dynamic_thread = None
 
     def compare_states_control_signals(self, monitor_time):
-
+        """
+        compare states of valve and control signals
+        :param monitor_time: MonStatTi or MonDynTi times
+        :return: results of states and control signals comparisons (a list including True or False)
+        """
         self.monitored_values.lock.acquire()
-        ctrl1 = self.attributes['Ctrl'].value
+        open_fbk1 = self.attributes['OpenFbk'].value
+        close_fbk1 = self.attributes['CloseFbk'].value
         open_op1 = self.monitored_values.open_op
         open_aut1 = self.monitored_values.open_aut
         close_op1 = self.monitored_values.close_op
         close_aut1 = self.monitored_values.close_aut
+        reset_op1 = self.monitored_values.reset_op
+        reset_aut1 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         sleep(monitor_time)
 
         self.monitored_values.lock.acquire()
-        ctrl2 = self.attributes['Ctrl'].value
+        open_fbk2 = self.attributes['OpenFbk'].value
+        close_fbk2 = self.attributes['CloseFbk'].value
         open_op2 = self.monitored_values.open_op
         open_aut2 = self.monitored_values.open_aut
         close_op2 = self.monitored_values.close_op
         close_aut2 = self.monitored_values.close_aut
+        reset_op2 = self.monitored_values.reset_op
+        reset_aut2 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         control_signals_comparison = [open_op1 == open_op2, open_aut1 == open_aut2, close_op1 == close_op2,
-                                      close_aut1 == close_aut2]
-        state_comparison = [ctrl1 == ctrl2]
-
+                                      close_aut1 == close_aut2, reset_op1 == reset_op2, reset_aut1 == reset_aut2]
+        state_comparison = [open_fbk1 == open_fbk2, close_fbk1 == close_fbk2]
         return state_comparison, control_signals_comparison
 
     def monitor_static_error(self):
+        """
+        monitor static error
+        """
         while True:
             if self.monitored_values.stop_event_lock.isSet():
                 print('static monitoring stopped')
                 break
             states, control_signals = self.compare_states_control_signals(self.attributes['MonStatTi'].value)
 
-            if not all(states):
-                if all(control_signals):
+            if not all(states):  # if the states of valve changed
+                if all(control_signals):  # but the control signals did not change
                     self.attributes['MonStatErr'].set_value(True)
                     print('Static error set to True')
                     self._handle_monitored_error()
 
     def monitor_dynamic_error(self):
+        """
+        monitor dynamic error
+        """
         while True:
             if self.monitored_values.stop_event_lock.isSet():
                 print('dynamic monitoring stopped')
                 break
             states, control_signals = self.compare_states_control_signals(self.attributes['MonDynTi'].value)
 
-            if all(states):
-                if not all(control_signals):
+            if all(states):  # if the states of valve did not changed
+                if not all(control_signals):  # but a control command is executed
                     self.attributes['MonDynErr'].set_value(True)
                     print('Dynamic error set to True')
                     self._handle_monitored_error()
@@ -763,6 +826,9 @@ class MonBinVlv(BinVlv):
             self.attributes['SafePosAct'].set_value(True)
 
     def start_monitor(self):
+        """
+        start static and dynamic error monitoring thread
+        """
         if self.attributes['MonEn'].value:
             self.monitor_static_thread = Thread(target=self.monitor_static_error)
             self.monitor_static_thread.start()
@@ -791,6 +857,15 @@ class MonBinVlv(BinVlv):
                 print('CloseAut set to %s' % value)
                 self._run_close_vlv()
 
+    def set_reset_aut(self, value: bool):
+        print('ResetAut set to %s' % value)
+        if self.op_src_mode.attributes['StateAutAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_aut = value
+                self.monitored_values.lock.release()
+            self._reset_vlv()
+
     def set_open_op(self, value: bool):
         print('OpenOp set to %s' % value)
         if self.op_src_mode.attributes['StateOpAct'].value:
@@ -812,6 +887,16 @@ class MonBinVlv(BinVlv):
                     self.monitored_values.lock.release()
                 self._run_close_vlv()
                 self.attributes['CloseOp'].value = False
+
+    def set_reset_op(self, value: bool):
+        print('ResetOp set to %s' % value)
+        if self.op_src_mode.attributes['StateOpAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_op = value
+                self.monitored_values.lock.release()
+            self._reset_vlv()
+            self.attributes['ResetOp'].set_value(False)
 
     def set_stop_monitor(self):
         self.monitored_values.stop_event_lock.set()
@@ -1012,13 +1097,15 @@ class BinDrv(SUCActiveElement):
 
 
 class MonBinDrvValues:
-    def __init__(self, fwd_aut, fwd_op, rev_aut, rev_op, stop_aut, stop_op):
+    def __init__(self, fwd_aut, fwd_op, rev_aut, rev_op, stop_aut, stop_op, reset_aut, reset_op):
         self.fwd_aut = fwd_aut
         self.fwd_op = fwd_op
         self.rev_aut = rev_aut
         self.rev_op = rev_op
         self.stop_aut = stop_aut
         self.stop_op = stop_op
+        self.reset_aut = reset_aut
+        self.reset_op = reset_op
         self.lock = threading.Lock()
         self.stop_event_lock = threading.Event()
 
@@ -1030,6 +1117,11 @@ class MonBinDrv(BinDrv):
         super().__init__(tag_name, tag_description, rev_fbk_calc, fwd_fbk_calc, safe_pos, fwd_en, rev_en, perm_en,
                          intl_en, prot_en)
 
+        self.mon_en = mon_en
+        self.mon_safe_pos = mon_safe_pos
+        self.mon_stat_ti = mon_stat_ti
+        self.mon_dyn_ti = mon_dyn_ti
+
         self._add_attribute(Attribute('MonEn', bool, init_value=mon_en))
         self._add_attribute(Attribute('MonSafePos', bool, init_value=mon_safe_pos))
         self._add_attribute(Attribute('MonStatErr', bool, init_value=False))
@@ -1038,39 +1130,45 @@ class MonBinDrv(BinDrv):
         self._add_attribute(Attribute('MonDynTi', float, init_value=mon_dyn_ti))
         self.monitored_values = MonBinDrvValues(self.attributes['FwdAut'].value, self.attributes['FwdOp'].value,
                                                 self.attributes['RevAut'].value, self.attributes['RevOp'].value,
-                                                self.attributes['StopAut'].value, self.attributes['StopOp'].value)
+                                                self.attributes['StopAut'].value, self.attributes['StopOp'].value,
+                                                self.attributes['ResetAut'].value, self.attributes['ResetOp'].value)
         self.monitor_static_thread = None
         self.monitor_dynamic_thread = None
 
     def compare_states_control_signals(self, monitor_time):
 
         self.monitored_values.lock.acquire()
-        fwd_ctrl1 = self.attributes['FwdCtrl'].value
-        rev_ctrl1 = self.attributes['RevCtrl'].value
+        fwd_fbk1 = self.attributes['FwdFbk'].value
+        rev_fbk1 = self.attributes['RevFbk'].value
         fwd_op1 = self.monitored_values.fwd_op
         fwd_aut1 = self.monitored_values.fwd_aut
         rev_op1 = self.monitored_values.rev_op
         rev_aut1 = self.monitored_values.rev_aut
         stop_op1 = self.monitored_values.stop_op
         stop_aut1 = self.monitored_values.stop_aut
+        reset_op1 = self.monitored_values.reset_op
+        reset_aut1 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         sleep(monitor_time)
 
         self.monitored_values.lock.acquire()
-        fwd_ctrl2 = self.attributes['FwdCtrl'].value
-        rev_ctrl2 = self.attributes['RevCtrl'].value
+        fwd_fbk2 = self.attributes['FwdFbk'].value
+        rev_fbk2 = self.attributes['RevFbk'].value
         fwd_op2 = self.monitored_values.fwd_op
         fwd_aut2 = self.monitored_values.fwd_aut
         rev_op2 = self.monitored_values.rev_op
         rev_aut2 = self.monitored_values.rev_aut
         stop_op2 = self.monitored_values.stop_op
         stop_aut2 = self.monitored_values.stop_aut
+        reset_op2 = self.monitored_values.reset_op
+        reset_aut2 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         control_signals_comparison = [fwd_op1 == fwd_op2, fwd_aut1 == fwd_aut2, rev_op1 == rev_op2,
-                                      rev_aut1 == rev_aut2, stop_op1 == stop_op2, stop_aut1 == stop_aut2]
-        state_comparison = [fwd_ctrl1 == fwd_ctrl2, rev_ctrl1 == rev_ctrl2]
+                                      rev_aut1 == rev_aut2, stop_op1 == stop_op2, stop_aut1 == stop_aut2,
+                                      reset_op1 == reset_op2, reset_aut1 == reset_aut2]
+        state_comparison = [fwd_fbk1 == fwd_fbk2, rev_fbk1 == rev_fbk2]
         return state_comparison, control_signals_comparison
 
     def monitor_static_error(self):
@@ -1146,6 +1244,16 @@ class MonBinDrv(BinDrv):
             self._stop_drv()
             self.attributes['StopOp'].set_value(False)
 
+    def set_reset_op(self, value: bool):
+        print('ResetOp set to %s' % value)
+        if self.op_src_mode.attributes['StateOpAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_op = value
+                self.monitored_values.lock.release()
+            self._reset_drv()
+            self.attributes['ResetOp'].set_value(False)
+
     def set_fwd_aut(self, value: bool):
         print('FwdAut set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'].value and self.fwd_en:
@@ -1174,6 +1282,15 @@ class MonBinDrv(BinDrv):
                 self.monitored_values.stop_aut = value
                 self.monitored_values.lock.release()
             self._stop_drv()
+
+    def set_reset_aut(self, value: bool):
+        print('ResetAut set to %s' % value)
+        if self.op_src_mode.attributes['StateAutAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_aut = value
+                self.monitored_values.lock.release()
+            self._reset_drv()
 
     def set_stop_monitor(self):
         self.monitored_values.stop_event_lock.set()
@@ -1446,13 +1563,15 @@ class AnaDrv(SUCActiveElement):
 
 
 class MonAnaDrvValues:
-    def __init__(self, fwd_aut, fwd_op, rev_aut, rev_op, stop_aut, stop_op, rpm):
+    def __init__(self, fwd_aut, fwd_op, rev_aut, rev_op, stop_aut, stop_op, reset_aut, reset_op, rpm):
         self.fwd_aut = fwd_aut
         self.fwd_op = fwd_op
         self.rev_aut = rev_aut
         self.rev_op = rev_op
         self.stop_aut = stop_aut
         self.stop_op = stop_op
+        self.reset_aut = reset_aut
+        self.reset_op = reset_op
         self.rpm = rpm
         self.lock = threading.Lock()
         self.stop_event_lock = threading.Event()
@@ -1461,10 +1580,19 @@ class MonAnaDrvValues:
 class MonAnaDrv(AnaDrv):
     def __init__(self, tag_name, tag_description, rpm_min=0, rpm_max=1000, rpm_scl_min=0, rpm_scl_max=1000, rpm_unit=0,
                  rev_fbk_calc=True, fwd_fbk_calc=True, rpm_fbk_calc=True, safe_pos=0, fwd_en=True, rev_en=False,
-                 perm_en=False, intl_en=False, prot_en=False, mon_en=True, mon_safe_pos=True, mon_stat_ti=1, mon_dyn_ti=1,
-                 rmp_ah_en=True, rmp_al_en=True, rpm_ah_lim=900, rpm_al_lim=50):
+                 perm_en=False, intl_en=False, prot_en=False, mon_en=True, mon_safe_pos=True, mon_stat_ti=1,
+                 mon_dyn_ti=1, rpm_ah_en=True, rpm_al_en=True, rpm_ah_lim=900, rpm_al_lim=50):
         super().__init__(tag_name, tag_description, rpm_min, rpm_max, rpm_scl_min, rpm_scl_max, rpm_unit, rev_fbk_calc,
                          fwd_fbk_calc, rpm_fbk_calc, safe_pos, fwd_en, rev_en, perm_en, intl_en, prot_en)
+
+        self.mon_en = mon_en
+        self.mon_safe_pos = mon_safe_pos
+        self.mon_stat_ti = mon_stat_ti
+        self.mon_dyn_ti = mon_dyn_ti
+        self.rpm_ah_en = rpm_ah_en
+        self.rpm_al_en = rpm_al_en
+        self.rpm_ah_lim = rpm_ah_lim
+        self.rpm_al_lim = rpm_ah_lim
 
         self._add_attribute(Attribute('MonEn', bool, init_value=mon_en))
         self._add_attribute(Attribute('MonSafePos', bool, init_value=mon_safe_pos))
@@ -1473,8 +1601,8 @@ class MonAnaDrv(AnaDrv):
         self._add_attribute(Attribute('MonStatTi', float, init_value=mon_stat_ti))
         self._add_attribute(Attribute('MonDynTi', float, init_value=mon_dyn_ti))
         self._add_attribute(Attribute('RpmErr', float, init_value=0))
-        self._add_attribute(Attribute('RpmAHEn', bool, init_value=rmp_ah_en))
-        self._add_attribute(Attribute('RpmALEn', bool, init_value=rmp_al_en))
+        self._add_attribute(Attribute('RpmAHEn', bool, init_value=rpm_ah_en))
+        self._add_attribute(Attribute('RpmALEn', bool, init_value=rpm_al_en))
         self._add_attribute(Attribute('RpmAHAct', bool, init_value=False))
         self._add_attribute(Attribute('RpmALAct', bool, init_value=False))
         self._add_attribute(Attribute('RpmAHLim', float, init_value=rpm_ah_lim))
@@ -1482,6 +1610,7 @@ class MonAnaDrv(AnaDrv):
         self.monitored_values = MonAnaDrvValues(self.attributes['FwdAut'].value, self.attributes['FwdOp'].value,
                                                 self.attributes['RevAut'].value, self.attributes['RevOp'].value,
                                                 self.attributes['StopAut'].value, self.attributes['StopOp'].value,
+                                                self.attributes['ResetAut'].value, self.attributes['ResetOp'].value,
                                                 self.attributes['Rpm'].value)
         self.monitor_static_thread = None
         self.monitor_dynamic_thread = None
@@ -1492,31 +1621,36 @@ class MonAnaDrv(AnaDrv):
     def compare_states_control_signals(self, monitor_time):
 
         self.monitored_values.lock.acquire()
-        fwd_ctrl1 = self.attributes['FwdCtrl'].value
-        rev_ctrl1 = self.attributes['RevCtrl'].value
+        fwd_ctrl1 = self.attributes['FwdFbk'].value
+        rev_ctrl1 = self.attributes['RevFbk'].value
         fwd_op1 = self.monitored_values.fwd_op
         fwd_aut1 = self.monitored_values.fwd_aut
         rev_op1 = self.monitored_values.rev_op
         rev_aut1 = self.monitored_values.rev_aut
         stop_op1 = self.monitored_values.stop_op
         stop_aut1 = self.monitored_values.stop_aut
+        reset_op1 = self.monitored_values.reset_op
+        reset_aut1 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         sleep(monitor_time)
 
         self.monitored_values.lock.acquire()
-        fwd_ctrl2 = self.attributes['FwdCtrl'].value
-        rev_ctrl2 = self.attributes['RevCtrl'].value
+        fwd_ctrl2 = self.attributes['FwdFbk'].value
+        rev_ctrl2 = self.attributes['RevFbk'].value
         fwd_op2 = self.monitored_values.fwd_op
         fwd_aut2 = self.monitored_values.fwd_aut
         rev_op2 = self.monitored_values.rev_op
         rev_aut2 = self.monitored_values.rev_aut
         stop_op2 = self.monitored_values.stop_op
         stop_aut2 = self.monitored_values.stop_aut
+        reset_op2 = self.monitored_values.reset_op
+        reset_aut2 = self.monitored_values.reset_aut
         self.monitored_values.lock.release()
 
         control_signals_comparison = [fwd_op1 == fwd_op2, fwd_aut1 == fwd_aut2, rev_op1 == rev_op2,
-                                      rev_aut1 == rev_aut2, stop_op1 == stop_op2, stop_aut1 == stop_aut2]
+                                      rev_aut1 == rev_aut2, stop_op1 == stop_op2, stop_aut1 == stop_aut2,
+                                      reset_op1 == reset_op2, reset_aut1 == reset_aut2]
         state_comparison = [fwd_ctrl1 == fwd_ctrl2, rev_ctrl1 == rev_ctrl2]
         return state_comparison, control_signals_comparison
 
@@ -1647,6 +1781,16 @@ class MonAnaDrv(AnaDrv):
             self._stop_drv()
             self.attributes['StopOp'].set_value(False)
 
+    def set_reset_op(self, value: bool):
+        print('ResetOp set to %s' % value)
+        if self.op_src_mode.attributes['StateOpAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_op = value
+                self.monitored_values.lock.release()
+            self._reset_drv()
+            self.attributes['ResetOp'].set_value(False)
+
     def set_fwd_aut(self, value: bool):
         print('FwdAut set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'].value and self.fwd_en:
@@ -1675,6 +1819,15 @@ class MonAnaDrv(AnaDrv):
                 self.monitored_values.stop_aut = value
                 self.monitored_values.lock.release()
             self._stop_drv()
+
+    def set_reset_aut(self, value: bool):
+        print('ResetAut set to %s' % value)
+        if self.op_src_mode.attributes['StateAutAct'].value and value:
+            if self.attributes['MonEn'].value:
+                self.monitored_values.lock.acquire()
+                self.monitored_values.reset_aut = value
+                self.monitored_values.lock.release()
+            self._reset_drv()
 
     def _set_rpm(self, value: float):
         if self.valid_value(value):
