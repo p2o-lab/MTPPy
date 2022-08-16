@@ -5,7 +5,7 @@ from mtppy.suc_data_assembly import SUCActiveElement
 
 
 class OPCUAServerPEA:
-    def __init__(self, mtp_generator, endpoint='opc.tcp://0.0.0.0:4840/'):
+    def __init__(self, mtp_generator=None, endpoint='opc.tcp://0.0.0.0:4840/'):
         self.service_set = {}
         self.active_elements = {}
         self.endpoint = endpoint
@@ -50,10 +50,12 @@ class OPCUAServerPEA:
         services_node = server.add_folder(services_node_id, "services")
 
         # initiate a new MTP that will be added to InstanceHierarchy: ModuleTypePackage
-        self.mtp.add_module_type_package('1.0.0', name='mtp_test', description='')
+        if self.mtp:
+            self.mtp.add_module_type_package('1.0.0', name='mtp_test', description='')
 
         # add InternalElement opcua server to ModuleTypePackage/CommunicationSet/SourceList
-        self.mtp.add_opcua_server(self.endpoint)
+        if self.mtp:
+            self.mtp.add_opcua_server(self.endpoint)
 
         for service in self.service_set.values():
             self._create_opcua_objects_for_folders(service, services_node_id, services_node)
@@ -64,10 +66,12 @@ class OPCUAServerPEA:
             self._create_opcua_objects_for_folders(active_element, act_elem_node_id, act_elem_node)
 
         # add SupportedRoleClass to all InternalElements
-        self.mtp.apply_add_supported_role_class()
+        if self.mtp:
+            self.mtp.apply_add_supported_role_class()
 
         # export manifest.aml
-        self.mtp.export_manifest()
+        if self.mtp:
+            self.mtp.export_manifest()
 
     def _create_opcua_objects_for_folders(self, data_assembly, parent_opcua_prefix, parent_opcua_object):
         da_node_id = f'{parent_opcua_prefix}.{data_assembly.tag_name}'
@@ -82,11 +86,17 @@ class OPCUAServerPEA:
         leaves = ['op_src_mode', 'state_machine', 'procedure_control']
 
         # create instance of  ServiceControl, HealthStateView, DIntServParam etc.
-        instance = self.mtp.create_instance(data_assembly, da_node_id)
+        if self.mtp:
+            instance = self.mtp.create_instance(data_assembly, da_node_id)
+        else:
+            instance = None
 
-        link_id = self.mtp.random_id_generator()
-        if da_type == 'services' or da_type in folders:
-            link_id = self.mtp.create_components_for_services(data_assembly, da_type)
+        if self.mtp:
+            link_id = self.mtp.random_id_generator()
+            if da_type == 'services' or da_type in folders:
+                link_id = self.mtp.create_components_for_services(data_assembly, da_type)
+        else:
+            link_id = None
 
         if hasattr(data_assembly, 'attributes'):
             self._create_opcua_objects_for_leaves(data_assembly, da_node_id, da_node, instance)
@@ -105,13 +115,10 @@ class OPCUAServerPEA:
                 self._create_opcua_objects_for_leaves(section, section_node_id, section_node, instance)
 
         # create linked obj between instance and service component
-        self.mtp.add_linked_attr(instance, link_id)
+        if self.mtp:
+            self.mtp.add_linked_attr(instance, link_id)
 
     def _create_opcua_objects_for_leaves(self, object, parent_opcua_prefix, parent_opcua_object, par_instance):
-        """
-        :param par_instance: instance under InstanceHierarchy_MTP/CommunicationSet/InstanceList
-        :param par_component: element under InstanceHierarchy_Service or InstanceHierarchy_Service (HMI is not implemented)
-        """
         for attr in object.attributes.values():
             attribute_node_id = f'{parent_opcua_prefix}.{attr.name}'
 
@@ -124,9 +131,12 @@ class OPCUAServerPEA:
             opcua_comm_obj = OPCUACommunicationObject(opcua_node_obj, node_id=opcua_node_obj)
             attr.attach_communication_object(opcua_comm_obj)
 
-            linked_id = self.mtp.random_id_generator()  # create linked-id for opc ua node
-            # add opc ua node and its attributes to ModuleTypePackage/CommunicationSet/SourceList/OPCUAServer
-            self.mtp.add_external_interface(attribute_node_id, self.opcua_ns, linked_id)
+            if self.mtp:
+                linked_id = self.mtp.random_id_generator()  # create linked-id for opc ua node
+                # add opc ua node and its attributes to ModuleTypePackage/CommunicationSet/SourceList/OPCUAServer
+                self.mtp.add_external_interface(attribute_node_id, self.opcua_ns, linked_id)
+            else:
+                linked_id = None
 
             """
             add attributes of data assembly to corresponding instance under InstanceList 
@@ -139,7 +149,8 @@ class OPCUAServerPEA:
             if type(object).__name__ == 'Procedure' and attr.name in ['ProcedureId', 'IsSelfCompleting', 'IsDefault']:
                 pass
             else:
-                self.mtp.add_attr_to_instance(par_instance, attr.name, attr.init_value, linked_id)
+                if self.mtp:
+                    self.mtp.add_attr_to_instance(par_instance, attr.name, attr.init_value, linked_id)
 
             # We subscribe to nodes that are writable attributes
             if attr.sub_cb is not None:
