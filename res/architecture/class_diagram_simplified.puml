@@ -1,0 +1,67 @@
+@startuml
+'https://plantuml.com/class-diagram
+'skinparam defaultFontSize 19
+
+class OPCUAServerPEA {
++service_set: dict of Service
++active_elements: SUCActiveElements
++endpoint: str
++opcua_server: opcua.Server
++opcua_ns: int
++add_service(Service)
++add_active_element(SUCActiveElement)
++run_opcua_server()
+}
+OPCUAServerPEA "1"*--"0..*" Service
+
+class Service {
++thread_ctrl: ThreadControl
++op_src_mode: OperationSourceMode
++configuration_parameters: SUCOperationElements
++procedures: Procedures
++state_machine: StateMachine
++state_change()
++add_configuration_parameter(SUCOperationElement)
++add_procedure(Procedure)
++idle()
++starting()
++execute()
++...()
+}
+Service "1"*--"1..*" Procedure
+Service "1"*--"1" StateMachine
+
+class Procedure{
++procedure_parameters: SUCOperationElements
++process_value_ins:
++report_values: SUCIndicatorElements
++process_value_outs: SUCIndicatorElements
+}
+
+class ProcedureControl{
++procedures: Procedures
++op_src_mode: OperationSourceMode
++default_procedure_id: int
+}
+
+class StateMachine{
++op_src_mode: OperationSourceMode
++procedure_control: ProcedureControl
++execution_routine: callable
++command_en_control: CommandEnControl
++command_execution(int)
+}
+StateMachine "1"*--"1" ProcedureControl
+StateMachine "1"*--"1" CommandEnControl
+
+class CommandEnControl{
++hold_enabled: bool
++pause_enabled: bool
++restart_enabled: bool
+}
+
+OPCUAServerPEA -[hidden]r-> Service
+OPCUAServerPEA -[hidden]d-> Procedure
+Service -[hidden]r-> StateMachine
+
+@enduml

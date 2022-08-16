@@ -1,0 +1,2358 @@
+<CAEXFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" FileName="Manifest.aml" SchemaVersion="2.15" xsi:noNamespaceSchemaLocation="CAEX_ClassModel_V2.15.xsd">
+	<Description />
+	<Version>2.0.0</Version>
+	<Copyright>VDI/VDE GMA 5.16 (c) 2019</Copyright>
+	<AdditionalInformation AutomationMLVersion="2.0" />
+	<AdditionalInformation DocumentVersions="Recommendations">
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-1" Version="1.0.0" />
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-2" Version="1.0.0" />
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-3" Version="1.0.0" />
+		<Document DocumentIdentifier="VDI/VDE/NAMUR 2658-4" Version="0.1.0" />
+	</AdditionalInformation>
+	<AdditionalInformation>
+		<WriterHeader>
+			<WriterName>tud/plt</WriterName>
+			<WriterID>tud/plt</WriterID>
+			<WriterVendor>tud</WriterVendor>
+			<WriterVendorURL>www.tud.de</WriterVendorURL>
+			<WriterVersion>1.0.0</WriterVersion>
+			<WriterRelease />
+			<LastWritingDateTime>2022-04-13 16:52:02.392884</LastWritingDateTime>
+			<WriterProjectTitle>tu/plt/mtp</WriterProjectTitle>
+			<WriterProjectID />
+		</WriterHeader>
+	</AdditionalInformation>
+	 <InterfaceClassLib Name="AutomationMLInterfaceClassLib">
+    <Description>Standard Automation Markup Language Interface Class Library - Part 1 Content extended with Part 3 and Part 4 Content</Description>
+    <Version>2.2.2</Version>
+    <InterfaceClass Name="AutomationMLBaseInterface">
+      <InterfaceClass Name="Order" RefBaseClassPath="AutomationMLBaseInterface">
+        <Attribute Name="Direction" AttributeDataType="xs:string" />
+      </InterfaceClass>
+      <InterfaceClass Name="PortConnector" RefBaseClassPath="AutomationMLBaseInterface" />
+      <InterfaceClass Name="InterlockingConnector" RefBaseClassPath="AutomationMLBaseInterface" />
+      <InterfaceClass Name="PPRConnector" RefBaseClassPath="AutomationMLBaseInterface" />
+      <InterfaceClass Name="ExternalDataConnector" RefBaseClassPath="AutomationMLBaseInterface">
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+        <InterfaceClass Name="COLLADAInterface" RefBaseClassPath="ExternalDataConnector">
+          <Attribute Name="refType" AttributeDataType="xs:string" />
+          <Attribute Name="target" AttributeDataType="xs:token" />
+        </InterfaceClass>
+        <InterfaceClass Name="PLCopenXMLInterface" RefBaseClassPath="ExternalDataConnector">
+          <InterfaceClass Name="LogicInterface" RefBaseClassPath="PLCopenXMLInterface">
+            <InterfaceClass Name="SequencingLogicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface/LogicInterface" />
+            <InterfaceClass Name="BehaviourLogicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface/LogicInterface" />
+            <InterfaceClass Name="SequencingBehaviourLogicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface/LogicInterface" />
+            <InterfaceClass Name="InterlockingLogicInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface/LogicInterface" />
+          </InterfaceClass>
+          <InterfaceClass Name="LogicElementInterface" RefBaseClassPath="PLCopenXMLInterface" />
+          <InterfaceClass Name="VariableInterface" RefBaseClassPath="PLCopenXMLInterface">
+            <InterfaceClass Name="InterlockingVariableInterface" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector/PLCopenXMLInterface/VariableInterface">
+              <Attribute Name="SafeConditionEquals" AttributeDataType="xs:boolean">
+                <DefaultValue>true</DefaultValue>
+              </Attribute>
+            </InterfaceClass>
+          </InterfaceClass>
+        </InterfaceClass>
+      </InterfaceClass>
+      <InterfaceClass Name="Communication" RefBaseClassPath="AutomationMLBaseInterface">
+        <InterfaceClass Name="SignalInterface" RefBaseClassPath="Communication" />
+      </InterfaceClass>
+      <InterfaceClass Name="AttachmentInterface" RefBaseClassPath="AutomationMLBaseInterface" />
+    </InterfaceClass>
+  </InterfaceClassLib>
+  <InterfaceClassLib Name="MTPCommunicationICLib">
+    <Description>Base elements of the MTP Communication Description</Description>
+    <Version>0</Version>
+    <InterfaceClass Name="DataItem">
+      <Description>Base Class for DataItems</Description>
+      <Attribute Name="Access" AttributeDataType="xs:byte">
+        <Description>[0]=NoAccess; [1]=Read; [2]=Write; [3]=Read/Write</Description>
+      </Attribute>
+      <InterfaceClass Name="OPCUAItem" RefBaseClassPath="MTPCommunicationICLib/DataItem">
+        <Description>OPC UA typed Data Item</Description>
+        <Attribute Name="Identifier" AttributeDataType="xs:string">
+          <Description>OPC UA NodeID - IdentifierType(depends on AttributeDataType): xs: string = string; xs: ID = GUID; xs: Base64Binary = ByteArray; xs: int = Integer</Description>
+        </Attribute>
+        <Attribute Name="Namespace" AttributeDataType="xs:string">
+          <Description>OPC UA Namespace</Description>
+        </Attribute>
+      </InterfaceClass>
+    </InterfaceClass>
+  </InterfaceClassLib>
+	<RoleClassLib Name="AutomationMLBaseRoleClassLib">
+        <Description>Automation Markup Language Base Role Class Library - Part 1 Content extended with Part 3 and Part 4 Content</Description>
+        <Version>2.2.2</Version>
+        <RoleClass Name="AutomationMLBaseRole">
+            <RoleClass Name="Group" RefBaseClassPath="AutomationMLBaseRole">
+                <Attribute Name="AssociatedFacet" AttributeDataType="xs:string" />
+                <RoleClass Name="InterlockingSourceGroup" RefBaseClassPath="Group" />
+                <RoleClass Name="InterlockingTargetGroup" RefBaseClassPath="Group" />
+            </RoleClass>
+            <RoleClass Name="Facet" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Port" RefBaseClassPath="AutomationMLBaseRole">
+                <Attribute Name="Direction" AttributeDataType="xs:string" />
+                <Attribute Name="Cardinality">
+                    <Attribute Name="MinOccur" AttributeDataType="xs:unsignedInt" />
+                    <Attribute Name="MaxOccur" AttributeDataType="xs:unsignedInt" />
+                    </Attribute>
+                <Attribute Name="Category" AttributeDataType="xs:string" />
+                <ExternalInterface Name="ConnectionPoint" ID="9942bd9c-c19d-44e4-a197-11b9edf264e7" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/PortConnector" />
+            </RoleClass>
+            <RoleClass Name="Resource" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Product" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Process" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Structure" RefBaseClassPath="AutomationMLBaseRole">
+                <RoleClass Name="ProductStructure" RefBaseClassPath="Structure" />
+                <RoleClass Name="ProcessStructure" RefBaseClassPath="Structure" />
+                <RoleClass Name="ResourceStructure" RefBaseClassPath="Structure" />
+            </RoleClass>
+            <RoleClass Name="PropertySet" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="Frame" RefBaseClassPath="AutomationMLBaseRole" />
+            <RoleClass Name="LogicObject" RefBaseClassPath="AutomationMLBaseRole" />
+        </RoleClass>
+    </RoleClassLib>
+    <SystemUnitClassLib Name="MTPSUCLib">
+        <Description>SystemUnitClassLibrary who contains the base elements of a MTP Package</Description>
+        <SystemUnitClass Name="ModuleTypePackage">
+            <Description>SystemUnitClass who represents the entry point into a MTP Package</Description>
+            <Attribute Name="Version" Unit="" AttributeDataType="xs:string">
+                <Description>MTP Package Version</Description>
+                <DefaultValue>1.0</DefaultValue>
+                <Value />
+            </Attribute>
+            <InternalElement Name="CommunicationSet" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet" ID="92ba728f-f5cd-4b02-a758-364717736d82">
+                <InternalElement Name="SourceList" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet/SourceList" ID="0a66b62b-931c-49b3-8753-c3368a5980f1">
+                    <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+                </InternalElement>
+                <InternalElement Name="InstanceList" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet/InstanceList" ID="12ecf3f7-fe5a-4be4-afc9-c0949a4d4f6a">
+                    <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+                </InternalElement>
+                    <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+                </InternalElement>
+        </SystemUnitClass>
+        <SystemUnitClass Name="MTPSet">
+            <Description>SystemUnitClass for the ServiceSet</Description>
+        </SystemUnitClass>
+        <SystemUnitClass Name="CommunicationSet" RefBaseClassPath="MTPSUCLib/MTPSet">
+            <Description>Base class for the MTP Communication Facet </Description>
+            <InternalElement Name="SourceList" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet/SourceList" ID="acf39f2c-0327-4d54-b32d-cb52a654766c">
+                <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+            </InternalElement>
+            <InternalElement Name="InstanceList" RefBaseSystemUnitPath="MTPSUCLib/CommunicationSet/InstanceList" ID="ea6c0003-ba78-4cb2-8ab7-99a6ba86cb54">
+                <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+            </InternalElement>
+            <SystemUnitClass Name="InstanceList">
+                <Description>SystemUnitClass for the List of DataAssemblies</Description>
+            </SystemUnitClass>
+            <SystemUnitClass Name="SourceList">
+                <Description>SystemUnitClass for the List of Server Sources</Description>
+            </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="LinkedObject">
+              <Description>Base Class for CrossSet referencing of ObjectInstances</Description>
+              <Attribute Name="RefID" Unit="" AttributeDataType="xs:ID">
+                    <Description>Reference ID - Relation of different data sets to a complete described Instance Object</Description>
+                    <DefaultValue />
+                    <Value />
+              </Attribute>
+        </SystemUnitClass>
+    </SystemUnitClassLib>
+    <SystemUnitClassLib Name="MTPCommunicationSUCLib">
+    <Description>Base elements of the MTP Communication Description</Description>
+    <Version>0</Version>
+    <SystemUnitClass Name="ServerAssembly" ID="b1ec5624-6d83-4e24-abe8-15347ce732e8">
+      <Description>Base Class for Server Assemblies</Description>
+      <SystemUnitClass Name="OPCUAServer" ID="48e293fa-f238-4a23-864f-f55230be0ade" RefBaseClassPath="MTPCommunicationSUCLib/ServerAssembly">
+        <Description>OPC UA typed Server Assembly</Description>
+        <Attribute Name="Endpoint" AttributeDataType="xs:string">
+          <Description>Endpoint URL of the initial server address</Description>
+        </Attribute>
+      </SystemUnitClass>
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+  <SystemUnitClassLib Name="MTPDataObjectSUCLib">
+    <Description>SystemUnitClassLibrary which contains the base interfaces</Description>
+    <Version>0</Version>
+    <SystemUnitClass Name="DataAssembly" ID="b68d5673-3b69-4292-b7be-511a05552929" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>SystemUnitClass of the DataAssembly</Description>
+      <Attribute Name="TagName" AttributeDataType="xs:string">
+        <Description>TagName Field</Description>
+      </Attribute>
+      <Attribute Name="TagDescription" AttributeDataType="xs:string">
+        <Description>TagDescription Field</Description>
+      </Attribute>
+      <SystemUnitClass Name="IndicatorElement" ID="8a7de778-514c-4024-9a7c-736682699986" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Description>SystemUnitClass of the IndicatorElement</Description>
+        <Attribute Name="WQC" AttributeDataType="xs:byte" Unit="">
+          <Description>Worst Quality Code variable</Description>
+        </Attribute>
+        <SystemUnitClass Name="AnaView" ID="cd8133d4-6b18-4762-850f-41fe3d5e2ac6" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement">
+          <Description>SystemUnitClass of the AnaView</Description>
+          <Attribute Name="VSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="V" AttributeDataType="xs:float" Unit="">
+            <Description>Value</Description>
+          </Attribute>
+          <SystemUnitClass Name="AnaMon" ID="834be31e-bfa8-45f8-99f3-758329acd370" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement/AnaView">
+            <Description>SystemUnitClass of the AnaMon</Description>
+            <Attribute Name="VAHEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Alarm High Limit</Description>
+            </Attribute>
+            <Attribute Name="VAHLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Alarm High</Description>
+            </Attribute>
+            <Attribute Name="VAHAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Alarm High active</Description>
+            </Attribute>
+            <Attribute Name="VWHEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Warning High Limit</Description>
+            </Attribute>
+            <Attribute Name="VWHLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Warning High</Description>
+            </Attribute>
+            <Attribute Name="VWHAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Warning High active</Description>
+            </Attribute>
+            <Attribute Name="VTHEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Tolerance High Limit</Description>
+            </Attribute>
+            <Attribute Name="VTHLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Tolerance High</Description>
+            </Attribute>
+            <Attribute Name="VTHAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Tolerance High active</Description>
+            </Attribute>
+            <Attribute Name="VTLEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Tolerance Low Limit</Description>
+            </Attribute>
+            <Attribute Name="VTLLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Tolerance Low</Description>
+            </Attribute>
+            <Attribute Name="VTLAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Tolerance Low active</Description>
+            </Attribute>
+            <Attribute Name="VWLEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Warning Low Limit</Description>
+            </Attribute>
+            <Attribute Name="VWLLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Warning Low</Description>
+            </Attribute>
+            <Attribute Name="VWLAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Warning Low active</Description>
+            </Attribute>
+            <Attribute Name="VALEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Alarm Low Limit</Description>
+            </Attribute>
+            <Attribute Name="VALLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Alarm Low</Description>
+            </Attribute>
+            <Attribute Name="VALAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Alarm Low active</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="DIntView" ID="19affcc3-2372-47ba-9c68-2622eff3adeb" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement">
+          <Description>SystemUnitClass of the DIntView</Description>
+          <Attribute Name="VSclMin" AttributeDataType="xs:int" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:int" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="V" AttributeDataType="xs:int" Unit="">
+            <Description>Value</Description>
+          </Attribute>
+          <SystemUnitClass Name="DIntMon" ID="3ed9efd4-f28e-40ad-9851-24be11e932b2" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement/DIntView">
+            <Description>SystemUnitClass of the DIntMon</Description>
+            <Attribute Name="VAHEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Alarm High Limit</Description>
+            </Attribute>
+            <Attribute Name="VAHLim" AttributeDataType="xs:int" Unit="">
+              <Description>Limit Value for Alarm High</Description>
+            </Attribute>
+            <Attribute Name="VAHAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Alarm High active</Description>
+            </Attribute>
+            <Attribute Name="VWHEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Warning High Limit</Description>
+            </Attribute>
+            <Attribute Name="VWHLim" AttributeDataType="xs:int" Unit="">
+              <Description>Limit Value for Warning High</Description>
+            </Attribute>
+            <Attribute Name="VWHAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Warning High active</Description>
+            </Attribute>
+            <Attribute Name="VTHEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Tolerance High Limit</Description>
+            </Attribute>
+            <Attribute Name="VTHLim" AttributeDataType="xs:int" Unit="">
+              <Description>Limit Value for Tolerance High</Description>
+            </Attribute>
+            <Attribute Name="VTHAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Tolerance High active</Description>
+            </Attribute>
+            <Attribute Name="VTLEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Tolerance Low Limit</Description>
+            </Attribute>
+            <Attribute Name="VTLLim" AttributeDataType="xs:int" Unit="">
+              <Description>Limit Value for Tolerance Low</Description>
+            </Attribute>
+            <Attribute Name="VTLAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Tolerance Low active</Description>
+            </Attribute>
+            <Attribute Name="VWLEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Warning Low Limit</Description>
+            </Attribute>
+            <Attribute Name="VWLLim" AttributeDataType="xs:int" Unit="">
+              <Description>Limit Value for Warning Low</Description>
+            </Attribute>
+            <Attribute Name="VWLAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Warning Low active</Description>
+            </Attribute>
+            <Attribute Name="VALEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Alarm Low Limit</Description>
+            </Attribute>
+            <Attribute Name="VALLim" AttributeDataType="xs:int" Unit="">
+              <Description>Limit Value for Alarm Low</Description>
+            </Attribute>
+            <Attribute Name="VALAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Alarm Low active</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="BinView" ID="3c306671-ba9d-4286-86a9-963a8ed355d9" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement">
+          <Description>SystemUnitClass of the BinView</Description>
+          <Attribute Name="V" AttributeDataType="xs:boolean" Unit="">
+            <Description>Value</Description>
+          </Attribute>
+          <Attribute Name="VState0" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for false</Description>
+          </Attribute>
+          <Attribute Name="VState1" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for true</Description>
+          </Attribute>
+          <SystemUnitClass Name="BinMon" ID="314723e6-5ed0-4759-a923-3f8a2a7c8c8d" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement/BinView">
+            <Description>SystemUnitClass of the BinMon</Description>
+            <Attribute Name="VFlutEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enable Fluttering Recognition (0: disabled; 1: enabled)</Description>
+            </Attribute>
+            <Attribute Name="VFlutTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Period of an active signal before it will be recognized as flutter-free in seconds</Description>
+            </Attribute>
+            <Attribute Name="VFlutCnt" AttributeDataType="xs:integer" Unit="">
+              <Description>Counts of the allowed fluttering signals in the defined period VFlut-Ti</Description>
+            </Attribute>
+            <Attribute Name="VFlutAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Fluttering Signal recognized (0: No Fluttering signal recognized; 1: Fluttering signal recognized )</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="StringView" ID="a4ed6e86-7205-48ac-b514-946952120cdb" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement">
+          <Description>SystemUnitClass of the StringView</Description>
+          <Attribute Name="Text" AttributeDataType="xs:string" Unit="">
+            <Description>Value</Description>
+          </Attribute>
+        </SystemUnitClass>
+      </SystemUnitClass>
+      <SystemUnitClass Name="OperationElement" ID="2f476d3e-0d08-49d7-95d0-f706ce748214" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Description>SystemUnitClass of the OperationElement</Description>
+        <Attribute Name="OSLevel" AttributeDataType="xs:byte" Unit="">
+          <Description>OS Level variable (0: Local HMI, &gt;0: POL HMI)</Description>
+        </Attribute>
+        <SystemUnitClass Name="AnaMan" ID="28dc6e53-0cac-49a2-85b9-bb5d70ef4237" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Description>SystemUnitClass of the AnaMan</Description>
+          <Attribute Name="VOut" AttributeDataType="xs:float" Unit="">
+            <Description>Output Value</Description>
+          </Attribute>
+          <Attribute Name="VSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="VMan" AttributeDataType="xs:float" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="VMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VRbk" AttributeDataType="xs:float" Unit="">
+            <Description>Readback Value</Description>
+          </Attribute>
+          <Attribute Name="VFbk" AttributeDataType="xs:float" Unit="">
+            <Description>Feedback Value</Description>
+          </Attribute>
+          <SystemUnitClass Name="AnaManInt" ID="cb355e70-91ef-4cd2-b5bf-26f95cb7cd6a" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/AnaMan">
+            <Description>SystemUnitClass of the AnaManInt</Description>
+            <Attribute Name="VInt" AttributeDataType="xs:float" Unit="">
+              <Description>Intern Value</Description>
+            </Attribute>
+            <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+              <Description>Selection of the active Source Mode interaction channel</Description>
+            </Attribute>
+            <Attribute Name="SrcManAut" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Manual by automatic interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Internal by automatic interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Intern by operator interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcManOp" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Manual by operator interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcManAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Manual Source Active</Description>
+            </Attribute>
+            <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Internal Source Active</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="DIntMan" ID="e1fdd45f-319a-4b1d-bf95-da57f5a37ad6" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Description>SystemUnitClass of the DIntMan</Description>
+          <Attribute Name="VOut" AttributeDataType="xs:int" Unit="">
+            <Description>Output Value</Description>
+          </Attribute>
+          <Attribute Name="VSclMin" AttributeDataType="xs:int" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:int" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="VMan" AttributeDataType="xs:int" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="VMin" AttributeDataType="xs:int" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VMax" AttributeDataType="xs:int" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VRbk" AttributeDataType="xs:int" Unit="">
+            <Description>Readback Value</Description>
+          </Attribute>
+          <Attribute Name="VFbk" AttributeDataType="xs:int" Unit="">
+            <Description>Feedback Value</Description>
+          </Attribute>
+          <SystemUnitClass Name="DIntManInt" ID="05b53d5c-507a-4e70-83a5-b0d96c292017" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/DIntMan">
+            <Description>SystemUnitClass of the DIntManInt</Description>
+            <Attribute Name="VInt" AttributeDataType="xs:int" Unit="">
+              <Description>Intern Value</Description>
+            </Attribute>
+            <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+              <Description>Selection of the active Source Mode interaction channel</Description>
+            </Attribute>
+            <Attribute Name="SrcManAut" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Manual by automatic interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Internal by automatic interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Intern by operator interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcManOp" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Manual by operator interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcManAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Manual Source Active</Description>
+            </Attribute>
+            <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Internal Source Active</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="BinMan" ID="e0b5c0b9-b1c9-4b59-b320-a850d5bc233d" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Description>SystemUnitClass of the BinMan</Description>
+          <Attribute Name="VState0" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for false</Description>
+          </Attribute>
+          <Attribute Name="VState1" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for true</Description>
+          </Attribute>
+          <Attribute Name="VOut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Output Value</Description>
+          </Attribute>
+          <Attribute Name="VMan" AttributeDataType="xs:boolean" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="VRbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Readback Value</Description>
+          </Attribute>
+          <Attribute Name="VFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Feedback Value</Description>
+          </Attribute>
+          <SystemUnitClass Name="BinManInt" ID="36db0f99-c2f2-42f6-9b26-937a32ce0bde" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement/BinMan">
+            <Description>SystemUnitClass of the BinManInt</Description>
+            <Attribute Name="VInt" AttributeDataType="xs:boolean" Unit="">
+              <Description>Intern Value</Description>
+            </Attribute>
+            <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+              <Description>Selection of the active Source Mode interaction channel</Description>
+            </Attribute>
+            <Attribute Name="SrcManAut" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Manual by automatic interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Internal by automatic interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Intern by operator interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcManOp" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set Source Mode to Manual by operator interaction</Description>
+            </Attribute>
+            <Attribute Name="SrcManAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Manual Source Active</Description>
+            </Attribute>
+            <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Internal Source Active</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="AnaServParam" ID="3e374007-1588-49b4-b539-eb8b4aee8e83" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Description>SystemUnitClass of the AnaServParam</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Service Source Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Internal by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Intern by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>External Source Active</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Internal Source Active</Description>
+          </Attribute>
+          <Attribute Name="VExt" AttributeDataType="xs:float" Unit="">
+            <Description>Extern Value</Description>
+          </Attribute>
+          <Attribute Name="VInt" AttributeDataType="xs:float" Unit="">
+            <Description>Intern Value</Description>
+          </Attribute>
+          <Attribute Name="VMan" AttributeDataType="xs:float" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="VReq" AttributeDataType="xs:float" Unit="">
+            <Description>Request Value</Description>
+          </Attribute>
+          <Attribute Name="VFbk" AttributeDataType="xs:float" Unit="">
+            <Description>Feedback Value</Description>
+          </Attribute>
+          <Attribute Name="VOut" AttributeDataType="xs:float" Unit="">
+            <Description>Output Value</Description>
+          </Attribute>
+          <Attribute Name="VSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="Sync" AttributeDataType="xs:boolean">
+            <Description>Synchronization Mode</Description>
+            <DefaultValue>true</DefaultValue>
+          </Attribute>
+        </SystemUnitClass>
+        <SystemUnitClass Name="DIntServParam" ID="924a1f68-310d-47a8-9b5d-24e2f59405d7" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Description>SystemUnitClass of the DIntServParam</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Service Source Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Internal by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Intern by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>External Source Active</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Internal Source Active</Description>
+          </Attribute>
+          <Attribute Name="VExt" AttributeDataType="xs:int" Unit="">
+            <Description>Extern Value</Description>
+          </Attribute>
+          <Attribute Name="VInt" AttributeDataType="xs:int" Unit="">
+            <Description>Intern Value</Description>
+          </Attribute>
+          <Attribute Name="VMan" AttributeDataType="xs:int" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="VReq" AttributeDataType="xs:int" Unit="">
+            <Description>Request Value</Description>
+          </Attribute>
+          <Attribute Name="VFbk" AttributeDataType="xs:int" Unit="">
+            <Description>Feedback Value</Description>
+          </Attribute>
+          <Attribute Name="VOut" AttributeDataType="xs:int" Unit="">
+            <Description>Output Value</Description>
+          </Attribute>
+          <Attribute Name="VSclMin" AttributeDataType="xs:int" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:int" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VMin" AttributeDataType="xs:int" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VMax" AttributeDataType="xs:int" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="Sync" AttributeDataType="xs:boolean">
+            <Description>Synchronization Mode</Description>
+            <DefaultValue>true</DefaultValue>
+          </Attribute>
+        </SystemUnitClass>
+        <SystemUnitClass Name="BinServParam" ID="46255d94-d647-4c0c-ba23-eaec110d8fbe" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Description>SystemUnitClass of the BinServParam</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Service Source Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Internal by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Intern by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>External Source Active</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Internal Source Active</Description>
+          </Attribute>
+          <Attribute Name="VExt" AttributeDataType="xs:boolean" Unit="">
+            <Description>Extern Value</Description>
+          </Attribute>
+          <Attribute Name="VInt" AttributeDataType="xs:boolean" Unit="">
+            <Description>Intern Value</Description>
+          </Attribute>
+          <Attribute Name="VMan" AttributeDataType="xs:boolean" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="VReq" AttributeDataType="xs:boolean" Unit="">
+            <Description>Request Value</Description>
+          </Attribute>
+          <Attribute Name="VFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Feedback Value</Description>
+          </Attribute>
+          <Attribute Name="VOut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Output Value</Description>
+          </Attribute>
+          <Attribute Name="VState0" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for false</Description>
+          </Attribute>
+          <Attribute Name="VState1" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for true</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="Sync" AttributeDataType="xs:boolean">
+            <Description>Synchronization Mode</Description>
+            <DefaultValue>true</DefaultValue>
+          </Attribute>
+        </SystemUnitClass>
+        <SystemUnitClass Name="StringServParam" ID="b5ce7389-bd87-4c29-8ae3-e837e8f61709" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/OperationElement">
+          <Description>SystemUnitClass of the BinServParam</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Service Source Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Internal by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Intern by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to External by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcExtAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>External Source Active</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Internal Source Active</Description>
+          </Attribute>
+          <Attribute Name="VExt" AttributeDataType="xs:string" Unit="">
+            <Description>Extern Value</Description>
+          </Attribute>
+          <Attribute Name="VInt" AttributeDataType="xs:string" Unit="">
+            <Description>Intern Value</Description>
+          </Attribute>
+          <Attribute Name="VMan" AttributeDataType="xs:string" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="VReq" AttributeDataType="xs:string" Unit="">
+            <Description>Request Value</Description>
+          </Attribute>
+          <Attribute Name="VFbk" AttributeDataType="xs:string" Unit="">
+            <Description>Feedback Value</Description>
+          </Attribute>
+          <Attribute Name="VOut" AttributeDataType="xs:string" Unit="">
+            <Description>Output Value</Description>
+          </Attribute>
+          <Attribute Name="Sync" AttributeDataType="xs:boolean">
+            <Description>Synchronization Mode</Description>
+            <DefaultValue>true</DefaultValue>
+          </Attribute>
+        </SystemUnitClass>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ActiveElement" ID="fd2f4887-e314-4ce6-b057-0ae97f784488" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Description>SystemUnitClass of the ActiveElement</Description>
+        <Attribute Name="OSLevel" AttributeDataType="xs:byte" Unit="">
+          <Description>OS Level variable (0: Local HMI, &gt;0: POL HMI)</Description>
+        </Attribute>
+        <Attribute Name="WQC" AttributeDataType="xs:byte" Unit="">
+          <Description>Worst Quality Code variable</Description>
+        </Attribute>
+        <SystemUnitClass Name="BinVlv" ID="02ddf77d-9775-4e68-9d97-f3835993ac55" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement">
+          <Description>SystemUnitClass of the BinVlv</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SafePosEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Hardware Safe Position enabled</Description>
+          </Attribute>
+          <Attribute Name="SafePos" AttributeDataType="xs:boolean" Unit="">
+            <Description>Safe Position</Description>
+          </Attribute>
+          <Attribute Name="OpenOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Open command from Operator </Description>
+          </Attribute>
+          <Attribute Name="CloseOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Close command from Operator </Description>
+          </Attribute>
+          <Attribute Name="OpenAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Valve to Open by automatic </Description>
+          </Attribute>
+          <Attribute Name="CloseAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Valve to Close by automatic </Description>
+          </Attribute>
+          <Attribute Name="Ctrl" AttributeDataType="xs:boolean" Unit="">
+            <Description>Valve Control</Description>
+          </Attribute>
+          <Attribute Name="OpenFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Open Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="CloseFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Close Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="OpenFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Open Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="CloseFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Close Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="PermEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Permission Lock</Description>
+          </Attribute>
+          <Attribute Name="Permit" AttributeDataType="xs:boolean" Unit="">
+            <Description>Permit allows the control</Description>
+          </Attribute>
+          <Attribute Name="IntlEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Interlock Lock</Description>
+          </Attribute>
+          <Attribute Name="Interlock" AttributeDataType="xs:boolean" Unit="">
+            <Description>Interlock prevents the valve from being activated and sets it to safe position</Description>
+          </Attribute>
+          <Attribute Name="ProtEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Protection Lock</Description>
+          </Attribute>
+          <Attribute Name="Protect" AttributeDataType="xs:boolean" Unit="">
+            <Description>Protect prevents the valve from being activated and sets it to safe position, requires a reset command</Description>
+          </Attribute>
+          <Attribute Name="ResetOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by operator</Description>
+          </Attribute>
+          <Attribute Name="ResetAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by automatic</Description>
+          </Attribute>
+          <SystemUnitClass Name="MonBinVlv" ID="c36b63d4-5d1d-4e1c-959a-c808b66be785" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement/BinVlv">
+            <Description>SystemUnitClass of the MonBinVlv</Description>
+            <Attribute Name="MonEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Monitoring Feature</Description>
+            </Attribute>
+            <Attribute Name="MonSafePos" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set the behavior, if an error occurs</Description>
+            </Attribute>
+            <Attribute Name="MonStatErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Static Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonDynErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Dynamic Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonStatTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for uncontrolled changes in seconds</Description>
+            </Attribute>
+            <Attribute Name="MonDynTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for controlled changes in seconds</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="AnaVlv" ID="cb9d1df4-e026-4b9e-8ff2-3d4993f94b97" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement">
+          <Description>SystemUnitClass of the AnaVlv</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Source Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="SrcManAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Manual by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Internal by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Intern by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcManOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Manual by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcManAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Manual Source Active</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Internal Source Active</Description>
+          </Attribute>
+          <Attribute Name="OpenOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Open command from Operator </Description>
+          </Attribute>
+          <Attribute Name="CloseOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Close command from Operator </Description>
+          </Attribute>
+          <Attribute Name="OpenAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Valve to Open by automatic </Description>
+          </Attribute>
+          <Attribute Name="CloseAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Valve to Close by automatic </Description>
+          </Attribute>
+          <Attribute Name="OpenAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Valve is set to Open</Description>
+          </Attribute>
+          <Attribute Name="CloseAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Valve is set to Close</Description>
+          </Attribute>
+          <Attribute Name="OpenFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Open Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="CloseFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Close Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="OpenFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Open Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="CloseFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Close Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="Pos" AttributeDataType="xs:float" Unit="">
+            <Description>Position Setpoint</Description>
+          </Attribute>
+          <Attribute Name="PosMan" AttributeDataType="xs:float" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="PosInt" AttributeDataType="xs:float" Unit="">
+            <Description>Intern Value</Description>
+          </Attribute>
+          <Attribute Name="PosSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="PosSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="PosUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="PosMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="PosMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="PosRbk" AttributeDataType="xs:float" Unit="">
+            <Description>Readback Value</Description>
+          </Attribute>
+          <Attribute Name="PosFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Position Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="PosFbk" AttributeDataType="xs:float" Unit="">
+            <Description>Position Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="SafePosEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Hardware Safe Position enabled</Description>
+          </Attribute>
+          <Attribute Name="SafePos" AttributeDataType="xs:boolean" Unit="">
+            <Description>Safe Position</Description>
+          </Attribute>
+          <Attribute Name="SafePosAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Safe Position Actived</Description>
+          </Attribute>
+          <Attribute Name="PermEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Permission Lock</Description>
+          </Attribute>
+          <Attribute Name="Permit" AttributeDataType="xs:boolean" Unit="">
+            <Description>Permit allows the control</Description>
+          </Attribute>
+          <Attribute Name="IntlEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Interlock Lock</Description>
+          </Attribute>
+          <Attribute Name="Interlock" AttributeDataType="xs:boolean" Unit="">
+            <Description>Interlock prevents the valve from being activated and sets it to safe position</Description>
+          </Attribute>
+          <Attribute Name="ProtEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Protection Lock</Description>
+          </Attribute>
+          <Attribute Name="Protect" AttributeDataType="xs:boolean" Unit="">
+            <Description>Protect prevents the valve from being activated and sets it to safe position, requires a reset command</Description>
+          </Attribute>
+          <Attribute Name="ResetOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by operator</Description>
+          </Attribute>
+          <Attribute Name="ResetAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by automatic</Description>
+          </Attribute>
+          <SystemUnitClass Name="MonAnaVlv" ID="4da7b1cd-710a-4f33-8cfe-7ad698457bf9" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement/AnaVlv">
+            <Description>SystemUnitClass of the MonAnaVlv</Description>
+            <Attribute Name="MonEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Monitoring Feature</Description>
+            </Attribute>
+            <Attribute Name="MonSafePos" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set the behavior, if an error occurs</Description>
+            </Attribute>
+            <Attribute Name="MonStatErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Static Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonDynErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Dynamic Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonStatTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for uncontrolled changes in seconds</Description>
+            </Attribute>
+            <Attribute Name="MonDynTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for controlled changes in seconds</Description>
+            </Attribute>
+            <Attribute Name="PosReachedFbk" AttributeDataType="xs:boolean" Unit="">
+              <Description>Position reached</Description>
+            </Attribute>
+            <Attribute Name="PosTolerance" AttributeDataType="xs:float" Unit="">
+              <Description>Position Tolerance Value for Calculation</Description>
+            </Attribute>
+            <Attribute Name="MonPosTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time until position is reached in seconds</Description>
+            </Attribute>
+            <Attribute Name="MonPosErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Position Error active</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="BinDrv" ID="e787d9ea-b87e-4994-8fe0-a467152d7e83" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement">
+          <Description>SystemUnitClass of the BinDrv</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="FwdEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward movement enabled</Description>
+          </Attribute>
+          <Attribute Name="RevEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse movement enabled</Description>
+          </Attribute>
+          <Attribute Name="SafePos" AttributeDataType="xs:boolean" Unit="">
+            <Description>Safe Position</Description>
+          </Attribute>
+          <Attribute Name="StopOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Stop command from Operator </Description>
+          </Attribute>
+          <Attribute Name="FwdOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward command from Operator </Description>
+          </Attribute>
+          <Attribute Name="RevOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse command from Operator </Description>
+          </Attribute>
+          <Attribute Name="StopAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Drive to Stop by automatic</Description>
+          </Attribute>
+          <Attribute Name="FwdAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Drive to Forward by automatic</Description>
+          </Attribute>
+          <Attribute Name="RevAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Drive to Reverse by automatic</Description>
+          </Attribute>
+          <Attribute Name="FwdCtrl" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward Control</Description>
+          </Attribute>
+          <Attribute Name="RevCtrl" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse Control</Description>
+          </Attribute>
+          <Attribute Name="RevFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="FwdFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="FwdFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="RevFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="Trip" AttributeDataType="xs:boolean" Unit="">
+            <Description>Drive Protection Indicator </Description>
+          </Attribute>
+          <Attribute Name="PermEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Permission Lock</Description>
+          </Attribute>
+          <Attribute Name="Permit" AttributeDataType="xs:boolean" Unit="">
+            <Description>Permit allows the control</Description>
+          </Attribute>
+          <Attribute Name="IntlEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Interlock Lock</Description>
+          </Attribute>
+          <Attribute Name="Interlock" AttributeDataType="xs:boolean" Unit="">
+            <Description>Interlock prevents the valve from being activated and sets it to safe position</Description>
+          </Attribute>
+          <Attribute Name="ProtEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Protection Lock</Description>
+          </Attribute>
+          <Attribute Name="Protect" AttributeDataType="xs:boolean" Unit="">
+            <Description>Protect prevents the valve from being activated and sets it to safe position, requires a reset command</Description>
+          </Attribute>
+          <Attribute Name="ResetOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by operator</Description>
+          </Attribute>
+          <Attribute Name="ResetAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by automatic</Description>
+          </Attribute>
+          <SystemUnitClass Name="MonBinDrv" ID="f24014e6-b3b8-4e07-b0d6-ecbb44f68d86" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement/BinDrv">
+            <Description>SystemUnitClass of the MonBinDrv</Description>
+            <Attribute Name="MonEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Monitoring Feature</Description>
+            </Attribute>
+            <Attribute Name="MonSafePos" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set the behavior, if an error occurs</Description>
+            </Attribute>
+            <Attribute Name="MonStatErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Static Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonDynErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Dynamic Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonStatTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for uncontrolled changes in seconds</Description>
+            </Attribute>
+            <Attribute Name="MonDynTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for controlled changes in seconds</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="AnaDrv" ID="5a7acb06-5ec3-48e8-8a70-2f7fb252807c" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement">
+          <Description>SystemUnitClass of the AnaDrv</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Source Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="SrcManAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Manual by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Internal by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Intern by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcManOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Manual by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcManAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Manual Source Active</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Internal Source Active</Description>
+          </Attribute>
+          <Attribute Name="FwdEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward movement enabled</Description>
+          </Attribute>
+          <Attribute Name="RevEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse movement enabled</Description>
+          </Attribute>
+          <Attribute Name="SafePos" AttributeDataType="xs:boolean" Unit="">
+            <Description>Safe Position</Description>
+          </Attribute>
+          <Attribute Name="StopOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Stop command from Operator </Description>
+          </Attribute>
+          <Attribute Name="FwdOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward command from Operator </Description>
+          </Attribute>
+          <Attribute Name="RevOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse command from Operator </Description>
+          </Attribute>
+          <Attribute Name="StopAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Drive to Stop by automatic</Description>
+          </Attribute>
+          <Attribute Name="FwdAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Drive to Forward by automatic</Description>
+          </Attribute>
+          <Attribute Name="RevAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Drive to Reverse by automatic</Description>
+          </Attribute>
+          <Attribute Name="FwdCtrl" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward Control</Description>
+          </Attribute>
+          <Attribute Name="RevCtrl" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse Control</Description>
+          </Attribute>
+          <Attribute Name="RevFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="FwdFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="FwdFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Forward Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="RevFbk" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reverse Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="Trip" AttributeDataType="xs:boolean" Unit="">
+            <Description>Drive Protection Indicator </Description>
+          </Attribute>
+          <Attribute Name="Rpm" AttributeDataType="xs:float" Unit="">
+            <Description>RPM Setpoint</Description>
+          </Attribute>
+          <Attribute Name="RpmMan" AttributeDataType="xs:float" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="RpmInt" AttributeDataType="xs:float" Unit="">
+            <Description>Intern Value</Description>
+          </Attribute>
+          <Attribute Name="RpmSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="RpmSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="RpmUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="RpmMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="RpmMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="RpmRbk" AttributeDataType="xs:float" Unit="">
+            <Description>Readback Value</Description>
+          </Attribute>
+          <Attribute Name="RpmFbkCalc" AttributeDataType="xs:boolean" Unit="">
+            <Description>RPM Feedback Source</Description>
+          </Attribute>
+          <Attribute Name="RpmFbk" AttributeDataType="xs:float" Unit="">
+            <Description>RPM Feedback Signal</Description>
+          </Attribute>
+          <Attribute Name="PermEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Permission Lock</Description>
+          </Attribute>
+          <Attribute Name="Permit" AttributeDataType="xs:boolean" Unit="">
+            <Description>Permit allows the control</Description>
+          </Attribute>
+          <Attribute Name="IntlEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Interlock Lock</Description>
+          </Attribute>
+          <Attribute Name="Interlock" AttributeDataType="xs:boolean" Unit="">
+            <Description>Interlock prevents the valve from being activated and sets it to safe position</Description>
+          </Attribute>
+          <Attribute Name="ProtEn" AttributeDataType="xs:boolean" Unit="">
+            <Description>Enables the Protection Lock</Description>
+          </Attribute>
+          <Attribute Name="Protect" AttributeDataType="xs:boolean" Unit="">
+            <Description>Protect prevents the valve from being activated and sets it to safe position, requires a reset command</Description>
+          </Attribute>
+          <Attribute Name="ResetOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by operator</Description>
+          </Attribute>
+          <Attribute Name="ResetAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Reset by automatic</Description>
+          </Attribute>
+          <SystemUnitClass Name="MonAnaDrv" ID="fded1e7b-1298-4e72-b3bf-38a263bb3c57" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement/AnaDrv">
+            <Description>SystemUnitClass of the MonAnaDrv</Description>
+            <Attribute Name="MonEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Monitoring Feature</Description>
+            </Attribute>
+            <Attribute Name="MonSafePos" AttributeDataType="xs:boolean" Unit="">
+              <Description>Set the behavior, if an error occurs</Description>
+            </Attribute>
+            <Attribute Name="MonStatErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Static Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonDynErr" AttributeDataType="xs:boolean" Unit="">
+              <Description>Dynamic Error occured</Description>
+            </Attribute>
+            <Attribute Name="MonStatTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for uncontrolled changes in seconds</Description>
+            </Attribute>
+            <Attribute Name="MonDynTi" AttributeDataType="xs:float" Unit="SEC">
+              <Description>Monitor Time for controlled changes in seconds</Description>
+            </Attribute>
+            <Attribute Name="RpmErr" AttributeDataType="xs:float" Unit="">
+              <Description>RPM Error</Description>
+            </Attribute>
+            <Attribute Name="RpmAHEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Alarm High Limit</Description>
+            </Attribute>
+            <Attribute Name="RpmAHLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Alarm High</Description>
+            </Attribute>
+            <Attribute Name="RpmAHAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Alarm High active</Description>
+            </Attribute>
+            <Attribute Name="RpmALEn" AttributeDataType="xs:boolean" Unit="">
+              <Description>Enables the Alarm Low Limit</Description>
+            </Attribute>
+            <Attribute Name="RpmALLim" AttributeDataType="xs:float" Unit="">
+              <Description>Limit Value for Alarm Low</Description>
+            </Attribute>
+            <Attribute Name="RpmALAct" AttributeDataType="xs:boolean" Unit="">
+              <Description>Alarm Low active</Description>
+            </Attribute>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="PIDCtrl" ID="c88fd69e-e41a-4ae5-a68e-a408f0d5c0c8" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/ActiveElement">
+          <Description>SystemUnitClass of the PIDCtrl</Description>
+          <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Operation Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Offline by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Operator by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Operation Mode to Automatic by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Operator Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Automatic Mode Active</Description>
+          </Attribute>
+          <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Offline Mode Active</Description>
+          </Attribute>
+          <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+            <Description>Selection of the active Source Mode interaction channel</Description>
+          </Attribute>
+          <Attribute Name="SrcManAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Manual by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Internal by automatic interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Intern by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcManOp" AttributeDataType="xs:boolean" Unit="">
+            <Description>Set Source Mode to Manual by operator interaction</Description>
+          </Attribute>
+          <Attribute Name="SrcManAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Manual Source Active</Description>
+          </Attribute>
+          <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+            <Description>Internal Source Active</Description>
+          </Attribute>
+          <Attribute Name="PV" AttributeDataType="xs:float" Unit="">
+            <Description>Process Value</Description>
+          </Attribute>
+          <Attribute Name="PVSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="PVSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="PVUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="SP" AttributeDataType="xs:float" Unit="">
+            <Description>Setpoint Value</Description>
+          </Attribute>
+          <Attribute Name="SPMan" AttributeDataType="xs:float" Unit="">
+            <Description>Manual Value</Description>
+          </Attribute>
+          <Attribute Name="SPInt" AttributeDataType="xs:float" Unit="">
+            <Description>Intern Value</Description>
+          </Attribute>
+          <Attribute Name="SPSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="SPSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="SPUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="SPIntMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="SPIntMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="SPManMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="SPManMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="MVMan" AttributeDataType="xs:float" Unit="">
+            <Description>Manipulated Value from Operator</Description>
+          </Attribute>
+          <Attribute Name="MV" AttributeDataType="xs:float" Unit="">
+            <Description>Manipulated Value</Description>
+          </Attribute>
+          <Attribute Name="MVSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="MVSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="MVUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+          <Attribute Name="MVMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="MVMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="P" AttributeDataType="xs:float" Unit="C62">
+            <Description>Proportional Parameter</Description>
+          </Attribute>
+          <Attribute Name="Ti" AttributeDataType="xs:float" Unit="SEC">
+            <Description>Integration Parameter</Description>
+          </Attribute>
+          <Attribute Name="Td" AttributeDataType="xs:float" Unit="SEC">
+            <Description>Derivation Parameter</Description>
+          </Attribute>
+        </SystemUnitClass>
+      </SystemUnitClass>
+      <SystemUnitClass Name="DiagnosticElement" ID="194e8fa1-1526-4007-9bc2-4075450b97f7" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Description>SystemUnitClass of the DiagnosticElement</Description>
+        <Attribute Name="WQC" AttributeDataType="xs:byte" Unit="">
+          <Description>Worst Quality Code variable</Description>
+        </Attribute>
+        <SystemUnitClass Name="LockView4" ID="803ef9f8-6633-4861-b213-6c2e0a6acdfb" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement">
+          <Description>SystemUnitClass of the LockView4</Description>
+          <Attribute Name="Logic" AttributeDataType="xs:boolean" Unit="">
+            <Description>Logical behavior</Description>
+          </Attribute>
+          <Attribute Name="In1En" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Enable - In1</Description>
+          </Attribute>
+          <Attribute Name="In1" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Value - In1</Description>
+          </Attribute>
+          <Attribute Name="In1QC" AttributeDataType="xs:byte" Unit="">
+            <Description>Locking Input Quality Code - In1</Description>
+          </Attribute>
+          <Attribute Name="In1Inv" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Inversion Enable - In1</Description>
+          </Attribute>
+          <Attribute Name="In1Txt" AttributeDataType="xs:string" Unit="">
+            <Description>Locking Input Additional Text - In1</Description>
+          </Attribute>
+          <Attribute Name="In2En" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Enable - In2</Description>
+          </Attribute>
+          <Attribute Name="In2" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Value - In2</Description>
+          </Attribute>
+          <Attribute Name="In2QC" AttributeDataType="xs:byte" Unit="">
+            <Description>Locking Input Quality Code - In2</Description>
+          </Attribute>
+          <Attribute Name="In2Inv" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Inversion Enable - In2</Description>
+          </Attribute>
+          <Attribute Name="In2Txt" AttributeDataType="xs:string" Unit="">
+            <Description>Locking Input Additional Text - In2</Description>
+          </Attribute>
+          <Attribute Name="In3En" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Enable - In3</Description>
+          </Attribute>
+          <Attribute Name="In3" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Value - In3</Description>
+          </Attribute>
+          <Attribute Name="In3QC" AttributeDataType="xs:byte" Unit="">
+            <Description>Locking Input Quality Code - In3</Description>
+          </Attribute>
+          <Attribute Name="In3Inv" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Inversion Enable - In3</Description>
+          </Attribute>
+          <Attribute Name="In3Txt" AttributeDataType="xs:string" Unit="">
+            <Description>Locking Input Additional Text - In3</Description>
+          </Attribute>
+          <Attribute Name="In4En" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Enable - In4</Description>
+          </Attribute>
+          <Attribute Name="In4" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Value - In4</Description>
+          </Attribute>
+          <Attribute Name="In4QC" AttributeDataType="xs:byte" Unit="">
+            <Description>Locking Input Quality Code - In4</Description>
+          </Attribute>
+          <Attribute Name="In4Inv" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Input Inversion Enable - In4</Description>
+          </Attribute>
+          <Attribute Name="In4Txt" AttributeDataType="xs:string" Unit="">
+            <Description>Locking Input Additional Text - In4</Description>
+          </Attribute>
+          <Attribute Name="Out" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Result Output</Description>
+          </Attribute>
+          <Attribute Name="OutQC" AttributeDataType="xs:boolean" Unit="">
+            <Description>Locking Result Output Quality Code</Description>
+          </Attribute>
+          <SystemUnitClass Name="LockView8" ID="b3680afd-251f-42d6-851d-dbe55d1651be" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/LockView4">
+            <Description>SystemUnitClass of the LockView8</Description>
+            <Attribute Name="In5En" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Enable - In5</Description>
+            </Attribute>
+            <Attribute Name="In5" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Value - In5</Description>
+            </Attribute>
+            <Attribute Name="In5QC" AttributeDataType="xs:byte" Unit="">
+              <Description>Locking Input Quality Code - In5</Description>
+            </Attribute>
+            <Attribute Name="In5Inv" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Inversion Enable - In5</Description>
+            </Attribute>
+            <Attribute Name="In5Txt" AttributeDataType="xs:string" Unit="">
+              <Description>Locking Input Additional Text - In5</Description>
+            </Attribute>
+            <Attribute Name="In6En" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Enable - In6</Description>
+            </Attribute>
+            <Attribute Name="In6" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Value - In6</Description>
+            </Attribute>
+            <Attribute Name="In6QC" AttributeDataType="xs:byte" Unit="">
+              <Description>Locking Input Quality Code - In6</Description>
+            </Attribute>
+            <Attribute Name="In6Inv" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Inversion Enable - In6</Description>
+            </Attribute>
+            <Attribute Name="In6Txt" AttributeDataType="xs:string" Unit="">
+              <Description>Locking Input Additional Text - In6</Description>
+            </Attribute>
+            <Attribute Name="In7En" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Enable - In7</Description>
+            </Attribute>
+            <Attribute Name="In7" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Value - In7</Description>
+            </Attribute>
+            <Attribute Name="In7QC" AttributeDataType="xs:byte" Unit="">
+              <Description>Locking Input Quality Code - In7</Description>
+            </Attribute>
+            <Attribute Name="In7Inv" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Inversion Enable - In7</Description>
+            </Attribute>
+            <Attribute Name="In7Txt" AttributeDataType="xs:string" Unit="">
+              <Description>Locking Input Additional Text - In7</Description>
+            </Attribute>
+            <Attribute Name="In8En" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Enable - In8</Description>
+            </Attribute>
+            <Attribute Name="In8" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Value - In8</Description>
+            </Attribute>
+            <Attribute Name="In8QC" AttributeDataType="xs:byte" Unit="">
+              <Description>Locking Input Quality Code - In8</Description>
+            </Attribute>
+            <Attribute Name="In8Inv" AttributeDataType="xs:boolean" Unit="">
+              <Description>Locking Input Inversion Enable - In8</Description>
+            </Attribute>
+            <Attribute Name="In8Txt" AttributeDataType="xs:string" Unit="">
+              <Description>Locking Input Additional Text - In8</Description>
+            </Attribute>
+            <SystemUnitClass Name="LockView16" ID="a80f0db2-640f-4c3a-bb87-9a89ce217440" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement/LockView4/LockView8">
+              <Description>SystemUnitClass of the LockView16</Description>
+              <Attribute Name="In9En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In9</Description>
+              </Attribute>
+              <Attribute Name="In9" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In9</Description>
+              </Attribute>
+              <Attribute Name="In9QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In9</Description>
+              </Attribute>
+              <Attribute Name="In9Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In9</Description>
+              </Attribute>
+              <Attribute Name="In9Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In9</Description>
+              </Attribute>
+              <Attribute Name="In10En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In10</Description>
+              </Attribute>
+              <Attribute Name="In10" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In10</Description>
+              </Attribute>
+              <Attribute Name="In10QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In10</Description>
+              </Attribute>
+              <Attribute Name="In10Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In10</Description>
+              </Attribute>
+              <Attribute Name="In10Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In10</Description>
+              </Attribute>
+              <Attribute Name="In11En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In11</Description>
+              </Attribute>
+              <Attribute Name="In11" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In11</Description>
+              </Attribute>
+              <Attribute Name="In11QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In11</Description>
+              </Attribute>
+              <Attribute Name="In11Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In11</Description>
+              </Attribute>
+              <Attribute Name="In11Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In11</Description>
+              </Attribute>
+              <Attribute Name="In12En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In12</Description>
+              </Attribute>
+              <Attribute Name="In12" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In12</Description>
+              </Attribute>
+              <Attribute Name="In12QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In12</Description>
+              </Attribute>
+              <Attribute Name="In12Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In12</Description>
+              </Attribute>
+              <Attribute Name="In12Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In12</Description>
+              </Attribute>
+              <Attribute Name="In13En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In13</Description>
+              </Attribute>
+              <Attribute Name="In13" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In13</Description>
+              </Attribute>
+              <Attribute Name="In13QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In13</Description>
+              </Attribute>
+              <Attribute Name="In13Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In13</Description>
+              </Attribute>
+              <Attribute Name="In13Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In13</Description>
+              </Attribute>
+              <Attribute Name="In14En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In14</Description>
+              </Attribute>
+              <Attribute Name="In14" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In14</Description>
+              </Attribute>
+              <Attribute Name="In14QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In14</Description>
+              </Attribute>
+              <Attribute Name="In14Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In14</Description>
+              </Attribute>
+              <Attribute Name="In14Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In14</Description>
+              </Attribute>
+              <Attribute Name="In15En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In15</Description>
+              </Attribute>
+              <Attribute Name="In15" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In15</Description>
+              </Attribute>
+              <Attribute Name="In15QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In15</Description>
+              </Attribute>
+              <Attribute Name="In15Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In15</Description>
+              </Attribute>
+              <Attribute Name="In15Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In15</Description>
+              </Attribute>
+              <Attribute Name="In16En" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Enable - In16</Description>
+              </Attribute>
+              <Attribute Name="In16" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Value - In16</Description>
+              </Attribute>
+              <Attribute Name="In16QC" AttributeDataType="xs:byte" Unit="">
+                <Description>Locking Input Quality Code - In16</Description>
+              </Attribute>
+              <Attribute Name="In16Inv" AttributeDataType="xs:boolean" Unit="">
+                <Description>Locking Input Inversion Enable - In16</Description>
+              </Attribute>
+              <Attribute Name="In16Txt" AttributeDataType="xs:string" Unit="">
+                <Description>Locking Input Additional Text - In16</Description>
+              </Attribute>
+            </SystemUnitClass>
+          </SystemUnitClass>
+        </SystemUnitClass>
+        <SystemUnitClass Name="HealthStateView" ID="9c2e9d9b-4187-4c3b-a525-1d6c27636140" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/DiagnosticElement">
+          <Description>SystemUnitClass of the Health State View</Description>
+        </SystemUnitClass>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ServiceControl" ID="9d7746c2-3d60-4daf-a53b-fa49231b28a4" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Description>SystemUnitClass of the ServiceControl</Description>
+        <Attribute Name="StateChannel" AttributeDataType="xs:boolean" Unit="">
+          <Description>Selection of the active Operation Mode interaction channel</Description>
+        </Attribute>
+        <Attribute Name="StateOffAut" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Operation Mode to Offline by automatic interaction</Description>
+        </Attribute>
+        <Attribute Name="StateOpAut" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Operation Mode to Operator by automatic interaction</Description>
+        </Attribute>
+        <Attribute Name="StateAutAut" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Operation Mode to Automatic by automatic interaction</Description>
+        </Attribute>
+        <Attribute Name="StateOffOp" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Operation Mode to Offline by operator interaction</Description>
+        </Attribute>
+        <Attribute Name="StateOpOp" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Operation Mode to Operator by operator interaction</Description>
+        </Attribute>
+        <Attribute Name="StateAutOp" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Operation Mode to Automatic by operator interaction</Description>
+        </Attribute>
+        <Attribute Name="StateOpAct" AttributeDataType="xs:boolean" Unit="">
+          <Description>Operator Mode Active</Description>
+        </Attribute>
+        <Attribute Name="StateAutAct" AttributeDataType="xs:boolean" Unit="">
+          <Description>Automatic Mode Active</Description>
+        </Attribute>
+        <Attribute Name="StateOffAct" AttributeDataType="xs:boolean" Unit="">
+          <Description>Offline Mode Active</Description>
+        </Attribute>
+        <Attribute Name="SrcChannel" AttributeDataType="xs:boolean" Unit="">
+          <Description>Selection of the active Service Source Mode interaction channel</Description>
+        </Attribute>
+        <Attribute Name="SrcExtAut" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Source Mode to External by automatic interaction</Description>
+        </Attribute>
+        <Attribute Name="SrcIntAut" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Source Mode to Internal by automatic interaction</Description>
+        </Attribute>
+        <Attribute Name="SrcIntOp" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Source Mode to Intern by operator interaction</Description>
+        </Attribute>
+        <Attribute Name="SrcExtOp" AttributeDataType="xs:boolean" Unit="">
+          <Description>Set Source Mode to External by operator interaction</Description>
+        </Attribute>
+        <Attribute Name="SrcExtAct" AttributeDataType="xs:boolean" Unit="">
+          <Description>External Source Active</Description>
+        </Attribute>
+        <Attribute Name="SrcIntAct" AttributeDataType="xs:boolean" Unit="">
+          <Description>Internal Source Active</Description>
+        </Attribute>
+        <Attribute Name="WQC" AttributeDataType="xs:byte" Unit="">
+          <Description>Worst Quality Code variable</Description>
+        </Attribute>
+        <Attribute Name="CommandOp" AttributeDataType="xs:unsignedLong">
+          <Description>Command Input for Operator</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="CommandInt" AttributeDataType="xs:unsignedLong">
+          <Description>Command Input for Automatic-Intern</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="CommandExt" AttributeDataType="xs:unsignedLong">
+          <Description>Command Input for Automatic-Extern</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="ProcedureOp" AttributeDataType="xs:unsignedLong">
+          <Description>Procedure Input for Operator</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="ProcedureInt" AttributeDataType="xs:unsignedLong">
+          <Description>Procedure Input for Automatic-Intern</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="ProcedureExt" AttributeDataType="xs:unsignedLong">
+          <Description>Procedure Input for Automatic-Extern</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="CommandEnable" AttributeDataType="xs:unsignedLong">
+          <Description>Transition Clearance from the Current State</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="CurrentState" AttributeDataType="xs:unsignedLong">
+          <Description>Current State</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="CurrentProcedure" AttributeDataType="xs:unsignedLong">
+          <Description>Current Procedure</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="RequestedProcedure" AttributeDataType="xs:unsignedLong">
+          <Description>Requested Procedure</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="InteractQuestionID" AttributeDataType="xs:unsignedLong">
+          <Description>Operator Request Question ID</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="InteractAnswerID" AttributeDataType="xs:unsignedLong">
+          <Description>Operator Request Answer ID</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+        <Attribute Name="PosTextID" AttributeDataType="xs:unsignedLong">
+          <Description>Service Information Text ID</Description>
+          <DefaultValue>0</DefaultValue>
+        </Attribute>
+      </SystemUnitClass>
+      <SystemUnitClass Name="InputElement" ID="29d73837-7887-49b7-b6eb-d39269488ed0" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly">
+        <Description>SystemUnitClass of the InputElement</Description>
+        <Attribute Name="WQC" AttributeDataType="xs:byte" Unit="">
+          <Description>Worst Quality Code variable</Description>
+        </Attribute>
+        <SystemUnitClass Name="AnaProcessValueIn" ID="e63b7f39-b4b7-418c-b80e-b2bfea9d9766" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement">
+          <Description>SystemUnitClass of the Analog Process Value Input</Description>
+          <Attribute Name="VExt" AttributeDataType="xs:float" Unit="">
+            <Description>Extern Value</Description>
+          </Attribute>
+          <Attribute Name="VSclMin" AttributeDataType="xs:float" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:float" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+        </SystemUnitClass>
+        <SystemUnitClass Name="BinProcessValueIn" ID="49dcfa00-28ce-43c6-9ec5-94635a816aab" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement">
+          <Description>SystemUnitClass of the Binary Process Value Input</Description>
+          <Attribute Name="VExt" AttributeDataType="xs:boolean" Unit="">
+            <Description>Extern Value</Description>
+          </Attribute>
+          <Attribute Name="VState0" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for false</Description>
+          </Attribute>
+          <Attribute Name="VState1" AttributeDataType="xs:string" Unit="">
+            <Description>Text replacement for true</Description>
+          </Attribute>
+        </SystemUnitClass>
+        <SystemUnitClass Name="DIntProcessValueIn" ID="11acb2bb-1cdb-4254-80fb-1bdaa5e708fb" RefBaseClassPath="MTPDataObjectSUCLib/DataAssembly/IndicatorElement">
+          <Description>SystemUnitClass of the Digital Process Value Input</Description>
+          <Attribute Name="VExt" AttributeDataType="xs:int" Unit="">
+            <Description>Extern Value</Description>
+          </Attribute>
+          <Attribute Name="VSclMin" AttributeDataType="xs:int" Unit="">
+            <Description>Low Limit value</Description>
+          </Attribute>
+          <Attribute Name="VSclMax" AttributeDataType="xs:int" Unit="">
+            <Description>High Limit value</Description>
+          </Attribute>
+          <Attribute Name="VUnit" AttributeDataType="xs:short" Unit="">
+            <Description>Enumeration value of the unit list</Description>
+          </Attribute>
+        </SystemUnitClass>
+      </SystemUnitClass>
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+  <SystemUnitClassLib Name="MTPHMISUCLib">
+    <Description>SystemUnitClassLib which contains the base elements of a MTP HMI description.</Description>
+    <SystemUnitClass Name="HMISet" RefBaseClassPath="MTPSUCLib/MTPSet">
+      <Description>SystemUnitClass for the HMISet</Description>
+      <ExternalInterface Name="HMIReference" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector" ID="ce112064-678f-4f9b-b29b-0c9c4ff3691a">
+        <Description>Reference Path to the HMI Description External Reference (xs:anyURI): 'Folder1/hmiFile.aml' Internal Reference (xs:ID): 'HMI/'</Description>
+        <Attribute Name="refURI" AttributeDataType="xs:anyURI" />
+      </ExternalInterface>
+    </SystemUnitClass>
+    <SystemUnitClass Name="PortObject">
+      <Description>HMI Port Object Class</Description>
+      <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+        <Description>X-coordinate of the PortObject.</Description>
+      </Attribute>
+      <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+        <Description>Y-coordinate of the PortObject.</Description>
+      </Attribute>
+      <SystemUnitClass Name="LogicalPort" RefBaseClassPath="MTPHMISUCLib/PortObject">
+        <Description>Logical Port Object.</Description>
+        <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/InformationFlowConnector" ID="3395b2bb-6038-461c-ad8a-b5897b0d7e04" />
+      </SystemUnitClass>
+      <SystemUnitClass Name="MeasurementPoint" RefBaseClassPath="MTPHMISUCLib/PortObject">
+        <Description>Measurement Point Object.</Description>
+        <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/InformationFlowConnector" ID="1f8803c9-3eef-40b5-b371-4d715193f99b" />
+      </SystemUnitClass>
+      <SystemUnitClass Name="Nozzle" RefBaseClassPath="MTPHMISUCLib/PortObject">
+        <Description>Nozzle Object.</Description>
+        <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/MassFlowConnector" ID="a858cd1c-5e4e-4b42-b678-e9caeb08a330" />
+      </SystemUnitClass>
+    </SystemUnitClass>
+    <SystemUnitClass Name="TopologyObject">
+      <Description>Topology Object.</Description>
+      <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+        <Description>X-coordinate of the TopologyObject.</Description>
+      </Attribute>
+      <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+        <Description>Y-coordinate of the TopologyObject.</Description>
+      </Attribute>
+      <SystemUnitClass Name="Junction" RefBaseClassPath="MTPHMISUCLib/TopologyObject">
+        <Description>Junction Connection Object.</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="Termination" RefBaseClassPath="MTPHMISUCLib/TopologyObject">
+        <Description>Termination Connection Object.</Description>
+        <Attribute Name="RefID" Unit="" AttributeDataType="xs:ID">
+          <Description>Reference ID of the partner jump mark.</Description>
+        </Attribute>
+        <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        <SystemUnitClass Name="Sink" RefBaseClassPath="MTPHMISUCLib/TopologyObject/Termination">
+          <Description>Sink Connection Object.</Description>
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </SystemUnitClass>
+        <SystemUnitClass Name="Source" RefBaseClassPath="MTPHMISUCLib/TopologyObject/Termination">
+          <Description>Source Connection Object.</Description>
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </SystemUnitClass>
+      </SystemUnitClass>
+    </SystemUnitClass>
+    <SystemUnitClass Name="Connection">
+      <Description>HMI Connection Object.</Description>
+      <Attribute Name="Edgepath" Unit="" AttributeDataType="xs:string">
+        <Description>Edgepath notation x1,y1;x2,y2;x3,y3;... (including the start and end port coordinates in their absolute values).</Description>
+      </Attribute>
+      <SystemUnitClass Name="Pipe" RefBaseClassPath="MTPHMISUCLib/Connection">
+        <Description>Pipe Connection Object.</Description>
+        <Attribute Name="Directed" Unit="" AttributeDataType="xs:boolean">
+          <Description>Indication if the pipe is directed.</Description>
+        </Attribute>
+        <InternalElement Name="Nozzle2" RefBaseSystemUnitPath="MTPHMISUCLib/PortObject/Nozzle" ID="a177cdc8-8f58-4762-9052-800f1099024d">
+          <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+            <Description>X-coordinate of the PortObject.</Description>
+          </Attribute>
+          <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+            <Description>Y-coordinate of the PortObject.</Description>
+          </Attribute>
+          <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/MassFlowConnector" ID="6d54e1c4-31dc-43cd-a87a-9c7bf546bdd5" />
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </InternalElement>
+        <InternalElement Name="Nozzle1" RefBaseSystemUnitPath="MTPHMISUCLib/PortObject/Nozzle" ID="6b10add7-e875-48f0-836f-bb4a545d72c5">
+          <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+            <Description>X-coordinate of the PortObject.</Description>
+          </Attribute>
+          <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+            <Description>Y-coordinates of the PortObject.</Description>
+          </Attribute>
+          <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/MassFlowConnector" ID="52fe002e-52d8-4e31-9003-e5fc8013bd2f" />
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </InternalElement>
+      </SystemUnitClass>
+      <SystemUnitClass Name="FunctionLine" RefBaseClassPath="MTPHMISUCLib/Connection">
+        <Description>Function Line Object with a fixed direction from start to end port.</Description>
+        <InternalElement Name="End" RefBaseSystemUnitPath="MTPHMISUCLib/PortObject/LogicalPort" ID="62ba00c2-f8c0-4171-a3a3-1065a6616e4e">
+          <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+            <Description>X-coordinate of the PortObject.</Description>
+          </Attribute>
+          <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+            <Description>Y-coordinate of the PortObject.</Description>
+          </Attribute>
+          <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/InformationFlowConnector" ID="87ef1cdc-a72f-4667-b398-84a7bdc5fc21" />
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </InternalElement>
+        <InternalElement Name="Start" RefBaseSystemUnitPath="MTPHMISUCLib/PortObject/LogicalPort" ID="e753b833-5e19-487e-975b-f517f86777b7">
+          <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+            <Description>X-coordinate of the PortObject.</Description>
+          </Attribute>
+          <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+            <Description>Y-coordinate of the PortObject.</Description>
+          </Attribute>
+          <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/InformationFlowConnector" ID="ed59cb9b-9bbd-4c1b-9496-e97ea24c3b0d" />
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </InternalElement>
+      </SystemUnitClass>
+      <SystemUnitClass Name="MeasurementLine" RefBaseClassPath="MTPHMISUCLib/Connection">
+        <Description>Measurement Line Object.</Description>
+        <InternalElement Name="End" RefBaseSystemUnitPath="MTPHMISUCLib/PortObject/MeasurementPoint" ID="7654056b-5c15-4903-a803-350c7acfcc2a">
+          <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+            <Description>X-coordinate of the PortObject.</Description>
+          </Attribute>
+          <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+            <Description>Y-coordinate of the PortObject.</Description>
+          </Attribute>
+          <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/InformationFlowConnector" ID="263d2096-cc14-4da4-989c-5bc0a98ef096" />
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </InternalElement>
+        <InternalElement Name="Start" RefBaseSystemUnitPath="MTPHMISUCLib/PortObject/MeasurementPoint" ID="0aaf2a56-6414-401f-a767-632ba5bb28e2">
+          <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+            <Description>X-coordinate of the PortObject.</Description>
+          </Attribute>
+          <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+            <Description>Y-coordinate of the PortObject.</Description>
+          </Attribute>
+          <ExternalInterface Name="Connector" RefBaseClassPath="MTPHMIICLib/ConnectorInterface/InformationFlowConnector" ID="749da629-8601-4597-8f21-c67895e60faa" />
+          <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+        </InternalElement>
+      </SystemUnitClass>
+    </SystemUnitClass>
+    <SystemUnitClass Name="Picture">
+      <Description>HMI Picture Object.</Description>
+      <Attribute Name="Width" Unit="" AttributeDataType="xs:integer">
+        <Description>Width of the Picture in pixel.</Description>
+      </Attribute>
+      <Attribute Name="Height" Unit="" AttributeDataType="xs:integer">
+        <Description>Height of the Picture in pixel.</Description>
+      </Attribute>
+      <Attribute Name="HierarchyLevel" Unit="" AttributeDataType="xs:string">
+        <Description>Picture Hierarchy Level - formatted string: "x.y.z".</Description>
+      </Attribute>
+    </SystemUnitClass>
+    <SystemUnitClass Name="SemanticGroup">
+      <Description>HMI SemanticGroup object.</Description>
+    </SystemUnitClass>
+    <SystemUnitClass Name="VisualObject" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>HMI VisualObject - Visual Representation of a HMI object.</Description>
+      <Attribute Name="Width" Unit="" AttributeDataType="xs:integer">
+        <Description>Width of the VisualObject.</Description>
+      </Attribute>
+      <Attribute Name="Height" Unit="" AttributeDataType="xs:integer">
+        <Description>Height of the VisualObject.</Description>
+      </Attribute>
+      <Attribute Name="X" Unit="" AttributeDataType="xs:integer">
+        <Description>X-coordinate of the VisualObject.</Description>
+      </Attribute>
+      <Attribute Name="Y" Unit="" AttributeDataType="xs:integer">
+        <Description>Y-coordinate of the VisualObject.</Description>
+      </Attribute>
+      <Attribute Name="ZIndex" AttributeDataType="xs:integer">
+        <Description>ZIndex of the VisualObject.</Description>
+      </Attribute>
+      <Attribute Name="Rotation" Unit="" AttributeDataType="xs:integer">
+        <Description>Rotation of the VisualObject.</Description>
+      </Attribute>
+      <Attribute Name="eClassVersion" Unit="" AttributeDataType="xs:string">
+        <Description>The attribute shall define the version of the eclass catalogue, which the eclass category is related to: i.E. ECLASS-{Major}.{Release} -&gt; ECLASS-1.0</Description>
+      </Attribute>
+      <Attribute Name="eClassClassificationClass" Unit="" AttributeDataType="xs:string">
+        <Description>The attrtibue shall define the version of the eclass classification class for the aml object. The value shall be the coded name of the classification class as 8-digit integer. Two digits for each hierarchical level.</Description>
+      </Attribute>
+      <Attribute Name="eClassIRDI" Unit="" AttributeDataType="xs:string">
+        <Description>This attribute shall contain the IRDI of the Class - i.E. 0173-1---ADVANCED_1_1#01-ADN862#003</Description>
+      </Attribute>
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+  <SystemUnitClassLib Name="MTPServiceSUCLib">
+    <Description>SystemUnitClassLibrary which contains the Service Description</Description>
+    <Version>0</Version>
+    <SystemUnitClass Name="ServiceSet" ID="eccffd49-c314-4c4a-a0f5-c546a344960c" RefBaseClassPath="MTPSUCLib/MTPSet">
+      <Description>SystemUnitClass for the ServiceSet</Description>
+      <ExternalInterface Name="ServiceReference" ID="e4737d04-6b48-4279-afc9-c532c1078d20" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
+        <Description>Reference Path to the Service Description - External Reference (xs:anyURI): 'Folder1/hmiFile.aml' or Internal Reference (xs:anyURI): 'GUID/'</Description>
+        <Attribute Name="refURI" AttributeDataType="xs:IDREF" />
+      </ExternalInterface>
+    </SystemUnitClass>
+    <SystemUnitClass Name="Service" ID="b4f1b027-1701-46d2-91a3-18fc8f17e6ce" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>SystemUnitClass of the Service</Description>
+    </SystemUnitClass>
+    <SystemUnitClass Name="ServiceParameter" ID="1e26c783-c752-4198-8823-df1233b76eb5" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>SystemUnitClass of the ServiceParameter</Description>
+      <SystemUnitClass Name="ConfigurationParameter" ID="6794616c-a353-4812-981e-0da333d4e200" RefBaseClassPath="MTPServiceSUCLib/ServiceParameter">
+        <Description>SystemUnitClass of the ConfigurationParameter</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ProcedureParameter" ID="5db8615e-2086-48be-a83a-d94d1a07f0c8" RefBaseClassPath="MTPServiceSUCLib/ServiceParameter">
+        <Description>SystemUnitClass of the StrategyParameter</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ReportValue" ID="c91f57c4-38ef-4d6b-96cc-b3e70aedcda3" RefBaseClassPath="MTPServiceSUCLib/ServiceParameter">
+        <Description>SystemUnitClass of the ReportValue</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ProcessValueIn" ID="18bd22b0-e21b-4b4b-a87e-a9fbc72680c0" RefBaseClassPath="MTPServiceSUCLib/ServiceParameter">
+        <Description>SystemUnitClass of the ProcessValueIn</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ProcessValueOut" ID="a4fedee8-3ee9-477b-afaf-0aaa9ab0e510" RefBaseClassPath="MTPServiceSUCLib/ServiceParameter">
+        <Description>SystemUnitClass of the ProcessValueOut</Description>
+      </SystemUnitClass>
+    </SystemUnitClass>
+    <SystemUnitClass Name="ServiceProcedure" ID="c9beb238-bd7e-4e21-b823-533d3c35007d" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>SystemUnitClass of the ServiceProcedure</Description>
+      <Attribute Name="IsSelfCompleting" AttributeDataType="xs:boolean">
+        <Description>0: not self completing, 1: self completing</Description>
+      </Attribute>
+      <Attribute Name="ProcedureID" AttributeDataType="xs:unsignedLong">
+        <Description>Procedure Identifier</Description>
+      </Attribute>
+      <Attribute Name="IsDefault" AttributeDataType="xs:boolean">
+        <Description>1: is default strategy, 0: is not default - only one Strategy shall be default</Description>
+      </Attribute>
+    </SystemUnitClass>
+    <SystemUnitClass Name="ServiceRelation" ID="091d07c5-b015-4437-b07a-c15a09a8e99d">
+      <Description>SystemUnitClass of the ServiceRelation</Description>
+      <Attribute Name="SourceServiceID" AttributeDataType="xs:ID" Unit="">
+        <Description>Source Service ID</Description>
+      </Attribute>
+      <Attribute Name="SourceProcedureID" AttributeDataType="xs:string" Unit="">
+        <Description>Source Service Procedure ID</Description>
+      </Attribute>
+      <Attribute Name="SourceValue" AttributeDataType="xs:string" Unit="">
+        <Description>Source Value</Description>
+      </Attribute>
+      <Attribute Name="TargetServiceID" AttributeDataType="xs:string" Unit="">
+        <Description>Target Service ID</Description>
+      </Attribute>
+      <Attribute Name="TargetProcedureID" AttributeDataType="xs:string" Unit="">
+        <Description>Target Service Procedure ID</Description>
+      </Attribute>
+      <Attribute Name="TargetValue" AttributeDataType="xs:string" Unit="">
+        <Description>Target Value</Description>
+      </Attribute>
+      <SupportedRoleClass RefRoleClassPath="AutomationMLBaseRoleClassLib/AutomationMLBaseRole" />
+      <SystemUnitClass Name="ServiceEnable" ID="c8406ffb-1832-4c41-8e31-02aa0f6383fa" RefBaseClassPath="MTPServiceSUCLib/ServiceRelation">
+        <Description>SystemUnitClass of the ServiceEnable</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ServiceDisable" ID="1584b4bc-f7e3-4944-b498-f3f697e914a4" RefBaseClassPath="MTPServiceSUCLib/ServiceRelation">
+        <Description>SystemUnitClass of the ServiceDisable</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ServiceSynchronisation" ID="b447a34e-d38a-40ce-be8e-d52481a5521f" RefBaseClassPath="MTPServiceSUCLib/ServiceRelation">
+        <Description>SystemUnitClass of the ServiceSynchronisation</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="ServiceForce" ID="c9c1c393-088c-45f1-9b05-593643ea9cfb" RefBaseClassPath="MTPServiceSUCLib/ServiceRelation">
+        <Description>SystemUnitClass of the ServiceForce</Description>
+      </SystemUnitClass>
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+  <SystemUnitClassLib Name="MTPTextSUCLib">
+    <Description>SystemUnitClassLibrary which contains the text elements of a MTP Package</Description>
+    <Version>0</Version>
+    <SystemUnitClass Name="TextSet" ID="462cae7c-c1ed-4814-805b-8dd3bfb11ab9" RefBaseClassPath="MTPSUCLib/MTPSet">
+      <Description>SystemUnitClass for the TextSet</Description>
+      <ExternalInterface Name="TextReference" ID="42bb7306-9d7b-4d35-ab35-5f6d2924624a" RefBaseClassPath="AutomationMLInterfaceClassLib/AutomationMLBaseInterface/ExternalDataConnector">
+        <Description>Reference Path to the Text Description - External Reference (xs:anyURI): 'Folder1/textFile.aml' or Internal Reference (xs:anyURI): 'GUID/'</Description>
+        <Attribute Name="refURI" AttributeDataType="xs:IDREF" />
+      </ExternalInterface>
+    </SystemUnitClass>
+    <SystemUnitClass Name="Text" ID="4c9668d1-e6cf-4e68-8529-d548fc419eef">
+      <Description>SystemUnitClass of a Text Item</Description>
+      <Attribute Name="Text" AttributeDataType="xs:string">
+        <Description>Text Value</Description>
+      </Attribute>
+    </SystemUnitClass>
+    <SystemUnitClass Name="ServiceInteraction" ID="b90efae6-3f2c-4ca3-a09f-65fd5da0cdf5" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>SystemUnitClass of a Service Interaction</Description>
+      <SystemUnitClass Name="Question" ID="c3d2b729-f074-4e8a-8ea9-f93a32d74ad2" RefBaseClassPath="MTPTextSUCLib/Text">
+        <Description>SystemUnitClass of a Question Text</Description>
+      </SystemUnitClass>
+      <SystemUnitClass Name="Answer" ID="08aa0bd0-5458-4516-b920-9b2e6e168aea" RefBaseClassPath="MTPTextSUCLib/Text">
+        <Description>SystemUnitClass of a Answer Text</Description>
+      </SystemUnitClass>
+    </SystemUnitClass>
+    <SystemUnitClass Name="ServicePosition" ID="94fd5196-349a-41df-b924-33cd7bd17860" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>SystemUnitClass of a Service Position</Description>
+      <SystemUnitClass Name="PositionText" ID="192fb8f6-fa0a-442e-881a-029d391c1b28" RefBaseClassPath="MTPTextSUCLib/Text">
+        <Description>SystemUnitClass of a Position Text</Description>
+      </SystemUnitClass>
+    </SystemUnitClass>
+    <SystemUnitClass Name="EnumDefinition" ID="18a986d6-3e39-4401-820c-ec5a1cdb50ae" RefBaseClassPath="MTPSUCLib/LinkedObject">
+      <Description>SystemUnitClass of a Service Interaction</Description>
+      <SystemUnitClass Name="EnumItem" ID="fdbc7a81-fb58-488c-b26d-f92b0b004752" RefBaseClassPath="MTPTextSUCLib/Text">
+        <Description>SystemUnitClass of a Enumeration Item</Description>
+      </SystemUnitClass>
+    </SystemUnitClass>
+  </SystemUnitClassLib>
+</CAEXFile>
