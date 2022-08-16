@@ -5,10 +5,10 @@ import string
 
 
 class MTPGenerator:
-    def __init__(self, writer_infos: dict, export_path: str):
+    def __init__(self, writer_infos: dict, export_path: str, manifest_template_path: str):
 
         # path of a manifest template containing general infos
-        self.template_path = 'manifest_template.xml'
+        self.template_path = manifest_template_path
         self.writer_infos = writer_infos  # infos about manifest writer is configurable
 
         self.tree = ET.parse(self.template_path)
