@@ -253,18 +253,18 @@ def test_disable_all():
 def test_get_command():
     command_en_ctrl = init_state()
     for command_en in command_en_ctrl.command_en:
-        assert command_en_ctrl.get_command(command_en) == command_en_ctrl.command_en[command_en]['value']
+        assert command_en_ctrl.is_enabled(command_en) == command_en_ctrl.command_en[command_en]['value']
 
-    assert command_en_ctrl.get_command('not_exist') == None
+    assert command_en_ctrl.is_enabled('not_exist') == None
 
 
 def test_set_command():
     command_en_ctrl = init_state()
     for command_en in command_en_ctrl.command_en:
-        command_en_ctrl._set_command(command_en, True)
-        command_en_ctrl._set_command('not_exist', False)
+        command_en_ctrl.set_command_en(command_en, True)
+        command_en_ctrl.set_command_en('not_exist', False)
         assert command_en_ctrl.command_en[command_en]['value'] == True
 
-        command_en_ctrl._set_command(command_en, False)
-        command_en_ctrl._set_command('not_exist', True)
+        command_en_ctrl.set_command_en(command_en, False)
+        command_en_ctrl.set_command_en('not_exist', True)
         assert command_en_ctrl.command_en[command_en]['value'] == False

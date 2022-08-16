@@ -28,6 +28,13 @@ class SUCOperationElement(SUCDataAssembly):
         self._add_attribute(Attribute('WQC', int, init_value=255))
 
 
+class SUCActiveElement(SUCDataAssembly):
+    def __init__(self, tag_name, tag_description):
+        super().__init__(tag_name, tag_description)
+        self._add_attribute(Attribute('OSLevel', int, init_value=0))
+        self._add_attribute(Attribute('WQC', int, init_value=255))
+
+
 class SUCServiceControl(SUCDataAssembly):
     def __init__(self, tag_name, tag_description):
         super().__init__(tag_name, tag_description)
@@ -49,7 +56,7 @@ class SUCHealthStateView(SUCDiagnosticElement):
         super().__init__(tag_name, tag_description)
 
 
-class SUCServiceProcedure(SUCOperationElement):
+class SUCServiceProcedure(SUCHealthStateView):
     def __init__(self, procedure_id: int, tag_name: str, tag_description: str, is_self_completing=False,
                  is_default=True):
         super().__init__(tag_name, tag_description)
