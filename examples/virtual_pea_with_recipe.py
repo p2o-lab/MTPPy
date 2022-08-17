@@ -134,13 +134,13 @@ class ServiceDummy(Service):
 
 
 if __name__ == '__main__':
-
     writer_info_dict = {'WriterName': 'tud/plt', 'WriterID': 'tud/plt', 'WriterVendor': 'tud',
                         'WriterVendorURL': 'www.tud.de',
                         'WriterVersion': '1.0.0', 'WriterRelease': '', 'LastWritingDateTime': str(datetime.now()),
                         'WriterProjectTitle': 'tu/plt/mtp', 'WriterProjectID': ''}
-    export_manifest_path = '../manifest_files/example_recipe_manifest.aml'
-    mtp_generator = MTPGenerator(writer_info_dict, export_manifest_path)
+    export_manifest_path = '../manifest_files/example_minimal_manifest.aml'
+    manifest_template_path = '../manifest_files/manifest_template.xml'
+    mtp_generator = MTPGenerator(writer_info_dict, export_manifest_path, manifest_template_path)
 
     module = OPCUAServerPEA(mtp_generator)
 
