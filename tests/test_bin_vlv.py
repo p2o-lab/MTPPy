@@ -90,6 +90,8 @@ def test_open_close_permit_en_true():
             assert bin_vlv.attributes['SafePosAct'].value == False
             assert bin_vlv.attributes['Permit'].value == False
             assert bin_vlv.attributes['Ctrl'].value == False
+            assert bin_vlv.get_open_fbk() == False
+            assert bin_vlv.get_close_fbk() == False
 
     for op_mode, src_mode, set_command, expected_ctrl, expected_fbk in test_scenario:
         for command in [True, False]:
@@ -163,6 +165,8 @@ def test_open_close_interlock_en_true():
             assert bin_vlv.attributes['Interlock'].value == False
             assert bin_vlv.attributes['SafePosAct'].value == True
             assert bin_vlv.attributes['Ctrl'].value == False
+            assert bin_vlv.get_open_fbk() == False
+            assert bin_vlv.get_close_fbk() == True
 
     for op_mode, src_mode, set_command, expected_ctrl, expected_fbk in test_scenario:
         for command in [True, False]:
@@ -236,6 +240,8 @@ def test_open_close_protect_en_true():
             assert bin_vlv.attributes['Protect'].value == False
             assert bin_vlv.attributes['SafePosAct'].value == True
             assert bin_vlv.attributes['Ctrl'].value == False
+            assert bin_vlv.get_open_fbk() == False
+            assert bin_vlv.get_close_fbk() == True
 
     for op_mode, src_mode, set_command, expected_ctrl, expected_fbk in test_scenario:
         for command in [True, False]:
@@ -256,7 +262,7 @@ def test_open_close_protect_en_true():
                     assert bin_vlv.attributes['Ctrl'].value == False
                     assert bin_vlv.get_open_fbk() == False
                     assert bin_vlv.get_close_fbk() == False
-            elif set_command in ['set_rev_op', 'set_rev_aut']:
+            elif set_command in ['set_close_op', 'set_close_aut']:
                 if command:
                     assert bin_vlv.attributes['Ctrl'].value == expected_ctrl
                     assert bin_vlv.get_open_fbk() == False
@@ -321,6 +327,8 @@ def test_reset():
             bin_vlv.set_protect(False)
             assert bin_vlv.attributes['Protect'].value == False
             assert bin_vlv.attributes['SafePosAct'].value == True
+            assert bin_vlv.get_open_fbk() == False
+            assert bin_vlv.get_close_fbk() == True
 
             eval(f'bin_vlv.{set_command}({command})')
             print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, expected: {result}')
@@ -328,9 +336,12 @@ def test_reset():
             if command:
                 assert bin_vlv.attributes['Protect'].value == result
                 assert bin_vlv.attributes['SafePosAct'].value != result
+                assert bin_vlv.get_close_fbk() != result
+
             else:
                 assert bin_vlv.attributes['Protect'].value == False
                 assert bin_vlv.attributes['SafePosAct'].value == True
+                assert bin_vlv.get_close_fbk() == True
 
 
 test_scenario_safe_pos_en = [('op', 'int', 'set_open_op', 1, True),
@@ -384,7 +395,7 @@ def test_safe_pos_en_interlock():
                 elif safe_pos == 0:
                     assert bin_vlv.attributes['Ctrl'].value == False
                     assert bin_vlv.get_open_fbk() == False
-                    assert bin_vlv.get_close_fbk() == False
+                    assert bin_vlv.get_close_fbk() == True
 
             # if safe_pos_en is false, current valve state is the last active state
             else:
@@ -393,13 +404,13 @@ def test_safe_pos_en_interlock():
                 assert bin_vlv.get_close_fbk() == True
 
 
-def test_safe_pos_en__protect():
+def test_safe_pos_en_protect():
     for op_mode, src_mode, set_command, safe_pos, safe_pos_en in test_scenario_safe_pos_en:
         bin_vlv = init_bin_vlv(op_mode=op_mode, src_mode=src_mode, safe_pos=safe_pos,
                                safe_pos_en=safe_pos_en, prot_en=True)
-        bin_vlv.set_protect(True)  # interlock is inactive
+        bin_vlv.set_protect(True)  # protect is inactive
         eval(f'bin_vlv.{set_command}(True)')
-        bin_vlv.set_protect(False)  # active interlock after setting a position
+        bin_vlv.set_protect(False)  # active protect after setting a position
         print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, True, safe_pos: {safe_pos}, '
               f'safe_pos_en: {safe_pos_en}')
 
@@ -431,7 +442,7 @@ def test_safe_pos_en__protect():
                 elif safe_pos == 0:
                     assert bin_vlv.attributes['Ctrl'].value == False
                     assert bin_vlv.get_open_fbk() == False
-                    assert bin_vlv.get_close_fbk() == False
+                    assert bin_vlv.get_close_fbk() == True
 
             # if safe_pos_en is false, current valve state is the last active state
             else:
@@ -444,21 +455,21 @@ def test_safe_pos_en_permit():
     for op_mode, src_mode, set_command, safe_pos, safe_pos_en in test_scenario_safe_pos_en:
         bin_vlv = init_bin_vlv(op_mode=op_mode, src_mode=src_mode, safe_pos=safe_pos,
                                safe_pos_en=safe_pos_en, perm_en=True)
-        bin_vlv.set_permit(True)  # interlock is inactive
+        bin_vlv.set_permit(True)  # permit is inactive
         eval(f'bin_vlv.{set_command}(True)')
-        bin_vlv.set_permit(False)  # active interlock after setting a position
+        bin_vlv.set_permit(False)  # active permit after setting a position
         print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, True, safe_pos: {safe_pos}, '
               f'safe_pos_en: {safe_pos_en}')
 
         if set_command in ['set_open_op', 'set_open_aut']:
-            assert bin_vlv.attributes['Ctrl'].value == False
-            assert bin_vlv.get_open_fbk() == False
+            assert bin_vlv.attributes['Ctrl'].value == True
+            assert bin_vlv.get_open_fbk() == True
             assert bin_vlv.get_close_fbk() == False
 
         if set_command in ['set_close_op', 'set_close_aut']:
             assert bin_vlv.attributes['Ctrl'].value == False
             assert bin_vlv.get_open_fbk() == False
-            assert bin_vlv.get_close_fbk() == False
+            assert bin_vlv.get_close_fbk() == True
 
 
 def test_open_fbk():

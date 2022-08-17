@@ -97,6 +97,8 @@ def test_open_close_permit_en_true():
             assert ana_vlv.attributes['Permit'].value == False
             assert ana_vlv.attributes['OpenAct'].value == False
             assert ana_vlv.attributes['CloseAct'].value == False
+            assert ana_vlv.get_open_fbk() == False
+            assert ana_vlv.get_close_fbk() == False
 
     for op_mode, src_mode, set_command, expected_result in test_scenario:
         for command in [True, False]:
@@ -110,17 +112,25 @@ def test_open_close_permit_en_true():
             if set_command in ['set_open_op', 'set_open_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == expected_result
+                    assert ana_vlv.get_open_fbk() == expected_result
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
             elif set_command in ['set_close_op', 'set_close_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == expected_result
+                    assert ana_vlv.get_close_fbk() == expected_result
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
 
 
 def test_open_close_permit_en_false():
@@ -136,17 +146,25 @@ def test_open_close_permit_en_false():
             if set_command in ['set_open_op', 'set_open_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == expected_result
+                    assert ana_vlv.get_open_fbk() == expected_result
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
             elif set_command in ['set_close_op', 'set_close_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == expected_result
+                    assert ana_vlv.get_close_fbk() == expected_result
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
 
 
 def test_open_close_interlock_en_true():
@@ -160,7 +178,9 @@ def test_open_close_interlock_en_true():
             assert ana_vlv.attributes['Interlock'].value == False
             assert ana_vlv.attributes['SafePosAct'].value == True
             assert ana_vlv.attributes['OpenAct'].value == False
-            assert ana_vlv.attributes['CloseAct'].value == False
+            assert ana_vlv.attributes['CloseAct'].value == True
+            assert ana_vlv.get_open_fbk() == False
+            assert ana_vlv.get_close_fbk() == True
 
     for op_mode, src_mode, set_command, expected_result in test_scenario:
         for command in [True, False]:
@@ -174,17 +194,25 @@ def test_open_close_interlock_en_true():
             if set_command in ['set_open_op', 'set_open_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == expected_result
+                    assert ana_vlv.get_open_fbk() == expected_result
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
             elif set_command in ['set_close_op', 'set_close_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == expected_result
+                    assert ana_vlv.get_close_fbk() == expected_result
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
 
 
 def test_open_close_interlock_en_false():
@@ -200,17 +228,25 @@ def test_open_close_interlock_en_false():
             if set_command in ['set_open_op', 'set_open_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == expected_result
+                    assert ana_vlv.get_open_fbk() == expected_result
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
             elif set_command in ['set_close_op', 'set_close_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == expected_result
+                    assert ana_vlv.get_close_fbk() == expected_result
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
 
 
 def test_open_close_protect_en_true():
@@ -224,31 +260,42 @@ def test_open_close_protect_en_true():
             assert ana_vlv.attributes['Protect'].value == False
             assert ana_vlv.attributes['SafePosAct'].value == True
             assert ana_vlv.attributes['OpenAct'].value == False
-            assert ana_vlv.attributes['CloseAct'].value == False
+            assert ana_vlv.attributes['CloseAct'].value == True
 
     for op_mode, src_mode, set_command, expected_result in test_scenario:
         for command in [True, False]:
             ana_vlv = init_ana_vlv(op_mode=op_mode, src_mode=src_mode, prot_en=True)
             ana_vlv.set_protect(True)
+            assert ana_vlv.attributes['Protect'].value == True
+            assert ana_vlv.attributes['SafePosAct'].value == False
+            assert ana_vlv.attributes['OpenAct'].value == False  # state after calling reset
+            assert ana_vlv.attributes['CloseAct'].value == False  # state after calling reset
+
             eval(f'ana_vlv.{set_command}({command})')
             print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, expected: {expected_result}')
 
-            assert ana_vlv.attributes['Protect'].value == True
-            assert ana_vlv.attributes['SafePosAct'].value == False
             if set_command in ['set_open_op', 'set_open_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == expected_result
+                    assert ana_vlv.get_open_fbk() == expected_result
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
             elif set_command in ['set_rev_op', 'set_rev_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == expected_result
+                    assert ana_vlv.get_close_fbk() == expected_result
                 else:
                     assert ana_vlv.attributes['OpenAct'].value == False
+                    assert ana_vlv.get_open_fbk() == False
                     assert ana_vlv.attributes['CloseAct'].value == False
+                    assert ana_vlv.get_close_fbk() == False
 
 
 def test_open_close_protect_en_false():
@@ -256,11 +303,14 @@ def test_open_close_protect_en_false():
         for command in [True, False]:
             ana_vlv = init_ana_vlv(op_mode=op_mode, src_mode=src_mode, prot_en=False)
             ana_vlv.set_protect(True)
-            eval(f'ana_vlv.{set_command}({command})')
-            print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, expected: {expected_result}')
 
             assert ana_vlv.attributes['Protect'].value == True
             assert ana_vlv.attributes['SafePosAct'].value == False
+            assert ana_vlv.attributes['OpenAct'].value == False  # state after calling reset
+            assert ana_vlv.attributes['CloseAct'].value == False  # state after calling reset
+
+            eval(f'ana_vlv.{set_command}({command})')
+            print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, expected: {expected_result}')
             if set_command in ['set_open_op', 'set_open_aut']:
                 if command:
                     assert ana_vlv.attributes['OpenAct'].value == expected_result
@@ -297,19 +347,27 @@ def test_reset():
         for command in [True, False]:
             ana_vlv = init_ana_vlv(op_mode=op_mode, src_mode=src_mode, prot_en=True)
 
+            # active protect lock
             ana_vlv.set_protect(False)
             assert ana_vlv.attributes['Protect'].value == False
             assert ana_vlv.attributes['SafePosAct'].value == True
+            assert ana_vlv.attributes['OpenAct'].value == False
+            assert ana_vlv.attributes['CloseAct'].value == True
 
+            # call reset
             eval(f'ana_vlv.{set_command}({command})')
             print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, expected: {result}')
 
             if command:
                 assert ana_vlv.attributes['Protect'].value == result
                 assert ana_vlv.attributes['SafePosAct'].value != result
+                assert ana_vlv.attributes['OpenAct'].value == False
+                assert ana_vlv.attributes['CloseAct'].value != result
             else:
                 assert ana_vlv.attributes['Protect'].value == False
                 assert ana_vlv.attributes['SafePosAct'].value == True
+                assert ana_vlv.attributes['OpenAct'].value == False
+                assert ana_vlv.attributes['CloseAct'].value == True
 
 
 test_scenario_pos = [('off', 'int', 'set_pos_int', False),
@@ -494,6 +552,11 @@ def test_safe_pos_en_true_permit():
                   f'safe_pos_en: {safe_pos_en}')
 
             # activated DataAssembly in the locked state (permit mode) is not set to the safe position
+            assert ana_vlv.get_pos() == command
+            assert ana_vlv.get_pos_fbk() == command
+
+            # try to set new position after permit is activated, position should not be changed
+            eval(f'ana_vlv.{set_command}(6)')
             assert ana_vlv.get_pos() == command
             assert ana_vlv.get_pos_fbk() == command
 

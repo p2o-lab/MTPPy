@@ -118,6 +118,8 @@ def test_fwd_rev_permit_en_true():
             assert bin_drv.attributes['Permit'].value == False
             assert bin_drv.attributes['FwdCtrl'].value == False
             assert bin_drv.attributes['RevCtrl'].value == False
+            assert bin_drv.get_fwd_fbk() == False
+            assert bin_drv.get_rev_fbk() == False
 
     for op_mode, src_mode, set_command, expected_result in test_scenario:
         for command in [True, False]:
@@ -131,17 +133,25 @@ def test_fwd_rev_permit_en_true():
             if set_command in ['set_fwd_op', 'set_fwd_aut']:
                 if command:
                     assert bin_drv.attributes['FwdCtrl'].value == expected_result
+                    assert bin_drv.get_fwd_fbk() == expected_result
                     assert bin_drv.attributes['RevCtrl'].value == False
+                    assert bin_drv.get_rev_fbk() == False
                 else:
                     assert bin_drv.attributes['FwdCtrl'].value == False
+                    assert bin_drv.get_fwd_fbk() == False
                     assert bin_drv.attributes['RevCtrl'].value == False
+                    assert bin_drv.get_rev_fbk() == False
             elif set_command in ['set_rev_op', 'set_rev_aut']:
                 if command:
                     assert bin_drv.attributes['FwdCtrl'].value == False
+                    assert bin_drv.get_fwd_fbk() == False
                     assert bin_drv.attributes['RevCtrl'].value == expected_result
+                    assert bin_drv.get_rev_fbk() == expected_result
                 else:
                     assert bin_drv.attributes['FwdCtrl'].value == False
+                    assert bin_drv.get_fwd_fbk() == False
                     assert bin_drv.attributes['RevCtrl'].value == False
+                    assert bin_drv.get_rev_fbk() == False
 
 
 def test_fwd_rev_permit_en_false():
@@ -348,8 +358,10 @@ def test_stop():
     for op_mode, src_mode, set_command, changes_expected in test_scenario_stop:
         for command in [True, False]:
             bin_drv = init_bin_drv(op_mode=op_mode, src_mode=src_mode, fwd_en=True, rev_en=True)
-            bin_drv.set_fwd_op(True)
-            bin_drv.set_fwd_aut(True)
+            if op_mode == 'op':  # open valve
+                bin_drv.set_fwd_op(True)
+            elif op_mode == 'aut':
+                bin_drv.set_fwd_aut(True)
 
             print(f'Scenario: mode {op_mode} {src_mode}, {set_command}, expected: {changes_expected}')
             if changes_expected:
