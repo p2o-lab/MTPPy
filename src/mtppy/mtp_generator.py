@@ -6,6 +6,12 @@ import string
 
 class MTPGenerator:
     def __init__(self, writer_infos: dict, export_path: str, manifest_template_path: str):
+        """
+        Represents an MTP generator.
+        :param writer_infos: Writer info section that will be put in the header of the generate manifest.
+        :param export_path: Path where to save the generated MTP manifest.
+        :param manifest_template_path: Path where the manifest template is placed.
+        """
 
         # path of a manifest template containing general infos
         self.template_path = manifest_template_path

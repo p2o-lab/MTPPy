@@ -1,3 +1,5 @@
+import logging
+
 from abc import abstractmethod
 
 from mtppy.suc_data_assembly import SUCServiceControl
@@ -14,6 +16,11 @@ StateCodes = StateCodes()
 
 class Service(SUCServiceControl):
     def __init__(self, tag_name: str, tag_description: str):
+        """
+        Represents a service of the PEA.
+        :param tag_name: Tag name of the service.
+        :param tag_description: Tag description of the service.
+        """
         super().__init__(tag_name, tag_description)
 
         self.thread_ctrl = ThreadControl()
@@ -61,14 +68,28 @@ class Service(SUCServiceControl):
         self.state_machine.state_change()
 
     def add_configuration_parameter(self, configuration_parameter: SUCOperationElement):
+        """
+        Adds a configuration parameter to the service.
+        :param configuration_parameter: Configuration parameter.
+        :return:
+        """
         self.configuration_parameters[configuration_parameter.tag_name] = configuration_parameter
 
     def apply_configuration_parameters(self):
-        print('Applying service configuration parameters')
+        """
+        Applies configuration parameters.
+        :return:
+        """
+        logging.debug('Applying service configuration parameters')
         for configuration_parameter in self.configuration_parameters.values():
             configuration_parameter.set_v_out()
 
     def add_procedure(self, procedure: Procedure):
+        """
+        Adds procedure to the service.
+        :param procedure: Procedure.
+        :return:
+        """
         self.procedures[procedure.attributes['ProcedureId'].value] = procedure
         if procedure.attributes['IsDefault'].value:
             self.procedure_control.default_procedure_id = procedure.attributes['ProcedureId'].value
@@ -78,64 +99,128 @@ class Service(SUCServiceControl):
 
     @abstractmethod
     def idle(self):
+        """
+        Idle state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def starting(self):
+        """
+        Starting state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def execute(self):
+        """
+        Execute state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def completing(self):
+        """
+        Completing state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def completed(self):
+        """
+        Completed state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def pausing(self):
+        """
+        Pausing state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def paused(self):
+        """
+        Paused state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def resuming(self):
+        """
+        Resuming state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def holding(self):
+        """
+        Holding state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def held(self):
+        """
+        Held state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def unholding(self):
+        """
+        Unholding state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def stopping(self):
+        """
+        Stopping state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def stopped(self):
+        """
+        Stopped state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def aborting(self):
+        """
+        Aborting state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def aborted(self):
+        """
+        Aborted state.
+        :return:
+        """
         pass
 
     @abstractmethod
     def resetting(self):
+        """
+        Resetting state.
+        :return:
+        """
         pass

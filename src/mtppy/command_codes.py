@@ -1,5 +1,8 @@
 class CommandCodes:
     def __init__(self):
+        """
+        List of command codes.
+        """
         self.reset = 2
         self.start = 4
         self.stop = 8
@@ -24,7 +27,15 @@ class CommandCodes:
         self.int_code[1024] = 'complete'
 
     def get_list_int(self):
+        """
+        Provides a list of all command codes in int format.
+        :return:
+        """
         return list(self.int_code.keys())
 
     def get_list_str(self):
+        """
+        Provides a list of all command codes in string format.
+        :return:
+        """
         return list(self.int_code.values())

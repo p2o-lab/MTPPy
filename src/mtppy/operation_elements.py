@@ -1,11 +1,16 @@
-from mtppy.attribute import Attribute
+import logging
 
+from mtppy.attribute import Attribute
 from mtppy.operation_source_mode import OperationSourceMode
 from mtppy.suc_data_assembly import SUCOperationElement
 
 
 class AnaServParam(SUCOperationElement):
-    def __init__(self, tag_name, tag_description='', v_min=0, v_max=100, v_scl_min=0, v_scl_max=100, v_unit=0):
+    def __init__(self, tag_name: str, tag_description: str = '', v_min: float = 0, v_max: float = 100,
+                 v_scl_min: float = 0, v_scl_max: float = 100, v_unit: int = 0):
+        """
+        Analog Service Parameter (AnaServParam). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
@@ -30,17 +35,17 @@ class AnaServParam(SUCOperationElement):
         self._add_attribute(Attribute('Sync', bool, False))
 
     def set_v_op(self, value):
-        print('VOp set to %s' % value)
+        logging.debug('VOp set to %s' % value)
         if self.op_src_mode.attributes['StateOpAct']:
             self.set_v_req(value)
 
     def set_v_int(self, value):
-        print('VInt set to %s' % value)
+        logging.debug('VInt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcIntAct']:
             self.set_v_req(value)
 
     def set_v_ext(self, value):
-        print('VExt set to %s' % value)
+        logging.debug('VExt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcExtAct']:
             self.set_v_req(value)
 
@@ -53,26 +58,29 @@ class AnaServParam(SUCOperationElement):
     def set_v_req(self, value):
         if self.valid_value(value):
             self.attributes['VReq'].set_value(value)
-            print('VReq set to %s' % value)
+            logging.debug('VReq set to %s' % value)
         else:
-            print('VReq cannot be set to %s (out of range)' % value)
+            logging.debug('VReq cannot be set to %s (out of range)' % value)
 
     def set_v_out(self):
         v_req = self.attributes['VReq'].value
         self.attributes['VOut'].set_value(v_req)
         self.set_v_fbk(v_req)
-        print('VOut set to %s' % v_req)
+        logging.debug('VOut set to %s' % v_req)
 
     def get_v_out(self):
         return self.attributes['VOut'].value
 
     def set_v_fbk(self, value):
         self.attributes['VFbk'].set_value(value)
-        print('VFbk set to %s' % value)
+        logging.debug('VFbk set to %s' % value)
 
 
 class BinServParam(SUCOperationElement):
-    def __init__(self, tag_name, tag_description='', v_state_0='false', v_state_1='true'):
+    def __init__(self, tag_name: str, tag_description: str = '', v_state_0: str = 'false', v_state_1: str = 'true'):
+        """
+        Binary Service Parameter (BinServParam). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
@@ -91,40 +99,44 @@ class BinServParam(SUCOperationElement):
         self._add_attribute(Attribute('Sync', bool, False))
 
     def set_v_op(self, value):
-        print('VOp set to %s' % value)
+        logging.debug('VOp set to %s' % value)
         if self.op_src_mode.attributes['StateOpAct']:
             self.set_v_req(value)
 
     def set_v_int(self, value):
-        print('VInt set to %s' % value)
+        logging.debug('VInt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcIntAct']:
             self.set_v_req(value)
 
     def set_v_ext(self, value):
-        print('VExt set to %s' % value)
+        logging.debug('VExt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcExtAct']:
             self.set_v_req(value)
 
     def set_v_req(self, value):
         self.attributes['VReq'].set_value(value)
-        print('VReq set to %s' % value)
+        logging.debug('VReq set to %s' % value)
 
     def set_v_out(self):
         v_req = self.attributes['VReq'].value
         self.attributes['VOut'].set_value(v_req)
         self.set_v_fbk(v_req)
-        print('VOut set to %s' % v_req)
+        logging.debug('VOut set to %s' % v_req)
 
     def get_v_out(self):
         return self.attributes['VOut'].value
 
     def set_v_fbk(self, value):
         self.attributes['VFbk'].set_value(value)
-        print('VFbk set to %s' % value)
+        logging.debug('VFbk set to %s' % value)
 
 
 class DIntServParam(SUCOperationElement):
-    def __init__(self, tag_name, tag_description='', v_min=0, v_max=100, v_scl_min=0, v_scl_max=100, v_unit=0):
+    def __init__(self, tag_name: str, tag_description: str = '', v_min: int = 0, v_max: int = 100, v_scl_min: int = 0,
+                 v_scl_max: int = 100, v_unit: int = 0):
+        """
+        Discrete Integer Service Parameter (DIntServParam). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
@@ -149,17 +161,17 @@ class DIntServParam(SUCOperationElement):
         self._add_attribute(Attribute('Sync', bool, False))
 
     def set_v_op(self, value):
-        print('VOp set to %s' % value)
+        logging.debug('VOp set to %s' % value)
         if self.op_src_mode.attributes['StateOpAct']:
             self.set_v_req(value)
 
     def set_v_int(self, value):
-        print('VInt set to %s' % value)
+        logging.debug('VInt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcIntAct']:
             self.set_v_req(value)
 
     def set_v_ext(self, value):
-        print('VExt set to %s' % value)
+        logging.debug('VExt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcExtAct']:
             self.set_v_req(value)
 
@@ -172,26 +184,29 @@ class DIntServParam(SUCOperationElement):
     def set_v_req(self, value):
         if self.valid_value(value):
             self.attributes['VReq'].set_value(value)
-            print('VReq set to %s' % value)
+            logging.debug('VReq set to %s' % value)
         else:
-            print('VReq cannot be set to %s (out of range)' % value)
+            logging.debug('VReq cannot be set to %s (out of range)' % value)
 
     def set_v_out(self):
         v_req = self.attributes['VReq'].value
         self.attributes['VOut'].set_value(v_req)
         self.set_v_fbk(v_req)
-        print('VOut set to %s' % v_req)
+        logging.debug('VOut set to %s' % v_req)
 
     def get_v_out(self):
         return self.attributes['VOut'].value
 
     def set_v_fbk(self, value):
         self.attributes['VFbk'].set_value(value)
-        print('VFbk set to %s' % value)
+        logging.debug('VFbk set to %s' % value)
 
 
 class StringServParam(SUCOperationElement):
-    def __init__(self, tag_name, tag_description=''):
+    def __init__(self, tag_name: str, tag_description: str = ''):
+        """
+        String Service Parameter (StringServParam). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self.op_src_mode = OperationSourceMode()
@@ -205,17 +220,17 @@ class StringServParam(SUCOperationElement):
         self._add_attribute(Attribute('Sync', bool, False))
 
     def set_v_op(self, value):
-        print('VOp set to %s' % value)
+        logging.debug('VOp set to %s' % value)
         if self.op_src_mode.attributes['StateOpAct']:
             self.set_v_req(value)
 
     def set_v_int(self, value):
-        print('VInt set to %s' % value)
+        logging.debug('VInt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcIntAct']:
             self.set_v_req(value)
 
     def set_v_ext(self, value):
-        print('VExt set to %s' % value)
+        logging.debug('VExt set to %s' % value)
         if self.op_src_mode.attributes['StateAutAct'] and self.op_src_mode.attributes['SrcExtAct']:
             self.set_v_req(value)
 
@@ -225,19 +240,19 @@ class StringServParam(SUCOperationElement):
     def set_v_req(self, value):
         if self.valid_value(value):
             self.attributes['VReq'].set_value(value)
-            print('VReq set to %s' % value)
+            logging.debug('VReq set to %s' % value)
         else:
-            print('VReq cannot be set to %s (out of range)' % value)
+            logging.debug('VReq cannot be set to %s (out of range)' % value)
 
     def set_v_out(self):
         v_req = self.attributes['VReq'].value
         self.attributes['VOut'].set_value(v_req)
         self.set_v_fbk(v_req)
-        print('VOut set to %s' % v_req)
+        logging.debug('VOut set to %s' % v_req)
 
     def get_v_out(self):
         return self.attributes['VOut'].value
 
     def set_v_fbk(self, value):
         self.attributes['VFbk'].set_value(value)
-        print('VFbk set to %s' % value)
+        logging.debug('VFbk set to %s' % value)

@@ -2,7 +2,7 @@ from mtppy.attribute import Attribute
 
 
 class SUCDataAssembly:
-    def __init__(self, tag_name: str, tag_description=''):
+    def __init__(self, tag_name: str, tag_description: str = ''):
         self.tag_name = tag_name
         self.tag_description = tag_description
         self.attributes = {
@@ -15,28 +15,28 @@ class SUCDataAssembly:
 
 
 class SUCIndicatorElement(SUCDataAssembly):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
         self._add_attribute(Attribute('OSLevel', int, init_value=0))
         self._add_attribute(Attribute('WQC', int, init_value=255))
 
 
 class SUCOperationElement(SUCDataAssembly):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
         self._add_attribute(Attribute('OSLevel', int, init_value=0))
         self._add_attribute(Attribute('WQC', int, init_value=255))
 
 
 class SUCActiveElement(SUCDataAssembly):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
         self._add_attribute(Attribute('OSLevel', int, init_value=0))
         self._add_attribute(Attribute('WQC', int, init_value=255))
 
 
 class SUCServiceControl(SUCDataAssembly):
-    def __init__(self, tag_name, tag_description):
+    def __init__(self, tag_name: str, tag_description: str):
         super().__init__(tag_name, tag_description)
         self._add_attribute(Attribute('OSLevel', int, init_value=0))
         self._add_attribute(Attribute('WQC', int, init_value=255))

@@ -10,6 +10,7 @@ writer_info_dict = {'WriterName': 'tud/plt/shk', 'WriterID': 'tud/plt', 'WriterV
                     'WriterVersion': '1.0.0', 'WriterRelease': '', 'LastWritingDateTime': 123,
                     'WriterProjectTitle': 'tu/plt/mtp', 'WriterProjectID': ''}
 export_manifest_path = '../src/mtppy/example2_manifest.xml'
+manifest_template_path = './manifest_template.xml'
 
 
 class TestMTPStructure(object):  # test structure of manifest
@@ -17,7 +18,7 @@ class TestMTPStructure(object):  # test structure of manifest
         """
         initiate mtp generator and ModuleTypePackage
         """
-        self.mtp_generator = MTPGenerator(writer_info_dict, export_manifest_path)
+        self.mtp_generator = MTPGenerator(writer_info_dict, export_manifest_path, manifest_template_path)
         self.mtp_generator.add_module_type_package('1.0', 'mtp_test', '')
         self.module_type_package = self.mtp_generator.module_type_package
 
@@ -70,7 +71,7 @@ class TestMTPStructure(object):  # test structure of manifest
 
         # a KeyError should be raised
         with pytest.raises(KeyError):
-            mtp_generator = MTPGenerator(writer_info_dict1, export_manifest_path)
+            mtp_generator = MTPGenerator(writer_info_dict1, export_manifest_path, manifest_template_path)
             mtp_generator.edit_writer_information()
 
     def test_add_supported_role_class(self):

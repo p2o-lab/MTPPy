@@ -1,9 +1,15 @@
+import logging
+
 from mtppy.attribute import Attribute
 from mtppy.suc_data_assembly import SUCIndicatorElement
 
 
 class AnaView(SUCIndicatorElement):
-    def __init__(self, tag_name, tag_description='', v_scl_min=0, v_scl_max=100, v_unit=0):
+    def __init__(self, tag_name: str, tag_description: str = '', v_scl_min: float = 0, v_scl_max: float = 100,
+                 v_unit: int = 0):
+        """
+        Analog View (AnaView). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self.v_scl_min = v_scl_min
@@ -17,11 +23,14 @@ class AnaView(SUCIndicatorElement):
 
     def set_v(self, value):
         self.attributes['V'].set_value(value)
-        print('V set to %s' % value)
+        logging.debug('V set to %s' % value)
 
 
 class BinView(SUCIndicatorElement):
-    def __init__(self, tag_name, tag_description='', v_state_0='false', v_state_1='true'):
+    def __init__(self, tag_name: str, tag_description: str = '', v_state_0: str = 'false', v_state_1: str = 'true'):
+        """
+        Binary View (BinView). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self.v_state_0 = v_state_0
@@ -33,11 +42,15 @@ class BinView(SUCIndicatorElement):
 
     def set_v(self, value):
         self.attributes['V'].set_value(value)
-        print('V set to %s' % value)
+        logging.debug('V set to %s' % value)
 
 
 class DIntView(SUCIndicatorElement):
-    def __init__(self, tag_name, tag_description='', v_scl_min=0, v_scl_max=100, v_unit=0):
+    def __init__(self, tag_name: str, tag_description: str = '', v_scl_min: int = 0, v_scl_max: int = 100,
+                 v_unit: int = 0):
+        """
+        Discrete Integer View (DIntView). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self.v_scl_min = v_scl_min
@@ -51,15 +64,18 @@ class DIntView(SUCIndicatorElement):
 
     def set_v(self, value):
         self.attributes['V'].set_value(value)
-        print('V set to %s' % value)
+        logging.debug('V set to %s' % value)
 
 
 class StringView(SUCIndicatorElement):
-    def __init__(self, tag_name, tag_description=''):
+    def __init__(self, tag_name: str, tag_description: str = ''):
+        """
+        String View (StringView). Parameter names correspond attribute names in VDI/VDE/NAMUR 2658.
+        """
         super().__init__(tag_name, tag_description)
 
         self._add_attribute(Attribute('V', str, init_value=False))
 
     def set_v(self, value):
         self.attributes['V'].set_value(value)
-        print('V set to %s' % value)
+        logging.debug('V set to %s' % value)

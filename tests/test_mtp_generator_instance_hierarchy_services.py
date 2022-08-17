@@ -17,6 +17,7 @@ writer_info_dict = {'WriterName': 'tud/plt', 'WriterID': 'tud/plt', 'WriterVendo
                     'WriterVersion': '1.0.0', 'WriterRelease': '', 'LastWritingDateTime': 123,
                     'WriterProjectTitle': 'tu/plt/mtp', 'WriterProjectID': ''}
 export_manifest_path = '../src/mtppy/example2_manifest.xml'
+manifest_template_path = './manifest_template.xml'
 
 # test obj: active element pid controller
 pid_ctrl = PIDCtrl('pid_ctrl')
@@ -101,7 +102,7 @@ service1 = ServiceObject('service_test1', '')
 
 class TestInstanceHierarchyServices(object):  # test some functions of mtp generator
     def setup_class(self):
-        self.mtp_generator = MTPGenerator(writer_info_dict, export_manifest_path)
+        self.mtp_generator = MTPGenerator(writer_info_dict, export_manifest_path, manifest_template_path)
 
     def test_add_service_to_InstanceHierarchy(self):
         """

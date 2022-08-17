@@ -10,6 +10,9 @@ import time
 import random
 from datetime import datetime
 
+logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
+
 
 class RandomNumberGenerator(Service):
     def __init__(self, tag_name, tag_description):

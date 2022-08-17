@@ -1,3 +1,5 @@
+import logging
+
 from mtppy.attribute import Attribute
 from mtppy.state_codes import StateCodes
 from mtppy.command_codes import CommandCodes
@@ -12,6 +14,12 @@ class StateMachine:
     def __init__(self, operation_source_mode: OperationSourceMode,
                  procedure_control: ProcedureControl,
                  execution_routine: callable):
+        """
+        Represents a state machine for a service.
+        :param operation_source_mode: Operation and source mode control.
+        :param procedure_control: Procedure control.
+        :param execution_routine: Execution routine for state changing.
+        """
 
         self.attributes = {
             'CommandOp': Attribute('CommandOp', int, init_value=0, sub_cb=self.set_command_op),
@@ -44,15 +52,15 @@ class StateMachine:
 
     def command_execution(self, com_var: int):
         if com_var not in CommandCodes.get_list_int():
-            print(f'Command Code {com_var} does not exist')
+            logging.debug(f'Command Code {com_var} does not exist')
             return
 
         cmd_str = CommandCodes.int_code[com_var]
         if not self.command_en_ctrl.is_enabled(cmd_str):
-            print(f'CommandEn does not permit to execute {cmd_str} from state {self.get_current_state_str()}')
+            logging.debug(f'CommandEn does not permit to execute {cmd_str} from state {self.get_current_state_str()}')
             return
         else:
-            print(f'CommandEn permits to execute {cmd_str}')
+            logging.debug(f'CommandEn permits to execute {cmd_str}')
 
         eval(f'self.{CommandCodes.int_code[com_var]}()')
 
@@ -127,7 +135,7 @@ class StateMachine:
         self.command_en_ctrl.execute(new_state_str)
         self.attributes['CommandEn'].set_value(self.command_en_ctrl.get_command_en())
         self.execution_routine()
-        print(f'Service state changed to {new_state}')
+        logging.debug(f'Service state changed to {new_state}')
 
     def get_current_state_str(self):
         return StateCodes.int_code[self.act_state]
