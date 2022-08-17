@@ -216,6 +216,9 @@ manifest_template_path = '../manifest_files/manifest_template.xml'
 mtp_generator = MTPGenerator(writer_info_dict, export_manifest_path, manifest_template_path)
 ```
 
+The manifest template can be downloaded here:
+https://github.com/p2o-lab/MTPPy/blob/master/manifest_files/manifest_template.xml
+
 and add it as an input argument to the PEA instance.
 ```python
 module = OPCUAServerPEA(mtp_generator)
