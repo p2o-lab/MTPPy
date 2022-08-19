@@ -7,7 +7,7 @@ from mtppy.mtp_generator import MTPGenerator
 
 
 class OPCUAServerPEA:
-    def __init__(self, mtp_generator: MTPGenerator = None, endpoint: str ='opc.tcp://0.0.0.0:4840/'):
+    def __init__(self, mtp_generator: MTPGenerator = None, endpoint: str ='opc.tcp://127.0.0.1:4840/'):
         """
         Defines an OPC UA server for PEA.
         :param mtp_generator: Instance of an MTP generator. If specified, an MTP file is generated each time
@@ -71,6 +71,10 @@ class OPCUAServerPEA:
         self.opcua_server.start()
         self._build_opcua_server()
         self._start_subscription()
+
+    def set_services_in_idle(self):
+        for service in self.service_set.values():
+            service.init_idle_state()
 
     def _build_opcua_server(self):
         """
@@ -295,7 +299,7 @@ class Marshalling(object):
         """
         self.subscription_list = subscription_list
 
-    def data_change_notification(self, node, val, data):
+    def datachange_notification(self, node, val, data):
         """
         Executes a callback function if data value changes.
         :param node: OPC UA node.
@@ -308,6 +312,7 @@ class Marshalling(object):
             try:
                 callback(val)
             except Exception as exc:
+                pass
                 logging.warning(f'Something wrong with callback {callback}: {exc}')
 
     def find_set_callback(self, node_id):
